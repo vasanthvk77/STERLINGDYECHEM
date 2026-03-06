@@ -1,5 +1,16 @@
 import React, { useState } from 'react';
-import { Lock, User, ArrowRight, X } from 'lucide-react';
+import {
+    Box,
+    Paper,
+    Typography,
+    TextField,
+    Button,
+    Stack,
+    InputAdornment,
+    Alert,
+    Container
+} from '@mui/material';
+import { Lock, User, ArrowRight } from 'lucide-react';
 
 const Login = ({ onLogin }) => {
     const [username, setUsername] = useState('');
@@ -9,6 +20,8 @@ const Login = ({ onLogin }) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
+            // Note: Keeping original fetch for consistency with existing logic, 
+            // though the app seems to be moving towards db.json
             const response = await fetch('http://localhost:5000/users');
             const users = await response.json();
 
@@ -25,74 +38,132 @@ const Login = ({ onLogin }) => {
     };
 
     return (
-        <div className="min-h-screen bg-[#050769aa] flex items-center justify-center p-6">
-            <div className="bg-[#ffffff] w-full max-w-md p-10 shadow-2xl relative overflow-hidden">
-                <div className="absolute top-0 left-0 w-full h-2 bg-[#050769aa]"></div>
+        <Box
+            sx={{
+                minHeight: '100vh',
+                bgcolor: 'primary.main',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                p: 3
+            }}
+        >
+            <Paper
+                elevation={24}
+                sx={{
+                    width: '100%',
+                    maxWidth: 400,
+                    p: { xs: 4, md: 6 },
+                    borderRadius: 0,
+                    position: 'relative'
+                }}
+            >
+                <Box
+                    sx={{
+                        position: 'absolute',
+                        top: 0,
+                        left: 0,
+                        width: '100%',
+                        height: 8,
+                        bgcolor: 'primary.main'
+                    }}
+                />
 
-                <div className="mb-10 text-center">
-                    <h1 className="text-3xl font-black uppercase tracking-tighter text-[#050769aa] mb-2">Admin Login</h1>
-                    <p className="text-[10px] font-bold uppercase tracking-widest text-[#050769aa]/50">Authorized Personnel Only</p>
-                </div>
-
-                <form onSubmit={handleSubmit} className="space-y-6">
-                    <div>
-                        <label className="block text-[9px] font-black uppercase tracking-widest mb-2 text-[#050769aa]">Username</label>
-                        <div className="relative">
-                            <span className="absolute left-4 top-1/2 -translate-y-1/2 text-[#050769aa]/30">
-                                <User size={16} />
-                            </span>
-                            <input
-                                type="text"
-                                value={username}
-                                onChange={(e) => setUsername(e.target.value)}
-                                className="w-full bg-[#dfdfdfe6]/30 border border-[#dfdfdfe6] p-4 pl-12 text-sm focus:outline-none focus:border-[#050769aa] transition-colors"
-                                placeholder="Enter username"
-                                required
-                            />
-                        </div>
-                    </div>
-
-                    <div>
-                        <label className="block text-[9px] font-black uppercase tracking-widest mb-2 text-[#050769aa]">Password</label>
-                        <div className="relative">
-                            <span className="absolute left-4 top-1/2 -translate-y-1/2 text-[#050769aa]/30">
-                                <Lock size={16} />
-                            </span>
-                            <input
-                                type="password"
-                                value={password}
-                                onChange={(e) => setPassword(e.target.value)}
-                                className="w-full bg-[#dfdfdfe6]/30 border border-[#dfdfdfe6] p-4 pl-12 text-sm focus:outline-none focus:border-[#050769aa] transition-colors"
-                                placeholder="••••••••"
-                                required
-                            />
-                        </div>
-                    </div>
-
-                    {error && (
-                        <div className="flex items-center gap-2 text-red-600 text-[10px] font-bold uppercase py-2">
-                            <X size={14} /> {error}
-                        </div>
-                    )}
-
-                    <button
-                        type="submit"
-                        className="w-full bg-[#050769aa] text-[#ffffff] py-4 font-black uppercase tracking-[0.2em] text-[10px] hover:bg-[#050769aa]/90 transition-colors flex justify-center items-center gap-2"
+                <Box sx={{ mb: 6, textAlign: 'center' }}>
+                    <Typography
+                        variant="h4"
+                        color="primary"
+                        sx={{ fontWeight: 900, textTransform: 'uppercase', mb: 1, letterSpacing: '-0.02em' }}
                     >
-                        Sign In <ArrowRight size={14} />
-                    </button>
-                </form>
+                        Admin Login
+                    </Typography>
+                    <Typography
+                        variant="caption"
+                        sx={{ fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.2em', color: 'text.disabled' }}
+                    >
+                        Authorized Personnel Only
+                    </Typography>
+                </Box>
 
-                <div className="mt-8 text-center">
-                    <button
+                <Box component="form" onSubmit={handleSubmit}>
+                    <Stack spacing={4}>
+                        <TextField
+                            fullWidth
+                            label="Username"
+                            variant="outlined"
+                            value={username}
+                            onChange={(e) => setUsername(e.target.value)}
+                            required
+                            InputProps={{
+                                startAdornment: (
+                                    <InputAdornment position="start">
+                                        <User size={18} />
+                                    </InputAdornment>
+                                ),
+                            }}
+                            sx={{ '& .MuiOutlinedInput-root': { borderRadius: 0 } }}
+                        />
+
+                        <TextField
+                            fullWidth
+                            label="Password"
+                            type="password"
+                            variant="outlined"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            required
+                            InputProps={{
+                                startAdornment: (
+                                    <InputAdornment position="start">
+                                        <Lock size={18} />
+                                    </InputAdornment>
+                                ),
+                            }}
+                            sx={{ '& .MuiOutlinedInput-root': { borderRadius: 0 } }}
+                        />
+
+                        {error && (
+                            <Alert severity="error" sx={{ borderRadius: 0, fontWeight: 700, textTransform: 'uppercase', fontSize: '10px' }}>
+                                {error}
+                            </Alert>
+                        )}
+
+                        <Button
+                            fullWidth
+                            type="submit"
+                            variant="contained"
+                            size="large"
+                            endIcon={<ArrowRight size={18} />}
+                            sx={{
+                                py: 2,
+                                fontWeight: 900,
+                                textTransform: 'uppercase',
+                                letterSpacing: '0.2em',
+                                borderRadius: 0
+                            }}
+                        >
+                            Sign In
+                        </Button>
+                    </Stack>
+                </Box>
+
+                <Box sx={{ mt: 4, textAlign: 'center' }}>
+                    <Button
                         onClick={() => window.history.back()}
-                        className="text-[9px] font-bold uppercase tracking-widest text-[#050769aa]/40 hover:text-[#050769aa] transition-colors"
+                        sx={{
+                            color: 'text.disabled',
+                            fontSize: '10px',
+                            fontWeight: 800,
+                            textTransform: 'uppercase',
+                            letterSpacing: '0.1em',
+                            '&:hover': { color: 'primary.main', bgcolor: 'transparent' }
+                        }}
                     >
                         Back to Website
-                    </button>
-                </div>
-            </div>
-        </div>
+                    </Button>
+                </Box>
+            </Paper>
+        </Box>
     );
 };
 

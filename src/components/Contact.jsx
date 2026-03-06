@@ -1,93 +1,666 @@
-import React from 'react';
-import { Mail, Phone, ArrowRight } from 'lucide-react';
+import React, { useState } from 'react';
+import {
+    Box,
+    Container,
+    Grid,
+    Typography,
+    TextField,
+    Button,
+    Stack,
+    MenuItem,
+    Paper,
+    Alert,
+    CircularProgress,
+    Snackbar,
+    Autocomplete,
+    Checkbox,
+    Chip,
+    FormControlLabel
+} from '@mui/material';
+import { Mail, Phone, ArrowRight, CheckCircle2, X } from 'lucide-react';
+import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
+import CheckBoxIcon from '@mui/icons-material/CheckBox';
+import ScrollReveal from './ScrollReveal';
+import emailjs from '@emailjs/browser';
+import db from '../data/db.json';
 
 const Contact = () => {
+    // --- EMAIL CONFIGURATION ---
+    // Change SEND_METHOD to 1 for EmailJS (Direct Frontend)
+    // Change SEND_METHOD to 2 for Gmail SMTP (Serverless Vercel Function)
+    const SEND_METHOD = 2;
+
+    const [formData, setFormData] = useState({
+        firstName: '',
+        lastName: '',
+        email: '',
+        phone: '',
+        whatsapp: '',
+        products: ['Silicone Inks'],
+        message: ''
+    });
+
+    const [errors, setErrors] = useState({});
+    const [status, setStatus] = useState('idle'); // idle, loading, success, error
+    const [showSnackbar, setShowSnackbar] = useState(false);
+    const [syncWhatsApp, setSyncWhatsApp] = useState(false);
+
+    const productOptions = [
+        "Silicone Inks",
+        "Oilbase Non PVC",
+        "Specialitys",
+        "Waterbase Pigments",
+        "Eco friendly water based textile inks"
+    ];
+
+    const validateForm = () => {
+        const newErrors = {};
+        if (!formData.firstName.trim()) newErrors.firstName = 'First name is required';
+        if (!formData.email.trim()) {
+            newErrors.email = 'Email is required';
+        } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+            newErrors.email = 'Email is invalid';
+        }
+        if (!formData.phone.trim()) newErrors.phone = 'Phone number is required';
+        if (formData.products.length === 0) newErrors.products = 'Select at least one product';
+
+        setErrors(newErrors);
+        return Object.keys(newErrors).length === 0;
+    };
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setFormData(prev => {
+            const next = { ...prev, [name]: value };
+            if (name === 'phone' && syncWhatsApp) {
+                next.whatsapp = value;
+            }
+            return next;
+        });
+        // Clear error when user types
+        if (errors[name]) {
+            setErrors(prev => ({ ...prev, [name]: null }));
+        }
+    };
+
+    const handleSyncToggle = (e) => {
+        const checked = e.target.checked;
+        setSyncWhatsApp(checked);
+        if (checked) {
+            setFormData(prev => ({ ...prev, whatsapp: prev.phone }));
+        }
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        if (!validateForm()) return;
+
+        setStatus('loading');
+
+        const fullName = `${formData.firstName} ${formData.lastName}`.trim();
+        const requirement = formData.products.join(', ');
+
+        const templateParams = {
+            name: fullName,
+            requirement: requirement,
+            email: formData.email,
+            phone: formData.phone,
+            whatsapp: formData.whatsapp || 'Not provided',
+            command: formData.message || 'There is no additional message given by customer'
+        };
+
+        try {
+            if (SEND_METHOD === 1) {
+                // METHOD 1: EMAILJS (Frontend)
+                const { service_id, public_key, ack_template_id, admin_template_id } = db.emailjs_details;
+
+                // 1. Send Admin Notification First
+                await emailjs.send(service_id, admin_template_id, templateParams, public_key);
+
+                // 2. Send Customer Acknowledgment Second
+                await emailjs.send(
+                    service_id,
+                    ack_template_id,
+                    {
+                        name: fullName,
+                        requirement: requirement,
+                        email: formData.email
+                    },
+                    public_key
+                );
+            } else {
+                // METHOD 2: RESEND (Serverless API)
+                const response = await fetch('/api/sendEmail', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(templateParams)
+                });
+
+                if (!response.ok) throw new Error('API Error');
+            }
+
+            setStatus('success');
+            setFormData({
+                firstName: '',
+                lastName: '',
+                email: '',
+                phone: '',
+                whatsapp: '',
+                products: ['Silicone Inks'],
+                message: ''
+            });
+            setShowSnackbar(true);
+        } catch (error) {
+            console.error('Email Sending Error:', error);
+            setStatus('error');
+        }
+    };
+
     return (
-        <section className="py-24 lg:py-32 bg-[#050769aa] text-[#ffffff] relative overflow-hidden">
-            <div className="absolute inset-0 opacity-10 pointer-events-none">
-                <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
-                    <defs>
-                        <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
-                            <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#ffffff" strokeWidth="1" />
-                        </pattern>
-                    </defs>
-                    <rect width="100%" height="100%" fill="url(#grid)" />
-                </svg>
-            </div>
+        <Box
+            component="section"
+            sx={{
+                pt: { xs: 15, lg: 22 }, // Pushes content below navbar height (100px + 20px gap)
+                pb: { xs: 8, lg: 12 },
+                bgcolor: 'primary.main',
+                color: '#ffffff',
+                position: 'relative',
+                overflow: 'hidden',
+                minHeight: '100vh',
+                display: 'flex',
+                alignItems: 'center'
+            }}
+        >
+            {/* BACKGROUND IMAGE WITH OVERLAY */}
+            <Box sx={{ position: 'absolute', inset: 0, zIndex: 0 }}>
+                <Box
+                    component="img"
+                    src="/images/contact_bg_vibrant.png"
+                    alt="Vibrant Color Background"
+                    sx={{ width: '100%', height: '100%', objectFit: 'cover', opacity: 0.6 }}
+                />
+                <Box
+                    sx={{
+                        position: 'absolute',
+                        inset: 0,
+                        // background: 'linear-gradient(to right, #000158, rgba(0, 1, 88, 0.7), transparent)',
+                        zIndex: 1
+                    }}
+                />
+            </Box>
 
-            <div className="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-16 lg:gap-24 items-center relative z-10">
-                <div>
-                    <div className="flex items-center gap-4 mb-6">
-                        <div className="w-12 h-[2px] bg-[#ffffff]"></div>
-                        <span className="text-[10px] font-black tracking-[0.3em] uppercase">Connect With Us</span>
-                    </div>
-                    <h2 className="text-4xl lg:text-5xl font-black uppercase tracking-tighter mb-8 leading-tight">
-                        Request Technical Data & Samples
-                    </h2>
-                    <p className="text-lg opacity-80 mb-12 font-light leading-relaxed max-w-lg">
-                        Our technical engineering team is ready to assist you with safety data sheets (SDS), technical specifications, and custom formulation requests.
-                    </p>
+            {/* GRID PATTERN OVERLAY */}
+            <Box
+                sx={{
+                    position: 'absolute',
+                    inset: 0,
+                    opacity: 0.05,
+                    pointerEvents: 'none',
+                    zIndex: 0,
+                    backgroundImage: 'radial-gradient(#ffffff 1px, transparent 1px)',
+                    backgroundSize: '40px 40px',
+                }}
+            />
 
-                    <div className="space-y-6">
-                        <div className="flex items-center gap-6">
-                            <div className="w-12 h-12 border border-[#ffffff]/30 flex items-center justify-center">
-                                <Mail size={20} className="text-[#ffffff]" />
-                            </div>
-                            <div>
-                                <div className="text-[9px] font-bold uppercase tracking-widest opacity-60">General Inquiries</div>
-                                <div className="font-bold text-lg tracking-wide">sales@sterlingdyechem.com</div>
-                            </div>
-                        </div>
-                        <div className="flex items-center gap-6">
-                            <div className="w-12 h-12 border border-[#ffffff]/30 flex items-center justify-center">
-                                <Phone size={20} className="text-[#ffffff]" />
-                            </div>
-                            <div>
-                                <div className="text-[9px] font-bold uppercase tracking-widest opacity-60">Direct Support</div>
-                                <div className="font-bold text-lg tracking-wide">+91 (22) 2345 6789</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+            <Container maxWidth="lg" sx={{ position: 'relative', zIndex: 10 }}>
+                <Grid container spacing={{ xs: 4, lg: 6 }} alignItems="center">
+                    <Grid item xs={12} lg={6}>
+                        <ScrollReveal direction="left">
+                            <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 4 }}>
+                                <Box sx={{ width: 48, height: '2px', bgcolor: '#ffffff' }} />
+                                <Typography
+                                    variant="caption"
+                                    sx={{
+                                        fontWeight: 900,
+                                        letterSpacing: '0.3em',
+                                        textTransform: 'uppercase',
+                                        color: '#ffffff'
+                                    }}
+                                >
+                                    Connect With Us
+                                </Typography>
+                            </Box>
+                            <Typography
+                                variant="h2"
+                                sx={{ color: '#ffffff', mb: 4, lineHeight: 1.1 }}
+                            >
+                                Request Technical Data & Samples
+                            </Typography>
+                            <Typography
+                                variant="body1"
+                                sx={{
+                                    fontSize: '1.125rem',
+                                    fontWeight: 300,
+                                    lineHeight: 1.6,
+                                    color: 'rgba(255, 255, 255, 0.8)',
+                                    maxWidth: '500px',
+                                    mb: 6
+                                }}
+                            >
+                                Our technical engineering team is ready to assist you with safety data sheets (SDS), technical specifications, and custom formulation requests.
+                            </Typography>
 
-                <div className="bg-[#ffffff] p-8 lg:p-12 text-[#050769aa]">
-                    <h3 className="text-2xl font-black uppercase mb-8 tracking-tighter">Business Inquiry</h3>
-                    <div className="space-y-5">
-                        <div className="grid grid-cols-2 gap-5">
-                            <div>
-                                <label className="block text-[9px] font-black uppercase tracking-widest mb-2 opacity-60">First Name</label>
-                                <input type="text" className="w-full bg-[#dfdfdfe6]/30 border border-[#dfdfdfe6] p-3 text-sm focus:outline-none focus:border-[#050769aa] transition-colors" />
-                            </div>
-                            <div>
-                                <label className="block text-[9px] font-black uppercase tracking-widest mb-2 opacity-60">Last Name</label>
-                                <input type="text" className="w-full bg-[#dfdfdfe6]/30 border border-[#dfdfdfe6] p-3 text-sm focus:outline-none focus:border-[#050769aa] transition-colors" />
-                            </div>
-                        </div>
-                        <div>
-                            <label className="block text-[9px] font-black uppercase tracking-widest mb-2 opacity-60">Corporate Email</label>
-                            <input type="email" className="w-full bg-[#dfdfdfe6]/30 border border-[#dfdfdfe6] p-3 text-sm focus:outline-none focus:border-[#050769aa] transition-colors" />
-                        </div>
-                        <div>
-                            <label className="block text-[9px] font-black uppercase tracking-widest mb-2 opacity-60">Product Interest</label>
-                            <select className="w-full bg-[#dfdfdfe6]/30 border border-[#dfdfdfe6] p-3 text-sm focus:outline-none focus:border-[#050769aa] transition-colors rounded-none appearance-none">
-                                <option>Select a Category</option>
-                                <option>Reactive Dyes</option>
-                                <option>Acid Dyes</option>
-                                <option>Specialty Pigments</option>
-                                <option>Auxiliary Chemicals</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label className="block text-[9px] font-black uppercase tracking-widest mb-2 opacity-60">Message / Requirements</label>
-                            <textarea rows="4" className="w-full bg-[#dfdfdfe6]/30 border border-[#dfdfdfe6] p-3 text-sm focus:outline-none focus:border-[#050769aa] transition-colors resize-none"></textarea>
-                        </div>
-                        <button className="w-full bg-[#050769aa] text-[#ffffff] py-4 font-black uppercase tracking-[0.2em] text-[10px] hover:bg-[#050769aa]/90 transition-colors flex justify-center items-center gap-2 mt-2">
-                            Submit Request <ArrowRight size={14} />
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </section>
+                            <Stack spacing={4}>
+                                <Box sx={{ display: 'flex', alignItems: 'center', gap: 3 }}>
+                                    <Box
+                                        sx={{
+                                            width: 48,
+                                            height: 48,
+                                            border: '1px solid rgba(255, 255, 255, 0.3)',
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            justifyContent: 'center'
+                                        }}
+                                    >
+                                        <Mail size={20} color="#ffffff" />
+                                    </Box>
+                                    <Box>
+                                        <Typography
+                                            variant="caption"
+                                            sx={{
+                                                fontWeight: 700,
+                                                textTransform: 'uppercase',
+                                                letterSpacing: '0.1em',
+                                                opacity: 0.6,
+                                                display: 'block'
+                                            }}
+                                        >
+                                            General Inquiries
+                                        </Typography>
+                                        <Typography variant="h6" sx={{ fontWeight: 700 }}>
+                                            sales@sterlingdyechem.com
+                                        </Typography>
+                                    </Box>
+                                </Box>
+                                <Box sx={{ display: 'flex', alignItems: 'center', gap: 3 }}>
+                                    <Box
+                                        sx={{
+                                            width: 48,
+                                            height: 48,
+                                            border: '1px solid rgba(255, 255, 255, 0.3)',
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            justifyContent: 'center'
+                                        }}
+                                    >
+                                        <Phone size={20} color="#ffffff" />
+                                    </Box>
+                                    <Box>
+                                        <Typography
+                                            variant="caption"
+                                            sx={{
+                                                fontWeight: 700,
+                                                textTransform: 'uppercase',
+                                                letterSpacing: '0.1em',
+                                                opacity: 0.6,
+                                                display: 'block'
+                                            }}
+                                        >
+                                            Direct Support
+                                        </Typography>
+                                        <Typography variant="h6" sx={{ fontWeight: 700 }}>
+                                            +91 (22) 2345 6789
+                                        </Typography>
+                                    </Box>
+                                </Box>
+                            </Stack>
+                        </ScrollReveal>
+                    </Grid>
+
+                    <Grid item xs={12} lg={6}>
+                        <ScrollReveal direction="right" delay={0.2}>
+                            <Paper
+                                elevation={0}
+                                sx={{
+                                    p: { xs: 4, lg: 6 },
+                                    borderRadius: '0px',
+                                    bgcolor: 'rgba(223, 223, 223, 0.85)',
+                                    backdropFilter: 'blur(10px)',
+                                    color: 'primary.main',
+                                    border: '1px solid rgba(255, 255, 255, 0.2)',
+                                    boxShadow: '0 25px 50px -12px rgba(0, 1, 88, 0.2)'
+                                }}
+                            >
+                                <Typography variant="h5" sx={{ fontWeight: 900, mb: 4, textTransform: 'uppercase', letterSpacing: '-0.02em' }}>
+                                    Business Inquiry
+                                </Typography>
+
+                                {status === 'error' && (
+                                    <Alert severity="error" sx={{ mb: 3, borderRadius: 0 }}>
+                                        Failed to send your request. Please try again later.
+                                    </Alert>
+                                )}
+
+                                <form onSubmit={handleSubmit}>
+                                    <Grid container spacing={2}>
+                                        <Grid item xs={6}>
+                                            <TextField
+                                                fullWidth
+                                                label="First Name"
+                                                name="firstName"
+                                                value={formData.firstName}
+                                                onChange={handleChange}
+                                                error={!!errors.firstName}
+                                                helperText={errors.firstName}
+                                                variant="filled"
+                                                size="small"
+                                                InputProps={{
+                                                    disableUnderline: true,
+                                                    sx: { borderRadius: 0, color: 'white' }
+                                                }}
+                                                sx={{
+                                                    bgcolor: '#b9bd62ff',
+                                                    '& .MuiInputLabel-root': { color: 'white' },
+                                                    '& .MuiInputLabel-root.Mui-focused': { color: 'white' },
+                                                    '& .MuiFilledInput-root:hover': { bgcolor: '#9ba035ff' },
+                                                    '& .MuiFilledInput-root.Mui-focused': { bgcolor: '#9ba035ff' }
+                                                }}
+                                            />
+                                        </Grid>
+                                        <Grid item xs={6}>
+                                            <TextField
+                                                fullWidth
+                                                label="Last Name"
+                                                name="lastName"
+                                                value={formData.lastName}
+                                                onChange={handleChange}
+                                                variant="filled"
+                                                size="small"
+                                                InputProps={{
+                                                    disableUnderline: true,
+                                                    sx: { borderRadius: 0, color: 'white' }
+                                                }}
+                                                sx={{
+                                                    bgcolor: '#b9bd62ff',
+                                                    '& .MuiInputLabel-root': { color: 'white' },
+                                                    '& .MuiInputLabel-root.Mui-focused': { color: 'white' },
+                                                    '& .MuiFilledInput-root:hover': { bgcolor: '#9ba035ff' },
+                                                    '& .MuiFilledInput-root.Mui-focused': { bgcolor: '#9ba035ff' }
+                                                }}
+                                            />
+                                        </Grid>
+                                        <Grid item xs={12} sm={6}>
+                                            <TextField
+                                                fullWidth
+                                                label="Phone Number"
+                                                name="phone"
+                                                value={formData.phone}
+                                                onChange={handleChange}
+                                                error={!!errors.phone}
+                                                helperText={errors.phone}
+                                                variant="filled"
+                                                size="small"
+                                                InputProps={{
+                                                    disableUnderline: true,
+                                                    sx: { borderRadius: 0, color: 'white' }
+                                                }}
+                                                sx={{
+                                                    bgcolor: '#b9bd62ff',
+                                                    '& .MuiInputLabel-root': { color: 'white' },
+                                                    '& .MuiInputLabel-root.Mui-focused': { color: 'white' },
+                                                    '& .MuiFilledInput-root:hover': { bgcolor: '#9ba035ff' },
+                                                    '& .MuiFilledInput-root.Mui-focused': { bgcolor: '#9ba035ff' }
+                                                }}
+                                            />
+                                            {formData.phone && (
+                                                <ScrollReveal direction="up" distance={10}>
+                                                    <FormControlLabel
+                                                        control={
+                                                            <Checkbox
+                                                                checked={syncWhatsApp}
+                                                                onChange={handleSyncToggle}
+                                                                size="small"
+                                                                sx={{
+                                                                    color: 'primary.main',
+                                                                    '&.Mui-checked': { color: 'primary.main' }
+                                                                }}
+                                                            />
+                                                        }
+                                                        label={
+                                                            <Typography sx={{ fontSize: '0.75rem', fontWeight: 600, color: 'primary.main', opacity: 0.8 }}>
+                                                                Use same for WhatsApp?
+                                                            </Typography>
+                                                        }
+                                                        sx={{ mt: 0.5, ml: 0 }}
+                                                    />
+                                                </ScrollReveal>
+                                            )}
+                                        </Grid>
+                                        <Grid item xs={12} sm={6}>
+                                            <TextField
+                                                fullWidth
+                                                label="WhatsApp (Optional)"
+                                                name="whatsapp"
+                                                value={formData.whatsapp}
+                                                onChange={handleChange}
+                                                disabled={syncWhatsApp}
+                                                variant="filled"
+                                                size="small"
+                                                InputProps={{
+                                                    disableUnderline: true,
+                                                    sx: { borderRadius: 0, color: 'white' }
+                                                }}
+                                                sx={{
+                                                    bgcolor: '#b9bd62ff',
+                                                    opacity: syncWhatsApp ? 0.7 : 1,
+                                                    '& .MuiInputLabel-root': { color: 'white' },
+                                                    '& .MuiInputLabel-root.Mui-focused': { color: 'white' },
+                                                    '& .MuiFilledInput-root:hover': { bgcolor: '#9ba035ff' },
+                                                    '& .MuiFilledInput-root.Mui-focused': { bgcolor: '#9ba035ff' },
+                                                    '& .Mui-disabled': { WebkitTextFillColor: 'rgba(255, 255, 255, 0.5)' }
+                                                }}
+                                            />
+                                        </Grid>
+                                        <Grid item xs={12}>
+                                            <TextField
+                                                fullWidth
+                                                label="Corporate Email"
+                                                name="email"
+                                                value={formData.email}
+                                                onChange={handleChange}
+                                                error={!!errors.email}
+                                                helperText={errors.email}
+                                                variant="filled"
+                                                size="small"
+                                                InputProps={{
+                                                    disableUnderline: true,
+                                                    sx: { borderRadius: 0, color: 'white' }
+                                                }}
+                                                sx={{
+                                                    bgcolor: '#b9bd62ff',
+                                                    '& .MuiInputLabel-root': { color: 'white' },
+                                                    '& .MuiInputLabel-root.Mui-focused': { color: 'white' },
+                                                    '& .MuiFilledInput-root:hover': { bgcolor: '#9ba035ff' },
+                                                    '& .MuiFilledInput-root.Mui-focused': { bgcolor: '#9ba035ff' }
+                                                }}
+                                            />
+                                        </Grid>
+                                        <Grid item xs={12}>
+                                            <Autocomplete
+                                                multiple
+                                                id="product-interest"
+                                                options={productOptions}
+                                                disableCloseOnSelect
+                                                value={formData.products}
+                                                onChange={(event, newValue) => {
+                                                    setFormData(prev => ({ ...prev, products: newValue }));
+                                                    if (errors.products) setErrors(prev => ({ ...prev, products: null }));
+                                                }}
+                                                getOptionLabel={(option) => option}
+                                                renderOption={(props, option, { selected }) => (
+                                                    <li {...props} style={{ padding: '4px 12px' }}>
+                                                        <Checkbox
+                                                            icon={<CheckBoxOutlineBlankIcon fontSize="small" />}
+                                                            checkedIcon={<CheckBoxIcon fontSize="small" />}
+                                                            style={{ marginRight: 8 }}
+                                                            checked={selected}
+                                                            sx={{ color: '#000158' }}
+                                                        />
+                                                        <Typography sx={{ fontSize: '13px', fontWeight: 600 }}>
+                                                            {option}
+                                                        </Typography>
+                                                    </li>
+                                                )}
+                                                renderTags={(value, getTagProps) =>
+                                                    value.map((option, index) => (
+                                                        <Chip
+                                                            variant="filled"
+                                                            label={option}
+                                                            {...getTagProps({ index })}
+                                                            deleteIcon={<X size={14} color="#fff" />}
+                                                            sx={{
+                                                                bgcolor: '#ffffffff',
+                                                                color: '#000158',
+                                                                borderRadius: '20px',
+                                                                height: '28px',
+                                                                fontSize: '11px',
+                                                                fontWeight: 700,
+                                                                '& .MuiChip-label': { px: 2 },
+                                                                '& .MuiChip-deleteIcon': {
+                                                                    color: '#fff !important',
+                                                                    opacity: 0.8,
+                                                                    '&:hover': { opacity: 1 }
+                                                                }
+                                                            }}
+                                                        />
+                                                    ))
+                                                }
+                                                renderInput={(params) => (
+                                                    <TextField
+                                                        {...params}
+                                                        variant="filled"
+                                                        label="Product Interest (Multiple)"
+                                                        placeholder={formData.products.length === 0 ? "Select products..." : ""}
+                                                        size="small"
+                                                        error={!!errors.products}
+                                                        helperText={errors.products}
+                                                        InputProps={{
+                                                            ...params.InputProps,
+                                                            disableUnderline: true,
+                                                            sx: {
+                                                                borderRadius: 0,
+                                                                bgcolor: '#b9bd62ff',
+                                                                color: 'white',
+                                                                pt: '24px !important',
+                                                                pb: '8px !important',
+                                                                px: '12px !important'
+                                                            }
+                                                        }}
+                                                        sx={{
+                                                            '& .MuiInputLabel-root': { color: 'white' },
+                                                            '& .MuiInputLabel-root.Mui-focused': { color: 'main.primary' },
+                                                            '& .MuiAutocomplete-endAdornment .MuiIconButton-root': { color: 'main.primary' }
+                                                        }}
+                                                    />
+                                                )}
+                                                slotProps={{
+                                                    popper: {
+                                                        placement: 'bottom-start',
+                                                        modifiers: [{ name: 'flip', enabled: false }]
+                                                    },
+                                                    paper: {
+                                                        elevation: 12,
+                                                        sx: {
+                                                            mt: 1,
+                                                            borderRadius: '8px',
+                                                            border: '1px solid rgba(0, 1, 88, 0.1)',
+                                                            '& .MuiAutocomplete-listbox': { p: 1 }
+                                                        }
+                                                    }
+                                                }}
+                                                sx={{
+                                                    '& .MuiAutocomplete-inputRoot': {
+                                                        bgcolor: '#b9bd62ff',
+                                                        borderRadius: 0,
+                                                        pt: '24px !important',
+                                                        pb: '8px !important',
+                                                        px: '12px !important',
+                                                        display: 'flex',
+                                                        flexWrap: 'wrap',
+                                                        gap: '8px'
+                                                    },
+                                                    '& .MuiAutocomplete-endAdornment': {
+                                                        top: '50%',
+                                                        transform: 'translateY(-50%)',
+                                                        right: '8px',
+                                                        '& .MuiIconButton-root': {
+                                                            padding: '4px',
+                                                            color: '#000158'
+                                                        }
+                                                    }
+                                                }}
+                                            />
+                                        </Grid>
+                                        <Grid item xs={12}>
+                                            <TextField
+                                                fullWidth
+                                                multiline
+                                                rows={3}
+                                                label="Message / Requirements"
+                                                name="message"
+                                                value={formData.message}
+                                                onChange={handleChange}
+                                                variant="filled"
+                                                size="small"
+                                                InputProps={{
+                                                    disableUnderline: true,
+                                                    sx: { borderRadius: 0, color: 'white' }
+                                                }}
+                                                sx={{
+                                                    bgcolor: '#b9bd62ff',
+                                                    '& .MuiInputLabel-root': { color: 'white' },
+                                                    '& .MuiInputLabel-root.Mui-focused': { color: 'white' },
+                                                    '& .MuiFilledInput-root:hover': { bgcolor: '#9ba035ff' },
+                                                    '& .MuiFilledInput-root.Mui-focused': { bgcolor: '#9ba035ff' }
+                                                }}
+                                            />
+                                        </Grid>
+                                        <Grid item xs={12}>
+                                            <Button
+                                                fullWidth
+                                                type="submit"
+                                                variant="contained"
+                                                size="large"
+                                                disabled={status === 'loading'}
+                                                sx={{
+                                                    py: 2,
+                                                    mt: 1,
+                                                    bgcolor: status === 'success' ? 'success.main' : '#b9bd62ff',
+                                                    '& .MuiFilledInput-root:hover': { bgcolor: '#28911cff' },
+                                                    '& .MuiFilledInput-root.Mui-focused': { bgcolor: '#28911cff' },
+                                                    '& .MuiButton-root:hover': { bgcolor: '#28911cff' },
+
+                                                }}
+                                                endIcon={status === 'loading' ? <CircularProgress size={20} color="inherit" /> : <ArrowRight size={14} />}
+                                            >
+                                                {status === 'success' ? 'Request Sent' : 'Submit Request'}
+                                            </Button>
+                                        </Grid>
+                                    </Grid>
+                                </form>
+                            </Paper>
+                        </ScrollReveal>
+                    </Grid>
+                </Grid>
+            </Container>
+
+            {/* Success Feedback */}
+            <Snackbar
+                open={showSnackbar}
+                autoHideDuration={6000}
+                onClose={() => setShowSnackbar(false)}
+                anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+            >
+                <Alert
+                    onClose={() => setShowSnackbar(false)}
+                    severity="success"
+                    icon={<CheckCircle2 size={20} />}
+                    sx={{ width: '100%', borderRadius: 0, bgcolor: 'success.main', color: '#fff' }}
+                >
+                    Thank you! Your inquiry has been sent. Check your email for confirmation.
+                </Alert>
+            </Snackbar>
+        </Box>
     );
 };
 

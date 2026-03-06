@@ -1,0 +1,153 @@
+/* Use GPU-accelerated properties only: opacity and transform */
+
+.reveal-hidden {
+    opacity: 0;
+    visibility: hidden;
+    will-change: opacity, transform;
+}
+
+.reveal-visible {
+    opacity: 1;
+    visibility: visible;
+    transform: translate(0, 0) scale(1) !important;
+    transition: opacity 0.8s cubic-bezier(0.25, 0.1, 0.25, 1),
+        transform 0.8s cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+/* Directional Starts */
+.reveal-up {
+    transform: translateY(50px);
+}
+
+.reveal-down {
+    transform: translateY(-50px);
+}
+
+.reveal-left {
+    transform: translateX(-80px);
+}
+
+.reveal-right {
+    transform: translateX(80px);
+}
+
+/* Delay Utilities */
+.delay-100 {
+    transition-delay: 0.1s;
+}
+
+.delay-200 {
+    transition-delay: 0.2s;
+}
+
+.delay-300 {
+    transition-delay: 0.3s;
+}
+
+.delay-400 {
+    transition-delay: 0.4s;
+}
+
+.delay-500 {
+    transition-delay: 0.5s;
+}
+
+/* CUSTOM CURSOR STYLES */
+/* Restore system arrow */
+body,
+a,
+button,
+[role="button"],
+input,
+textarea,
+select {
+    cursor: auto !important;
+}
+
+.custom-cursor-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none;
+    z-index: 10000;
+    mix-blend-mode: difference;
+}
+
+/* INWARD-FACING TEARDROP RAIN DROPS */
+.cursor-drop {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    background: #ffffff;
+    /* Teardrop shape */
+    border-radius: 0 50% 50% 50%;
+    opacity: 0.95;
+    will-change: transform;
+    /* No transition for orbit, just pure animation */
+}
+
+/* CIRCULAR ORBITING ANIMATION */
+/* We rotate the entire drop around the cursor center while keeping it pointed inward */
+@keyframes dropOrbit {
+    from {
+        transform: rotate(var(--start-angle)) translateY(12px) rotate(180deg);
+    }
+
+    to {
+        transform: rotate(calc(var(--start-angle) + 360deg)) translateY(12px) rotate(180deg);
+    }
+}
+
+/* 6 Drops Orbiting Inward */
+.d-0 {
+    background: #ff00ff;
+    --start-angle: 0deg;
+    animation: dropOrbit 3s linear infinite;
+}
+
+.d-1 {
+    background: #00ffff;
+    --start-angle: 60deg;
+    animation: dropOrbit 3s linear infinite;
+}
+
+.d-2 {
+    background: #eeff00;
+    --start-angle: 120deg;
+    animation: dropOrbit 3s linear infinite;
+}
+
+.d-3 {
+    background: #00ff00;
+    --start-angle: 180deg;
+    animation: dropOrbit 3s linear infinite;
+}
+
+.d-4 {
+    background: #ff0000;
+    --start-angle: 240deg;
+    animation: dropOrbit 3s linear infinite;
+}
+
+.d-5 {
+    background: #a600ff;
+    --start-angle: 300deg;
+    animation: dropOrbit 3s linear infinite;
+}
+
+@media (max-width: 1024px) {
+    .custom-cursor-container {
+        display: none;
+    }
+
+    body,
+    a,
+    button,
+    input,
+    textarea,
+    select {
+        cursor: auto !important;
+    }
+}

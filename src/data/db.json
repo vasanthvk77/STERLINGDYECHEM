@@ -2,59 +2,101 @@
   "products": [
     {
       "id": "1",
-      "name": "Reactive Black 5",
-      "category": "Reactive Dyes",
-      "cas": "17095-24-8",
-      "app": "Cotton, Viscose",
-      "image": "images/products/reactive.png"
+      "name": "Silicone Printing Inks - Bristal Effect",
+      "category": "Silicone Inks",
+      "cas": "-",
+      "app": "Bristal Effect Printing",
+      "image": "/images/products/reactive.png"
     },
     {
       "id": "2",
-      "name": "Reactive Red 195",
-      "category": "Reactive Dyes",
-      "cas": "93050-80-7",
-      "app": "Textile Dyeing",
-      "image": "images/products/reactive.png"
+      "name": "Heat transfer Silicone Ink",
+      "category": "Silicone Inks",
+      "cas": "-",
+      "app": "Heat Transfer Printing",
+      "image": "/images/products/reactive.png"
     },
     {
       "id": "3",
-      "name": "Acid Blue 113",
-      "category": "Acid Dyes",
-      "cas": "6844-74-2",
-      "app": "Wool, Silk, Nylon",
-      "image": "images/products/acid.png"
+      "name": "Hydesity Silicone Ink",
+      "category": "Silicone Inks",
+      "cas": "-",
+      "app": "Hydesity Effect",
+      "image": "/images/products/reactive.png"
     },
     {
       "id": "4",
-      "name": "Acid Yellow 36",
-      "category": "Acid Dyes",
-      "cas": "587-98-4",
-      "app": "Leather, Paper",
-      "image": "images/products/acid.png"
+      "name": "Oilbase White ink",
+      "category": "Oilbase Non PVC",
+      "cas": "-",
+      "app": "Non PVC Printing",
+      "image": "/images/products/reactive.png"
     },
     {
       "id": "5",
-      "name": "Pigment Green 7",
-      "category": "Pigments",
-      "cas": "1328-53-6",
-      "app": "Inks, Plastics",
-      "image": "images/products/pigments.png"
+      "name": "Speciality Metallic Ink",
+      "category": "Specialitys",
+      "cas": "-",
+      "app": "Speciality Effects",
+      "image": "/images/products/reactive.png"
     },
     {
       "id": "6",
-      "name": "Direct Blue 86",
-      "category": "Direct Dyes",
-      "cas": "1330-38-7",
-      "app": "Paper, Textiles",
-      "image": "images/products/reactive.png"
+      "name": "Vibrant Waterbase Pigment",
+      "category": "Waterbase Pigments",
+      "cas": "-",
+      "app": "Textile Coloring",
+      "image": "/images/products/reactive.png"
     },
     {
-      "id": "8",
-      "name": "Disperse Red 60",
-      "category": "Disperse Dyes",
-      "cas": "17418-58-5",
-      "app": "Polyester",
-      "image": "images/products/acid.png"
+      "id": "7",
+      "name": "Eco Soft Waterbase Ink",
+      "category": "Eco friendly water based textile inks",
+      "cas": "-",
+      "app": "Sustainable Printing",
+      "image": "/images/products/reactive.png"
+    }
+  ],
+  "homePageProducts": [
+    {
+      "id": "1",
+      "name": "Silicone Printing Inks - Bristal Effect",
+      "category": "Silicone Inks",
+      "cas": "-",
+      "app": "Bristal Effect Printing",
+      "image": "/images/products/reactive.png"
+    },
+    {
+      "id": "2",
+      "name": "FC - Hydrochromic Ink",
+      "category": "Speciality",
+      "cas": "-",
+      "app": "Color Changing Effect lorem ipsum dolor sit amet consectetur adipiscing elit",
+      "image": "/images/products/reactive.png"
+    },
+    {
+      "id": "4",
+      "name": "Oilbase White ink",
+      "category": "Oilbase Non PVC",
+      "cas": "-",
+      "app": "Non PVC Printing",
+      "image": "/images/products/reactive.png"
+    },
+    {
+      "id": "5",
+      "name": "FC - Thermochromic Ink",
+      "category": "Speciality",
+      "cas": "-",
+      "app": "Temperature Sensitive Color Changing",
+      "image": "/images/products/reactive.png"
+    },
+    {
+      "id": "7",
+      "name": "Eco Soft Waterbase Ink",
+      "category": "Eco friendly water based textile inks",
+      "cas": "-",
+      "app": "Sustainable Printing",
+      "image": "/images/products/reactive.png"
     }
   ],
   "users": [
@@ -63,5 +105,22 @@
       "username": "admin",
       "password": "password123"
     }
-  ]
+  ],
+  "email_outbound": [
+    {
+      "email_address": "vasanth2004vk@gmail.com",
+      "email_server": "smtp.gmail.com",
+      "email_port": "587",
+      "email_password": "mlom jcmk hjtb psgw"
+    }
+  ],
+  "email_inbound": [
+    "tnkutty3690@gmail.com"
+  ],
+  "emailjs_details": {
+    "service_id": "service_qmrm8ih",
+    "public_key": "tt5gnnveHqtYMVvGR",
+    "ack_template_id": "sdc_ack_temp",
+    "admin_template_id": "sdc_admin_temp"
+  }
 }

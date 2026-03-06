@@ -14,7 +14,15 @@ import PrinciplesPage from './components/PrinciplesPage';
 import BlogPage from './components/BlogPage';
 import Login from './components/Login';
 import AdminPanel from './components/AdminPanel';
-import initialData from './data/db.json';
+import BrandsTicker from './components/BrandsTicker';
+import ScrollReveal from './components/ScrollReveal';
+import CustomCursor from './components/CustomCursor';
+import './styles/animations.css';
+import dbData from './data/db.json';
+import { ThemeProvider } from '@mui/material/styles';
+import CssBaseline from '@mui/material/CssBaseline';
+import Box from '@mui/material/Box';
+import theme from './theme';
 
 const App = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -22,7 +30,8 @@ const App = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [activeCategory, setActiveCategory] = useState('All');
   const [currentPage, setCurrentPage] = useState(sessionStorage.getItem('currentPage') || 'HOME');
-  const [productsList, setProductsList] = useState(initialData.products);
+  const [productsList, setProductsList] = useState(dbData.products);
+  const [homePageProducts, setHomePageProducts] = useState(dbData.homePageProducts || []);
   const [user, setUser] = useState(JSON.parse(localStorage.getItem('adminUser')));
 
   useEffect(() => {
@@ -41,37 +50,53 @@ const App = () => {
     { name: 'HOME', hasDropdown: false },
     { name: 'ABOUT US', hasDropdown: false },
     { name: 'PRINCIPLES', hasDropdown: false },
-    { name: 'PRODUCT', hasDropdown: false },
+    {
+      name: 'PRODUCT',
+      hasDropdown: true,
+      subItems: [
+        'Silicone Inks',
+        'Oilbase Non PVC',
+        'Specialitys',
+        'Waterbase Pigments',
+        'Eco friendly water based textile inks'
+      ]
+    },
     { name: 'BLOG', hasDropdown: false },
-    { name: 'CONTACT US', hasDropdown: false },
   ];
 
   // Hero Slider Data
   const slides = [
     {
-      title: "Pioneering the Future of Color",
+      title: "Welcome to Sterling Dyes Chem",
       subtitle: "Manufacturing world-class Dyestuffs and Specialty Chemicals for the global textile and ink industries.",
-      cta: "Explore Our Range",
-      image: "images/hero_1.png"
+      cta: "Quality Control",
+      image: "/public/images/hero_sdc.png"
     },
     {
-      title: "State-of-the-Art Infrastructure",
-      subtitle: "Advanced manufacturing units and R&D labs ensuring precision in every molecular batch.",
-      cta: "Technical Labs",
-      image: "images/hero_2.png"
+      title: "Sustainable Chemical Solutions",
+      subtitle: "Leading the way in eco-friendly chemical manufacturing and green chemistry innovations.",
+      cta: "Go Green",
+      image: "/public/images/hero_sustainable.png"
     },
     {
       title: "ZDHC & ISO Certified Quality",
       subtitle: "Committed to sustainable chemical management and international safety standards.",
-      cta: "Quality Control",
-      image: "images/hero_3.png"
+      cta: "Explore Our Range",
+      image: "/images/hero_pioneer.jpg"
     }
+
   ];
 
-  const categories = ['All', 'Reactive Dyes', 'Acid Dyes', 'Pigments', 'Auxiliaries', 'Direct Dyes'];
+  const categories = ['All'];
   const filteredProducts = activeCategory === 'All' ? productsList : productsList.filter(p => p.category === activeCategory);
 
   useEffect(() => {
+    const handleSetCategory = (e) => {
+      setActiveCategory(e.detail);
+      window.scrollTo(0, 0);
+    };
+    window.addEventListener('setCategory', handleSetCategory);
+
     // Global error logger to help debug white screen on GitHub Pages
     window.onerror = function (msg, url, line, col, error) {
       console.log('UNCAUGHT ERROR:', msg, 'at', url, ':', line, ':', col);
@@ -90,15 +115,22 @@ const App = () => {
 
     return () => {
       window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('setCategory', handleSetCategory);
       clearInterval(slideInterval);
     };
   }, [slides.length]);
 
   const fetchProducts = async () => {
     try {
+      // Fetch full products list
       const response = await fetch('http://localhost:5000/products');
       const data = await response.json();
       setProductsList(data);
+
+      // Fetch specific home page products
+      const homeResponse = await fetch('http://localhost:5000/homePageProducts');
+      const homeData = await homeResponse.json();
+      setHomePageProducts(homeData);
     } catch (err) {
       console.error("Failed to fetch products:", err);
     }
@@ -138,98 +170,128 @@ const App = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#ffffff] text-[#050769aa] font-sans selection:bg-[#050769aa] selection:text-[#ffffff]">
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <CustomCursor />
+      <div className="min-h-screen text-[#000158] font-sans selection:bg-[#000158] selection:text-[#ffffff]">
 
-      {/* Hide navbar on Login page for clean UI */}
-      {currentPage !== 'LOGIN' && (
-        <Navbar
-          isScrolled={isScrolled}
-          currentPage={currentPage}
-          navLinks={navLinks}
-          navigateTo={navigateTo}
-          mobileMenuOpen={mobileMenuOpen}
-          setMobileMenuOpen={setMobileMenuOpen}
-        />
-      )}
-
-      {/* --- PAGE CONTENT ROUTER --- */}
-      {currentPage === 'HOME' && (
-        <>
-          <Hero
-            slides={slides}
-            currentSlide={currentSlide}
-            setCurrentSlide={setCurrentSlide}
-            nextSlide={nextSlide}
-            prevSlide={prevSlide}
+        {/* Hide navbar on Login page for clean UI */}
+        {currentPage !== 'LOGIN' && (
+          <Navbar
+            isScrolled={isScrolled}
+            currentPage={currentPage}
+            navLinks={navLinks}
+            navigateTo={navigateTo}
+            mobileMenuOpen={mobileMenuOpen}
+            setMobileMenuOpen={setMobileMenuOpen}
           />
-          <CorporateProfile />
-          <ProductCatalog
-            categories={categories}
-            activeCategory={activeCategory}
-            setActiveCategory={setActiveCategory}
-            filteredProducts={filteredProducts}
-          />
-          <Infrastructure />
-          <Contact />
-        </>
-      )}
+        )}
 
-      {currentPage === 'ABOUT US' && <AboutPage />}
+        {/* --- PAGE CONTENT ROUTER --- */}
+        {currentPage === 'HOME' && (
+          <>
+            <Hero
+              slides={slides}
+              currentSlide={currentSlide}
+              setCurrentSlide={setCurrentSlide}
+              nextSlide={nextSlide}
+              prevSlide={prevSlide}
+            />
 
-      {currentPage === 'PRINCIPLES' && <PrinciplesPage />}
+            <CorporateProfile />
 
-      {currentPage === 'PRODUCT' && (
-        <div className="pt-24 min-h-screen">
-          <ProductCatalog
-            categories={categories}
-            activeCategory={activeCategory}
-            setActiveCategory={setActiveCategory}
-            filteredProducts={filteredProducts}
-          />
-        </div>
-      )}
+            <ScrollReveal>
+              <ProductCatalog
+                isHomePage={true}
+                homePageProducts={homePageProducts}
+                categories={categories}
+                activeCategory={activeCategory}
+                setActiveCategory={setActiveCategory}
+                filteredProducts={filteredProducts}
+              />
+            </ScrollReveal>
 
-      {currentPage === 'BLOG' && <BlogPage />}
+            <Infrastructure />
 
-      {currentPage === 'CONTACT US' && (
-        <div className="pt-24 min-h-screen">
-          <Contact />
-        </div>
-      )}
+            <ScrollReveal>
+              <BrandsTicker />
+            </ScrollReveal>
 
-      {currentPage === 'LOGIN' && (
-        <Login onLogin={(user) => {
-          setUser(user);
-          navigateTo('ADMIN');
-        }} />
-      )}
+            <ScrollReveal>
+              <Contact />
+            </ScrollReveal>
+          </>
+        )}
 
-      {currentPage === 'ADMIN' && (
-        user ? (
-          <AdminPanel
-            products={productsList}
-            onAdd={handleAddProduct}
-            onDelete={handleDeleteProduct}
-            onLogout={() => {
-              setUser(null);
-              navigateTo('HOME');
-            }}
-          />
-        ) : (
+        {currentPage === 'ABOUT US' && (
+          <Box sx={{ pt: { xs: 12, lg: 20 }, minHeight: '100vh' }}>
+            <AboutPage />
+          </Box>
+        )}
+
+        {currentPage === 'PRINCIPLES' && (
+          <Box sx={{ pt: { xs: 12, lg: 20 }, minHeight: '100vh' }}>
+            <PrinciplesPage />
+          </Box>
+        )}
+
+        {currentPage === 'PRODUCT' && (
+          <Box sx={{ pt: { xs: 12, lg: 20 }, minHeight: '100vh' }}>
+            <ProductCatalog
+              categories={categories}
+              activeCategory={activeCategory}
+              setActiveCategory={setActiveCategory}
+              filteredProducts={filteredProducts}
+            />
+          </Box>
+        )}
+
+        {currentPage === 'BLOG' && (
+          <Box sx={{ pt: { xs: 12, lg: 20 }, minHeight: '100vh' }}>
+            <BlogPage />
+          </Box>
+        )}
+
+        {currentPage === 'CONTACT US' && (
+          <Box sx={{ minHeight: '100vh' }}>
+            <Contact />
+          </Box>
+        )}
+
+        {currentPage === 'LOGIN' && (
           <Login onLogin={(user) => {
             setUser(user);
             navigateTo('ADMIN');
           }} />
-        )
-      )}
+        )}
 
-      {/* --- RENDER FALLBACK FOR UNHANDLED ROUTES --- */}
-      {!['HOME', 'ABOUT US', 'PRINCIPLES', 'PRODUCT', 'BLOG', 'CONTACT US', 'LOGIN', 'ADMIN'].includes(currentPage) && (
-        <PlaceholderPage title={currentPage} />
-      )}
+        {currentPage === 'ADMIN' && (
+          user ? (
+            <AdminPanel
+              products={productsList}
+              onAdd={handleAddProduct}
+              onDelete={handleDeleteProduct}
+              onLogout={() => {
+                setUser(null);
+                navigateTo('HOME');
+              }}
+            />
+          ) : (
+            <Login onLogin={(user) => {
+              setUser(user);
+              navigateTo('ADMIN');
+            }} />
+          )
+        )}
 
-      {currentPage !== 'LOGIN' && <Footer navigateTo={navigateTo} />}
-    </div>
+        {/* --- RENDER FALLBACK FOR UNHANDLED ROUTES --- */}
+        {!['HOME', 'ABOUT US', 'PRINCIPLES', 'PRODUCT', 'BLOG', 'CONTACT US', 'LOGIN', 'ADMIN'].includes(currentPage) && (
+          <PlaceholderPage title={currentPage} />
+        )}
+
+        {currentPage !== 'LOGIN' && <Footer navigateTo={navigateTo} />}
+      </div>
+    </ThemeProvider>
   );
 };
 

@@ -1,78 +1,176 @@
 import React from 'react';
+import { Box, Container, Typography, Grid, Stack, Paper } from '@mui/material';
 import { Shield, Leaf, Award } from 'lucide-react';
 
 const PrinciplesPage = () => {
     return (
-        <div className="pt-24">
-            <div className="bg-[#ffffff] pt-24 pb-16">
-                <div className="max-w-7xl mx-auto px-6">
-                    <div className="flex items-center gap-4 mb-4">
-                        <div className="w-12 h-[2px] bg-[#050769aa]"></div>
-                        <span className="text-[10px] font-black tracking-[0.3em] uppercase text-[#050769aa]">Core Philosophy</span>
-                    </div>
-                    <h1 className="text-5xl md:text-7xl font-black uppercase tracking-tighter text-[#050769aa] mb-12">Principles of <br /> Excellence</h1>
-                </div>
-            </div>
+        <Box>
+            <Box sx={{ py: { xs: 8, lg: 12 }, bgcolor: '#ffffff' }}>
+                <Container maxWidth="lg">
+                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 4 }}>
+                        <Box sx={{ width: 48, height: '2px', bgcolor: 'primary.main' }} />
+                        <Typography
+                            variant="caption"
+                            sx={{
+                                fontWeight: 900,
+                                letterSpacing: '0.3em',
+                                textTransform: 'uppercase',
+                                color: 'primary.main'
+                            }}
+                        >
+                            Core Philosophy
+                        </Typography>
+                    </Box>
+                    <Typography
+                        variant="h1"
+                        color="primary"
+                        sx={{
+                            fontSize: { xs: '3rem', md: '5rem' },
+                            fontWeight: 900,
+                            textTransform: 'uppercase',
+                            letterSpacing: '-0.05em',
+                            mb: 6,
+                            lineHeight: 1.1
+                        }}
+                    >
+                        Principles of <br /> Excellence
+                    </Typography>
+                </Container>
+            </Box>
 
-            <section className="relative h-[500px] overflow-hidden">
-                <img
-                    src="images/principles.png"
+            {/* HERO QUOTE SECTION */}
+            <Box
+                sx={{
+                    position: 'relative',
+                    height: '500px',
+                    overflow: 'hidden',
+                    display: 'flex',
+                    alignItems: 'center'
+                }}
+            >
+                <Box
+                    component="img"
+                    src="/images/principles.png"
                     alt="Sustainability"
-                    className="w-full h-full object-cover"
+                    sx={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', zIndex: -1 }}
                 />
-                <div className="absolute inset-0 bg-[#050769aa]/60 flex items-center">
-                    <div className="max-w-7xl mx-auto px-6">
-                        <p className="text-3xl font-light text-[#ffffff] max-w-3xl leading-relaxed">
-                            "We believe that industrial progress must not come at the cost of our planet's future.
-                            Our chemistry is built on a foundation of responsibility."
-                        </p>
-                    </div>
-                </div>
-            </section>
+                <Box
+                    sx={{
+                        position: 'absolute',
+                        inset: 0,
+                        bgcolor: 'rgba(0, 1, 88, 0.6)',
+                        zIndex: 0
+                    }}
+                />
+                <Container maxWidth="lg" sx={{ position: 'relative', zIndex: 10 }}>
+                    <Typography
+                        variant="h4"
+                        sx={{
+                            color: '#ffffff',
+                            fontWeight: 300,
+                            lineHeight: 1.6,
+                            maxWidth: '800px',
+                            fontStyle: 'italic'
+                        }}
+                    >
+                        "We believe that industrial progress must not come at the cost of our planet's future.
+                        Our chemistry is built on a foundation of responsibility."
+                    </Typography>
+                </Container>
+            </Box>
 
-            <section className="py-24 bg-[#ffffff]">
-                <div className="max-w-7xl mx-auto px-6 grid md:grid-cols-3 gap-12">
-                    {[
-                        {
-                            title: "Sustainability",
-                            desc: "Implementing ZDHC standards to eliminate hazardous chemicals from the global supply chain.",
-                            icon: Leaf
-                        },
-                        {
-                            title: "Quality Control",
-                            desc: "Every batch undergoes rigorous HPLC testing ensuring 99.9% consistency in hue and stability.",
-                            icon: Shield
-                        },
-                        {
-                            title: "Ethics",
-                            desc: "Full transparency in our supply chain and commitment to fair labor practices globally.",
-                            icon: Award
-                        }
-                    ].map((item, i) => (
-                        <div key={i} className="flex flex-col gap-6">
-                            <div className="w-16 h-16 bg-[#050769aa]/10 flex items-center justify-center text-[#050769aa]">
-                                <item.icon size={32} />
-                            </div>
-                            <h3 className="text-2xl font-black uppercase tracking-tight text-[#050769aa]">{item.title}</h3>
-                            <p className="text-[#050769aa]/70 font-light leading-relaxed">{item.desc}</p>
-                        </div>
-                    ))}
-                </div>
-            </section>
-
-            <section className="py-24 bg-[#dfdfdfe6]/20 border-t border-[#dfdfdfe6]">
-                <div className="max-w-7xl mx-auto px-6 flex flex-col items-center text-center">
-                    <h2 className="text-3xl font-black uppercase tracking-tight text-[#050769aa] mb-8">Compliance & Certifications</h2>
-                    <div className="flex flex-wrap justify-center gap-12 grayscale opacity-60">
-                        {['ISO 9001:2026', 'ZDHC Level 3', 'OEKO-TEX', 'REACH Compliant'].map(cert => (
-                            <div key={cert} className="text-xl font-black tracking-widest uppercase border-2 border-[#050769aa] px-6 py-2">
-                                {cert}
-                            </div>
+            {/* PRINCIPLES GRID */}
+            <Box sx={{ py: { xs: 8, lg: 12 }, bgcolor: '#ffffff' }}>
+                <Container maxWidth="lg">
+                    <Grid container spacing={8}>
+                        {[
+                            {
+                                title: "Sustainability",
+                                desc: "Implementing ZDHC standards to eliminate hazardous chemicals from the global supply chain.",
+                                icon: Leaf
+                            },
+                            {
+                                title: "Quality Control",
+                                desc: "Every batch undergoes rigorous HPLC testing ensuring 99.9% consistency in hue and stability.",
+                                icon: Shield
+                            },
+                            {
+                                title: "Ethics",
+                                desc: "Full transparency in our supply chain and commitment to fair labor practices globally.",
+                                icon: Award
+                            }
+                        ].map((item, i) => (
+                            <Grid item key={i} xs={12} md={4}>
+                                <Stack spacing={3}>
+                                    <Box
+                                        sx={{
+                                            width: 64,
+                                            height: 64,
+                                            bgcolor: 'rgba(0, 1, 88, 0.1)',
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            justifyContent: 'center',
+                                            color: 'primary.main'
+                                        }}
+                                    >
+                                        <item.icon size={32} />
+                                    </Box>
+                                    <Typography
+                                        variant="h5"
+                                        sx={{
+                                            fontWeight: 900,
+                                            textTransform: 'uppercase',
+                                            letterSpacing: '-0.02em',
+                                            color: 'primary.main'
+                                        }}
+                                    >
+                                        {item.title}
+                                    </Typography>
+                                    <Typography
+                                        variant="body1"
+                                        sx={{ color: 'text.secondary', fontWeight: 300, lineHeight: 1.6 }}
+                                    >
+                                        {item.desc}
+                                    </Typography>
+                                </Stack>
+                            </Grid>
                         ))}
-                    </div>
-                </div>
-            </section>
-        </div>
+                    </Grid>
+                </Container>
+            </Box>
+
+            {/* COMPLIANCE SECTION */}
+            <Box sx={{ py: { xs: 8, lg: 12 }, bgcolor: 'rgba(223, 223, 223, 0.2)', borderTop: '1px solid', borderColor: 'divider' }}>
+                <Container maxWidth="lg" sx={{ textAlign: 'center' }}>
+                    <Typography
+                        variant="h4"
+                        color="primary"
+                        sx={{ fontWeight: 900, textTransform: 'uppercase', mb: 8 }}
+                    >
+                        Compliance & Certifications
+                    </Typography>
+                    <Box sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: 6, opacity: 0.6, filter: 'grayscale(1)' }}>
+                        {['ZDHC Level 3', 'OEKO-TEX', 'REACH Compliant'].map(cert => (
+                            <Box
+                                key={cert}
+                                sx={{
+                                    border: '2px solid',
+                                    borderColor: 'primary.main',
+                                    px: 4,
+                                    py: 1.5,
+                                    color: 'primary.main',
+                                    fontWeight: 900,
+                                    letterSpacing: '0.2em',
+                                    textTransform: 'uppercase'
+                                }}
+                            >
+                                {cert}
+                            </Box>
+                        ))}
+                    </Box>
+                </Container>
+            </Box>
+        </Box>
     );
 };
 
