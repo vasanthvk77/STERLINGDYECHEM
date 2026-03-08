@@ -137,7 +137,30 @@ app.post('/api/upload', upload.single('image'), (req, res) => {
 // Native JSON Routes (Replacing json-server)
 app.get('/products', (req, res) => {
     const db = readDB();
-    res.json(db.products);
+    res.json(db.products || []);
+});
+
+app.get('/catalog', (req, res) => {
+    const db = readDB();
+    res.json(db.catalog || []);
+});
+
+app.get('/insights', (req, res) => {
+    const db = readDB();
+    res.json(db.insights || []);
+});
+
+app.put('/catalog/:id', (req, res) => {
+    const db = readDB();
+    const { id } = req.params;
+    const catalogIndex = db.catalog.findIndex(c => c.id === id);
+    if (catalogIndex !== -1) {
+        db.catalog[catalogIndex] = req.body;
+        writeDB(db);
+        res.status(200).json(db.catalog[catalogIndex]);
+    } else {
+        res.status(404).send('Category not found');
+    }
 });
 
 app.post('/products', (req, res) => {

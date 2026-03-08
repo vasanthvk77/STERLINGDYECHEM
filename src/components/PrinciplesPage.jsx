@@ -106,7 +106,8 @@ const PrinciplesPage = () => {
                                 fontStyle: 'italic',
                                 fontSize: { xs: '2rem', md: '3rem' },
                                 letterSpacing: '-0.02em',
-                                position: 'relative'
+                                position: 'relative',
+                                textAlign: 'justify',
                             }}
                         >
                             "We believe that industrial progress must not come at the cost of our planet's future.
@@ -153,6 +154,7 @@ const PrinciplesPage = () => {
                                             transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
                                             position: 'relative',
                                             overflow: 'hidden',
+                                            textAlign: 'justify',
                                             '&:hover': {
                                                 borderColor: 'primary.main',
                                                 transform: 'translateY(-10px)',

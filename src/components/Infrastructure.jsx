@@ -4,20 +4,27 @@ import { CheckCircle2 } from 'lucide-react';
 import ScrollReveal from './ScrollReveal';
 
 const Infrastructure = () => {
+    const getImageUrl = (path) => {
+        if (!path) return '';
+        if (path.startsWith('http') || path.startsWith('data:')) return path;
+        const cleanPath = path.startsWith('/') ? path.substring(1) : path;
+        return `${import.meta.env.BASE_URL}${cleanPath}`;
+    };
+
     const certifications = [
         {
             name: "GOTS",
-            image: "/images/cert_gots.png",
+            image: getImageUrl("/images/cert_gots.png"),
             fullName: "Global Organic Textile Standard"
         },
         {
             name: "OEKO-TEX",
-            image: "/images/cert_oekotex.png",
+            image: getImageUrl("/images/cert_oekotex.png"),
             fullName: "Standard 100 by OEKO-TEX"
         },
         {
             name: "ZDHC",
-            image: "/images/cert_zdhc.png",
+            image: getImageUrl("/images/cert_zdhc.png"),
             fullName: "Zero Discharge of Hazardous Chemicals"
         }
     ];
@@ -30,7 +37,7 @@ const Infrastructure = () => {
                 py: { xs: 12, lg: 16 },
                 position: "relative",
                 overflow: "hidden",
-                backgroundImage: 'url("/images/hero_sustainable.png")',
+                backgroundImage: `url("${import.meta.env.BASE_URL}images/hero_sustainable.png")`,
                 backgroundSize: "cover",
                 backgroundPosition: "center",
                 color: "#ffffff",
@@ -79,7 +86,7 @@ const Infrastructure = () => {
                             fontWeight: 900,
                             textTransform: 'uppercase',
                             letterSpacing: '-0.02em',
-                            fontSize: { xs: '3rem', lg: '4.5rem' },
+                            fontSize: { xs: '2.25rem', lg: '4.5rem' },
                             lineHeight: 1
                         }}
                     >

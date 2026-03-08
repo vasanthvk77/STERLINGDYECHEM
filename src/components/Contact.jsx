@@ -161,7 +161,7 @@ const Contact = () => {
                 id="contact-section"
                 component="section"
                 sx={{
-                    height: { xs: "auto", md: "100vh", lg: "100vh" },
+                    height: { xs: "auto", md: "auto", lg: "100vh" },
 
                     pt: { xs: 15, lg: 22 }, // Pushes content below navbar height (100px + 20px gap)
                     pb: { xs: 8, lg: 12 },
@@ -178,7 +178,7 @@ const Contact = () => {
                 <Box sx={{ position: 'absolute', inset: 0, zIndex: 0 }}>
                     <Box
                         component="img"
-                        src="/images/contact_bg_vibrant.png"
+                        src={`${import.meta.env.BASE_URL}images/contact_bg_vibrant.png`}
                         alt="Vibrant Color Background"
                         sx={{ width: '100%', height: '100%', objectFit: 'cover', opacity: 0.6 }}
                     />
@@ -236,7 +236,8 @@ const Contact = () => {
                                     lineHeight: 1.6,
                                     color: 'rgba(255, 255, 255, 0.8)',
                                     maxWidth: '500px',
-                                    mb: 6
+                                    mb: 6,
+                                    textAlign: 'justify',
                                 }}
                             >
                                 Our technical engineering team is ready to assist you with safety data sheets (SDS), technical specifications, and custom formulation requests.
@@ -301,7 +302,7 @@ const Contact = () => {
                                             Direct Support
                                         </Typography>
                                         <Typography variant="h6" sx={{ fontWeight: 700 }}>
-                                            +91 8749432456 
+                                            +91 8749432456
                                         </Typography>
                                     </Box>
                                 </Box>
@@ -531,28 +532,31 @@ const Contact = () => {
                                                     </li>
                                                 )}
                                                 renderTags={(value, getTagProps) =>
-                                                    value.map((option, index) => (
-                                                        <Chip
-                                                            variant="filled"
-                                                            label={option}
-                                                            {...getTagProps({ index })}
-                                                            deleteIcon={<X size={14} color="#fff" />}
-                                                            sx={{
-                                                                bgcolor: '#ffffffff',
-                                                                color: '#000158',
-                                                                borderRadius: '20px',
-                                                                height: '28px',
-                                                                fontSize: '11px',
-                                                                fontWeight: 700,
-                                                                '& .MuiChip-label': { px: 2 },
-                                                                '& .MuiChip-deleteIcon': {
-                                                                    color: '#fff !important',
-                                                                    opacity: 0.8,
-                                                                    '&:hover': { opacity: 1 }
-                                                                }
-                                                            }}
-                                                        />
-                                                    ))
+                                                    value.map((option, index) => {
+                                                        const { key, ...tagProps } = getTagProps({ index });
+                                                        return (
+                                                            <Chip
+                                                                key={key}
+                                                                variant="filled"
+                                                                label={option}
+                                                                {...tagProps}
+                                                                deleteIcon={<X size={14} color="#fff" />}
+                                                                sx={{
+                                                                    bgcolor: '#ffffffff',
+                                                                    color: '#000158',
+                                                                    borderRadius: '20px',
+                                                                    height: '28px',
+                                                                    fontSize: '11px',
+                                                                    fontWeight: 700,
+                                                                    '& .MuiChip-label': { px: 2 },
+                                                                    '& .MuiChip-deleteIcon': {
+                                                                        color: '#fff !important',
+                                                                        opacity: 0.8,
+                                                                    }
+                                                                }}
+                                                            />
+                                                        );
+                                                    })
                                                 }
                                                 renderInput={(params) => (
                                                     <TextField

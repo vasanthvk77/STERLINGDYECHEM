@@ -69,7 +69,7 @@ const Navbar = ({ isScrolled, currentPage, navLinks, navigateTo, mobileMenuOpen,
                         onClick={() => navigateTo('HOME')}
                     >
                         <img
-                            src="/images/logo.png"
+                            src={`${import.meta.env.BASE_URL}images/logo.png`}
                             alt="Sterling Dye Chem"
                             style={{ height: '48px', width: 'auto' }}
                         />
@@ -207,7 +207,7 @@ const Navbar = ({ isScrolled, currentPage, navLinks, navigateTo, mobileMenuOpen,
                 }}
             >
                 <Box sx={{ p: { xs: 3, sm: 4 }, display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid rgba(255,255,255,0.1)' }}>
-                    <img src="/images/logo.png" alt="SDC" style={{ height: '40px', filter: 'brightness(0) invert(1)' }} />
+                    <img src={`${import.meta.env.BASE_URL}images/logo.png`} alt="SDC" style={{ height: '40px', filter: 'brightness(0) invert(1)' }} />
                     <IconButton onClick={() => setMobileMenuOpen(false)} sx={{ color: 'white' }}>
                         <CloseIcon size={32} />
                     </IconButton>

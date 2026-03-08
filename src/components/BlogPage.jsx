@@ -118,7 +118,7 @@ const ImageSlider = ({ images, title }) => {
                         }}
                     >
                         <img
-                            src={img}
+                            src={getImageUrl(img)}
                             alt={`${title} - image ${idx + 1}`}
                             style={{
                                 width: '100%',
@@ -235,6 +235,14 @@ const ImageSlider = ({ images, title }) => {
             )}
         </Box>
     );
+};
+
+const getImageUrl = (path) => {
+    if (!path) return '';
+    if (path.startsWith('http') || path.startsWith('data:')) return path;
+    const cleanPath = path.startsWith('/') ? path.substring(1) : path;
+    const finalPath = cleanPath.startsWith('public/') ? cleanPath.substring(7) : cleanPath;
+    return `${import.meta.env.BASE_URL}${finalPath}`;
 };
 
 const BlogPage = () => {
@@ -448,7 +456,7 @@ const BlogPage = () => {
                                 >
                                     <Box
                                         component="img"
-                                        src="/images/blog_news.png"
+                                        src={`${import.meta.env.BASE_URL}images/blog_news.png`}
                                         alt="Newsletter"
                                         sx={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', opacity: 0.3, filter: 'grayscale(1)' }}
                                     />

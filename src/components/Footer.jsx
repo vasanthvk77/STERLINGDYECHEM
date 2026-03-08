@@ -22,7 +22,7 @@ const Footer = ({ navigateTo }) => {
                     inset: 0,
                     opacity: 0.08,
                     pointerEvents: 'none',
-                    backgroundImage: 'url(public/images/footer_texture_1.png)',
+                    backgroundImage: `url(${import.meta.env.BASE_URL}images/footer_texture_1.png)`,
                     backgroundSize: 'cover',
                     backgroundPosition: 'center',
                     backgroundRepeat: 'no-repeat',
@@ -40,7 +40,7 @@ const Footer = ({ navigateTo }) => {
                             onClick={() => navigateTo('HOME')}
                         >
                             <img
-                                src="/images/logo.png"
+                                src={`${import.meta.env.BASE_URL}images/logo.png`}
                                 alt="Sterling Dye Chem"
                                 style={{ height: '48px', width: 'auto', objectFit: 'contain' }}
                             />
@@ -51,7 +51,8 @@ const Footer = ({ navigateTo }) => {
                                 color: 'text.secondary',
                                 lineHeight: 1.8,
                                 fontWeight: 500,
-                                pr: 2
+                                pr: 2,
+                                textAlign: 'justify'
                             }}
                         >
                             Sterling Dye Chem is a highly renowned name of the industry which got established in the year 2012. We are based out as a sole proprietorship firm and have located our office at Mumbai.
@@ -154,7 +155,7 @@ const Footer = ({ navigateTo }) => {
                         <Stack spacing={3}>
                             <Box sx={{ display: 'flex', gap: 2 }}>
                                 <Globe size={18} color="#000158" style={{ marginTop: '2px', flexShrink: 0 }} />
-                                <Typography variant="body2" sx={{ fontWeight: 600, color: 'text.secondary', lineHeight: 1.4 }}>
+                                <Typography variant="body2" sx={{ fontWeight: 600, color: 'text.secondary', lineHeight: 1.4, textAlign: 'justify' }}>
                                     49, Nvp Garden St, Valai Tottam, Periyandipalayam, Tiruppur, Andipalayam, Tamil Nadu 641687
                                 </Typography>
                             </Box>
@@ -192,7 +193,9 @@ const Footer = ({ navigateTo }) => {
                     <Typography
                         variant="caption"
                         sx={{
-                            fontWeight: 800,
+
+                            fontWeight: { xs: 500, sm: 600, md: 800 },
+                            fontSize: { xs: '10px', sm: '12px', md: '14px' },
                             color: '#000158',
                             textTransform: 'uppercase',
                             letterSpacing: '0.1em'

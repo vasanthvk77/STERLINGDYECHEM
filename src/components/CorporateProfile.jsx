@@ -4,7 +4,7 @@ import ScrollReveal from './ScrollReveal';
 
 const CorporateProfile = () => {
     return (
-        <Box component="section" sx={{ py: { xs: 8, lg: 12 }, bgcolor: '#ffffff', borderBottom: '1px solid', borderColor: 'divider' }}>
+        <Box component="section" sx={{ py: { xs: 8, lg: 12 }, bgcolor: '#ffffff', borderBottom: '1px solid', borderColor: 'divider', overflow: 'hidden' }}>
             <Container maxWidth="lg">
                 <Grid container spacing={8} alignItems="center">
                     <Grid item xs={12} lg={5}>
@@ -15,7 +15,7 @@ const CorporateProfile = () => {
                                         aspectRatio: { xs: '1/1', sm: '4/3', lg: '3/4' },
                                         position: 'relative',
                                         zIndex: 10,
-                                        backgroundImage: 'url("/images/corporate_profile.png")',
+                                        backgroundImage: `url("${import.meta.env.BASE_URL}images/corporate_profile.png")`,
                                         backgroundSize: 'cover',
                                         backgroundPosition: 'center',
                                     }}
@@ -26,7 +26,7 @@ const CorporateProfile = () => {
                                     sx={{
                                         position: 'absolute',
                                         bottom: { xs: -32, lg: -32 },
-                                        right: { xs: -32, lg: -64 },
+                                        right: { xs: 0, lg: -64 },
                                         bgcolor: 'primary.main',
                                         color: '#ffffff',
                                         p: { xs: 4, lg: 6 },
@@ -39,7 +39,7 @@ const CorporateProfile = () => {
                                         sx={{
                                             color: '#ffffff',
                                             mb: 1,
-                                            fontSize: '4rem',
+                                            fontSize: { xs: '2.5rem', lg: '4rem' },
                                             fontWeight: 900,
                                             letterSpacing: '-0.05em'
                                         }}
@@ -94,7 +94,8 @@ const CorporateProfile = () => {
                                         opacity: 0.8,
                                         maxWidth: '600px',
                                         fontWeight: 300,
-                                        lineHeight: 1.6
+                                        lineHeight: 1.6,
+                                        textAlign: 'justify',
                                     }}
                                 >
                                     Since 2008, Sterling Dye Chem has been at the forefront of chemical innovation,
@@ -107,7 +108,8 @@ const CorporateProfile = () => {
                                         fontSize: '1.125rem',
                                         fontWeight: 300,
                                         lineHeight: 1.6,
-                                        color: 'text.secondary'
+                                        color: 'text.secondary',
+                                        textAlign: 'justify',
                                     }}
                                 >
                                     Our rigorous R&D processes and commitment to sustainable manufacturing have made us the preferred partner for textile, leather, and polymer industries across 40+ countries.

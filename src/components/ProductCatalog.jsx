@@ -15,8 +15,17 @@ import {
 } from '@mui/material';
 import { ArrowRight, Search } from 'lucide-react';
 
+const getImageUrl = (path) => {
+    if (!path) return '';
+    if (path.startsWith('http') || path.startsWith('data:')) return path;
+    const cleanPath = path.startsWith('/') ? path.substring(1) : path;
+    const finalPath = cleanPath.startsWith('public/') ? cleanPath.substring(7) : cleanPath;
+    return `${import.meta.env.BASE_URL}${finalPath}`;
+};
+
 const ProductCatalog = ({ categories, activeCategory, setActiveCategory, activeSubtype, setActiveSubtype, filteredProducts, isHomePage }) => {
     const [searchQuery, setSearchQuery] = useState('');
+
 
     // Determine what mode we are rendering
     let renderMode = 'PRODUCTS'; // default if search
@@ -184,7 +193,7 @@ const ProductCatalog = ({ categories, activeCategory, setActiveCategory, activeS
                                     sx={{ color: 'primary.main', fontWeight: 700 }}
                                     startIcon={<ArrowRight size={18} style={{ transform: 'rotate(180deg)' }} />}
                                 >
-                                    BACK TO {activeCategory}
+                                    BACK TO {activeCategory} 
                                 </Button>
                                 <Typography variant="h6" color="primary" sx={{ fontWeight: 900, textTransform: 'uppercase' }}>
                                     / {activeSubtype}
@@ -316,7 +325,7 @@ const BrandCard = ({ brand, onClick }) => (
         <Box sx={{ position: 'relative', height: { xs: 220, md: 240 }, overflow: 'hidden' }}>
             <CardMedia
                 component="img"
-                image={brand.image}
+                image={getImageUrl(brand.image)}
                 alt={brand.brand}
                 sx={{
                     height: '100%',
@@ -351,13 +360,14 @@ const BrandCard = ({ brand, onClick }) => (
                     WebkitLineClamp: 3,
                     WebkitBoxOrient: 'vertical',
                     overflow: 'hidden',
-                    textOverflow: 'ellipsis'
+                    textOverflow: 'ellipsis',
+                    textAlign: 'justify'
                 }}
             >
                 {brand.description}
             </Typography>
             <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', color: 'text.secondary', fontWeight: 700, fontSize: '0.875rem' }}>
-                <Typography variant="caption" sx={{ textTransform: 'uppercase', letterSpacing: '0.1em' }}>View Types</Typography>
+                <Typography variant="caption" sx={{ textTransform: 'uppercase', letterSpacing: '0.1em' }}>View More</Typography>
                 <ArrowRight className="brand-arrow" size={18} style={{ transition: 'all 0.3s ease' }} />
             </Box>
         </CardContent>
@@ -395,7 +405,7 @@ const SubtypeCard = ({ subtype, onClick }) => (
         <Box sx={{ position: 'relative', height: { xs: 200, md: 220 }, overflow: 'hidden' }}>
             <CardMedia
                 component="img"
-                image={subtype.image}
+                image={getImageUrl(subtype.image)}
                 alt={subtype.name}
                 sx={{
                     height: '100%',
@@ -484,7 +494,7 @@ const ProductCard = ({ product }) => (
             />
             <CardMedia
                 component="img"
-                image={product.image || "/public/images/products/levis_bristle.png"}
+                image={getImageUrl(product.image || "/public/images/products/levis_bristle.png")}
                 alt={product.name}
                 sx={{
                     height: '100%',

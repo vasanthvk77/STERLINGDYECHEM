@@ -4,6 +4,14 @@ import { Eye, Target } from 'lucide-react';
 import CorporateProfile from './CorporateProfile';
 import Infrastructure from './Infrastructure';
 
+const getImageUrl = (path) => {
+    if (!path) return '';
+    if (path.startsWith('http') || path.startsWith('data:')) return path;
+    const cleanPath = path.startsWith('/') ? path.substring(1) : path;
+    const finalPath = cleanPath.startsWith('public/') ? cleanPath.substring(7) : cleanPath;
+    return `${import.meta.env.BASE_URL}${finalPath}`;
+};
+
 const AboutPage = () => {
     return (
         <Box>
@@ -84,7 +92,7 @@ const AboutPage = () => {
                                                 Our Vision
                                             </Typography>
                                         </Box>
-                                        <Typography variant="body1" sx={{ color: 'text.secondary', fontWeight: 400, lineHeight: 1.8, fontSize: '1.05rem' }}>
+                                        <Typography variant="body1" sx={{ color: 'text.secondary', fontWeight: 400, lineHeight: 1.8, fontSize: '1.05rem', textAlign: 'justify' }}>
                                             To be the most trusted global manufacturer of specialty chemicals,
                                             defined by our commitment to molecular excellence and ecological stewardship.
                                         </Typography>
@@ -120,7 +128,7 @@ const AboutPage = () => {
                                                 Our Mission
                                             </Typography>
                                         </Box>
-                                        <Typography variant="body1" sx={{ color: 'rgba(255,255,255,0.85)', fontWeight: 400, lineHeight: 1.8, fontSize: '1.05rem' }}>
+                                        <Typography variant="body1" sx={{ color: 'rgba(255,255,255,0.85)', fontWeight: 400, lineHeight: 1.8, fontSize: '1.05rem', textAlign: 'justify' }}>
                                             To empower the textile, leather, and polymer industries with high-performance
                                             auxiliaries and dyes while minimizing the environmental footprint of industrial chemistry.
                                         </Typography>
@@ -166,7 +174,7 @@ const AboutPage = () => {
                                 >
                                     <Box
                                         component="img"
-                                        src="public/images/vision_ascending_men.png"
+                                        src={getImageUrl("images/vision_ascending_men.png")}
                                         alt="Elevating Customers to Success"
                                         sx={{
                                             width: '100%',
@@ -189,7 +197,7 @@ const AboutPage = () => {
                                         <Typography variant="h4" sx={{ color: 'white', fontWeight: 900, mb: 1, textShadow: '0 2px 10px rgba(0,0,0,0.3)' }}>
                                             The Path to Success
                                         </Typography>
-                                        <Typography variant="body2" sx={{ color: 'rgba(255,255,255,0.9)', fontWeight: 500, lineHeight: 1.6 }}>
+                                        <Typography variant="body2" sx={{ color: 'rgba(255,255,255,0.9)', fontWeight: 500, lineHeight: 1.6, textAlign: 'justify' }}>
                                             Our ultimate journey is taking our customers by the hand and elevating them to absolute success.
                                         </Typography>
                                     </Box>
@@ -200,7 +208,10 @@ const AboutPage = () => {
                                     sx={{
                                         position: 'absolute',
                                         top: '15%',
-                                        left: { xs: -20, lg: -10 },
+                                        left: { xs: -15, lg: -10 },
+                                        width: { xs: '60%', lg: 'auto' },
+                                        height: { xs: '20%', lg: 'auto' },
+                                        fontSize: { xs: '10px', lg: 'auto' },
                                         zIndex: 2,
                                         bgcolor: 'white',
                                         p: 3,
@@ -217,7 +228,7 @@ const AboutPage = () => {
                                     }}
                                 >
                                     <Box sx={{ width: 56, height: 56, borderRadius: '50%', bgcolor: 'rgba(0,1,88,0.04)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                                        <img src="public/images/SDC_LOGO_short_bg_removed.png" alt="SDC" style={{ width: 32, height: 32, objectFit: 'contain', transform: 'scale(2.5)' }} />
+                                        <img src={getImageUrl("images/SDC_LOGO_short_bg_removed.png")} alt="SDC" style={{ width: 32, height: 32, objectFit: 'contain', transform: 'scale(2.5)' }} />
                                     </Box>
                                     <Box>
                                         <Typography variant="subtitle1" color="primary" sx={{ fontWeight: 900, lineHeight: 1.2, display: 'block', mb: 0.5 }}>

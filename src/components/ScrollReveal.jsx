@@ -14,7 +14,7 @@ const ScrollReveal = ({ children, delay = 0, direction = 'up' }) => {
                 }
             });
         }, {
-            threshold: 0.15
+            threshold: 0.05
         });
 
         const currentRef = domRef.current;

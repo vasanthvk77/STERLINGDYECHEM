@@ -84,8 +84,8 @@ const App = () => {
       title: "Welcome to Sterling Dyes Chem",
       subtitle: "Manufacturing world-class Dyestuffs and Specialty Chemicals for the global textile and ink industries.",
       cta: "Quality Products",
-      image: "/public/images/hero_sdc.png",
-      textColor: "#00d0ffff",
+      image: `${import.meta.env.BASE_URL}images/hero_sdc.png`,
+      textColor: "#ffffff",
       subtitleColor: "#ffffff",
       action: () => navigateTo('PRODUCT')
     },
@@ -93,7 +93,7 @@ const App = () => {
       title: "Sustainable Chemical Solutions",
       subtitle: "Leading the way in eco-friendly chemical manufacturing and green chemistry innovations.",
       cta: "Go Green",
-      image: "/public/images/hero_sustainable.png",
+      image: `${import.meta.env.BASE_URL}images/hero_sustainable.png`,
       textColor: "#ffffff",
       subtitleColor: "rgba(255, 255, 255, 0.9)",
       action: () => scrollToSection('certification-section', 'HOME')
@@ -102,8 +102,8 @@ const App = () => {
       title: "Global Reach & Performance",
       subtitle: "Delivering high-performance, tailored chemical solutions for modern manufacturing challenges worldwide.",
       cta: "Contact Us",
-      image: "/images/hero_pioneer.jpg",
-      textColor: "#00d0ffff",
+      image: `${import.meta.env.BASE_URL}images/hero_pioneer.jpg`,
+      textColor: "#ffffff",
       subtitleColor: "#ffffff",
       action: () => scrollToSection('contact-section', 'HOME')
     }
@@ -246,7 +246,7 @@ const App = () => {
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <CustomCursor />
-      <div className="min-h-screen text-[#000158] font-sans selection:bg-[#000158] selection:text-[#ffffff]">
+      <div className="min-h-screen text-[#000158] font-sans selection:bg-[#000158] selection:text-[#ffffff]" style={{ overflowX: 'hidden' }}>
 
         {/* Hide navbar on Login page for clean UI */}
         {currentPage !== 'LOGIN' && (
