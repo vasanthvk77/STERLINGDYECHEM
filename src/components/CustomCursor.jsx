@@ -8,7 +8,10 @@ const CustomCursor = () => {
         let animationFrameId;
 
         const moveCursor = (e) => {
-            const { clientX, clientY } = e;
+            const clientX = e.clientX || (e.touches && e.touches[0].clientX);
+            const clientY = e.clientY || (e.touches && e.touches[0].clientY);
+
+            if (clientX === undefined || clientY === undefined) return;
 
             // Use requestAnimationFrame for smooth, non-blocking rendering
             if (animationFrameId) cancelAnimationFrame(animationFrameId);
@@ -22,9 +25,13 @@ const CustomCursor = () => {
         };
 
         window.addEventListener('mousemove', moveCursor);
+        window.addEventListener('touchstart', moveCursor);
+        window.addEventListener('touchmove', moveCursor);
 
         return () => {
             window.removeEventListener('mousemove', moveCursor);
+            window.removeEventListener('touchstart', moveCursor);
+            window.removeEventListener('touchmove', moveCursor);
             if (animationFrameId) cancelAnimationFrame(animationFrameId);
         };
     }, []);

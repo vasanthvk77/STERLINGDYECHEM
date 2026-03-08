@@ -77,7 +77,7 @@ const Navbar = ({ isScrolled, currentPage, navLinks, navigateTo, mobileMenuOpen,
 
                     {/* DESKTOP MENU */}
                     <Box sx={{ display: { xs: 'none', lg: 'flex' }, alignItems: 'center', gap: 1 }}>
-                        {navLinks.map((link) => (
+                        {navLinks.filter(link => link.name !== 'CONTACT US').map((link) => (
                             <React.Fragment key={link.name}>
                                 <Button
                                     onClick={() => link.hasDropdown ? null : navigateTo(link.name)}

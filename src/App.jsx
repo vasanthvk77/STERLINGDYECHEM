@@ -62,6 +62,7 @@ const App = () => {
       ]
     },
     { name: 'INSIGHTS', hasDropdown: false },
+    { name: 'CONTACT US', hasDropdown: false },
   ];
 
   // Hero Slider Data

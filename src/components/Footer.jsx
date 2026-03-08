@@ -193,7 +193,7 @@ const Footer = ({ navigateTo }) => {
                         variant="caption"
                         sx={{
                             fontWeight: 800,
-                            color: '#94a3b8',
+                            color: '#000158',
                             textTransform: 'uppercase',
                             letterSpacing: '0.1em'
                         }}

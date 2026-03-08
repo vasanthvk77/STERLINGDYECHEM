@@ -138,9 +138,6 @@ select {
 }
 
 @media (max-width: 1024px) {
-    .custom-cursor-container {
-        display: none;
-    }
 
     body,
     a,

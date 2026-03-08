@@ -17,7 +17,7 @@ import {
     Chip,
     FormControlLabel
 } from '@mui/material';
-import { Mail, Phone, ArrowRight, CheckCircle2, X } from 'lucide-react';
+import { Mail, Phone, ArrowRight, CheckCircle2, X, MessageCircle } from 'lucide-react';
 import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 import CheckBoxIcon from '@mui/icons-material/CheckBox';
 import emailjs from '@emailjs/browser';
@@ -226,7 +226,7 @@ const Contact = () => {
                                 variant="h2"
                                 sx={{ color: '#ffffff', mb: 4, lineHeight: 1.1, fontSize: { xs: '2rem', md: '2.5rem' } }}
                             >
-                                Request Technical Data & Samples
+                                Ask for Requirements
                             </Typography>
                             <Typography
                                 variant="body1"
@@ -301,7 +301,38 @@ const Contact = () => {
                                             Direct Support
                                         </Typography>
                                         <Typography variant="h6" sx={{ fontWeight: 700 }}>
-                                            +91 (22) 2345 6789
+                                            +91 8749432456 
+                                        </Typography>
+                                    </Box>
+                                </Box>
+                                <Box sx={{ display: 'flex', alignItems: 'center', gap: 3 }}>
+                                    <Box
+                                        sx={{
+                                            width: 48,
+                                            height: 48,
+                                            border: '1px solid rgba(255, 255, 255, 0.3)',
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            justifyContent: 'center'
+                                        }}
+                                    >
+                                        <MessageCircle size={20} color="#ffffff" />
+                                    </Box>
+                                    <Box>
+                                        <Typography
+                                            variant="caption"
+                                            sx={{
+                                                fontWeight: 700,
+                                                textTransform: 'uppercase',
+                                                letterSpacing: '0.1em',
+                                                opacity: 0.6,
+                                                display: 'block'
+                                            }}
+                                        >
+                                            Connect via WhatsApp
+                                        </Typography>
+                                        <Typography variant="h6" sx={{ fontWeight: 700 }}>
+                                            +91 93240 12345
                                         </Typography>
                                     </Box>
                                 </Box>
@@ -527,7 +558,7 @@ const Contact = () => {
                                                     <TextField
                                                         {...params}
                                                         variant="filled"
-                                                        label="Product Interest (Multiple)"
+                                                        label="Product Interest"
                                                         placeholder={formData.products.length === 0 ? "Select products..." : ""}
                                                         size="small"
                                                         error={!!errors.products}
@@ -631,7 +662,7 @@ const Contact = () => {
                                                 }}
                                                 endIcon={status === 'loading' ? <CircularProgress size={20} color="inherit" /> : <ArrowRight size={14} />}
                                             >
-                                                {status === 'success' ? 'Request Sent' : 'Submit Request'}
+                                                {status === 'success' ? 'Request Sent' : 'Submit'}
                                             </Button>
                                         </Grid>
                                     </Grid>
