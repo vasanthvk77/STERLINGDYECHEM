@@ -12,8 +12,7 @@ const CorporateProfile = () => {
                             <Box sx={{ position: 'relative' }}>
                                 <Box
                                     sx={{
-                                        aspectRatio: '3/4',
-
+                                        aspectRatio: { xs: '1/1', sm: '4/3', lg: '3/4' },
                                         position: 'relative',
                                         zIndex: 10,
                                         backgroundImage: 'url("/images/corporate_profile.png")',
@@ -90,16 +89,18 @@ const CorporateProfile = () => {
                             </Typography>
                             <Stack spacing={3} sx={{ mb: 6 }}>
                                 <Typography
-                                    variant="body1"
+                                    variant="h6"
                                     sx={{
-                                        fontSize: '1.125rem',
+                                        opacity: 0.8,
+                                        maxWidth: '600px',
                                         fontWeight: 300,
-                                        lineHeight: 1.6,
-                                        color: 'text.secondary'
+                                        lineHeight: 1.6
                                     }}
                                 >
-                                    Sterling Dye Chem is a globally recognized manufacturer of premium Dyestuffs and Specialty Auxiliaries. We bridge the gap between advanced chemical synthesis and practical industrial application.
+                                    Since 2008, Sterling Dye Chem has been at the forefront of chemical innovation,
+                                    transforming industrial manufacturing with a focus on precision and sustainability.
                                 </Typography>
+
                                 <Typography
                                     variant="body1"
                                     sx={{
@@ -117,9 +118,9 @@ const CorporateProfile = () => {
 
                             <Grid container spacing={4}>
                                 {[
-                                    { label: "Production Plants", val: "03" },
-                                    { label: "Global Presence", val: "40+" },
-                                    { label: "ISO Certified", val: "Yes" },
+                                    { label: "Quality Brands Supplying", val: "07" },
+                                    { label: "Customers belives", val: "800+" },
+                                    { label: "Authorized Partner", val: "Yes" },
                                 ].map((stat, i) => (
                                     <Grid item key={i} xs={4}>
                                         <Typography

@@ -8,8 +8,7 @@ const Hero = ({ slides, currentSlide, setCurrentSlide, nextSlide, prevSlide }) =
             component="section"
             sx={{
                 position: 'relative',
-                height: '100vh',
-                minHeight: '800px',
+                height: { xs: 'calc(100vh - 80px)', lg: '100vh' },
                 overflow: 'hidden',
                 bgcolor: '#000158',
             }}
@@ -38,12 +37,12 @@ const Hero = ({ slides, currentSlide, setCurrentSlide, nextSlide, prevSlide }) =
                         }}
                     />
 
-                    {/* PROFESSIONAL BLUE OVERLAY (Matches Certifications Section)
+                    {/* PROFESSIONAL BLUE OVERLAY (Matches Certifications Section) */}
                     <Box
                         sx={{
                             position: 'absolute',
                             inset: 0,
-                            bgcolor: 'rgba(30, 32, 97, 0.45)', // Deep navy matching brand core
+                            // Deep navy matching brand core
                             zIndex: 20,
                         }}
                     />
@@ -51,10 +50,10 @@ const Hero = ({ slides, currentSlide, setCurrentSlide, nextSlide, prevSlide }) =
                         sx={{
                             position: 'absolute',
                             inset: 0,
-                            background: 'linear-gradient(to bottom, rgba(30, 32, 97, 0.45), transparent, rgba(30, 32, 97, 0.45))',
+
                             zIndex: 21,
                         }}
-                    /> */}
+                    />
 
                     {/* CONTENT */}
                     <Container
@@ -86,7 +85,7 @@ const Hero = ({ slides, currentSlide, setCurrentSlide, nextSlide, prevSlide }) =
                                 sx={{
                                     fontSize: { xs: '2.5rem', md: '4.5rem', lg: '5.5rem' },
                                     fontWeight: 500,
-                                    color: '#ffffff',
+                                    color: slide.textColor,
                                     lineHeight: 1.1,
                                     mb: 4,
                                     textTransform: 'uppercase',
@@ -100,7 +99,7 @@ const Hero = ({ slides, currentSlide, setCurrentSlide, nextSlide, prevSlide }) =
                                 variant="body1"
                                 sx={{
                                     fontSize: { xs: '1rem', md: '1.2rem' },
-                                    color: 'rgba(255, 255, 255, 0.9)',
+                                    color: slide.subtitleColor,
                                     maxWidth: '800px',
                                     mb: 6,
                                     fontWeight: 500,
@@ -113,7 +112,7 @@ const Hero = ({ slides, currentSlide, setCurrentSlide, nextSlide, prevSlide }) =
                             <Button
                                 variant="contained"
                                 size="large"
-                                onClick={() => navigateTo('PRODUCT')}
+                                onClick={() => slide.action ? slide.action() : navigateTo('PRODUCT')}
                                 sx={{
                                     bgcolor: '#ffffff',
                                     color: '#000158',
@@ -175,13 +174,14 @@ const Hero = ({ slides, currentSlide, setCurrentSlide, nextSlide, prevSlide }) =
                                 sx={{
                                     width: 64,
                                     height: 64,
-                                    border: '1.5px solid rgba(255, 255, 255, 0.3)',
-                                    color: '#ffffff',
+                                    border: '1.5px solid rgba(0, 1, 88, 0.3)',
+                                    color: '#000158',
+                                    bgcolor: 'rgba(255, 255, 255, 0.5)', // slightly visible background
                                     borderRadius: 0,
                                     mr: '-1.5px', // Overlap borders for single-line look if desired
                                     '&:hover': {
-                                        bgcolor: '#ffffff',
-                                        color: '#000158',
+                                        bgcolor: '#000158',
+                                        color: '#ffffff',
                                     }
                                 }}
                             >
@@ -192,12 +192,13 @@ const Hero = ({ slides, currentSlide, setCurrentSlide, nextSlide, prevSlide }) =
                                 sx={{
                                     width: 64,
                                     height: 64,
-                                    border: '1.5px solid rgba(255, 255, 255, 0.3)',
-                                    color: '#ffffff',
+                                    border: '1.5px solid rgba(0, 1, 88, 0.3)',
+                                    color: '#000158',
+                                    bgcolor: 'rgba(255, 255, 255, 0.5)',
                                     borderRadius: 0,
                                     '&:hover': {
-                                        bgcolor: '#ffffff',
-                                        color: '#000158',
+                                        bgcolor: '#000158',
+                                        color: '#ffffff',
                                     }
                                 }}
                             >

@@ -32,6 +32,7 @@ const AdminPanel = ({ products, onAdd, onDelete, onLogout }) => {
     const [newProduct, setNewProduct] = useState({
         name: '',
         category: 'Reactive Dyes',
+        subtype: '',
         cas: '',
         app: '',
         image: '/images/products/reactive.png'
@@ -40,6 +41,20 @@ const AdminPanel = ({ products, onAdd, onDelete, onLogout }) => {
     const [loading, setLoading] = useState(false);
 
     const categories = ['Silicone Inks', 'Oilbase Non PVC', 'Specialitys', 'Waterbase Pigments', 'Eco friendly water based textile inks'];
+
+    const allProducts = React.useMemo(() => {
+        return products.reduce((acc, brand) => {
+            const brandProducts = (brand.subtypes || []).reduce((subAcc, sub) => {
+                const productsWithSubtype = (sub.products || []).map(p => ({
+                    ...p,
+                    subtypeId: sub.id,
+                    subtypeName: sub.name
+                }));
+                return [...subAcc, ...productsWithSubtype];
+            }, []);
+            return [...acc, ...brandProducts];
+        }, []);
+    }, [products]);
 
     const handleAdd = async (e) => {
         e.preventDefault();
@@ -66,7 +81,7 @@ const AdminPanel = ({ products, onAdd, onDelete, onLogout }) => {
             }
         }
 
-        await onAdd({ ...newProduct, image: finalImageUrl });
+        await onAdd({ ...newProduct, image: finalImageUrl }, newProduct.subtype);
 
         setLoading(false);
         setIsAdding(false);
@@ -74,6 +89,7 @@ const AdminPanel = ({ products, onAdd, onDelete, onLogout }) => {
         setNewProduct({
             name: '',
             category: 'Reactive Dyes',
+            subtype: '',
             cas: '',
             app: '',
             image: '/images/products/reactive.png'
@@ -93,7 +109,7 @@ const AdminPanel = ({ products, onAdd, onDelete, onLogout }) => {
                             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mt: 1, opacity: 0.5 }}>
                                 <PackageIcon size={14} />
                                 <Typography variant="caption" sx={{ fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.1em' }}>
-                                    {products.length} Products Active
+                                    {allProducts.length} Products Active
                                 </Typography>
                             </Box>
                         </Box>
@@ -154,7 +170,7 @@ const AdminPanel = ({ products, onAdd, onDelete, onLogout }) => {
                                     <TextField
                                         fullWidth
                                         select
-                                        label="Category"
+                                        label="Category (Brand)"
                                         variant="filled"
                                         value={newProduct.category}
                                         onChange={e => {
@@ -171,6 +187,18 @@ const AdminPanel = ({ products, onAdd, onDelete, onLogout }) => {
                                     </TextField>
                                 </Grid>
                                 <Grid item xs={12} md={4}>
+                                    <TextField
+                                        fullWidth
+                                        label="Subtype (e.g., Bristal Effect)"
+                                        variant="filled"
+                                        required
+                                        value={newProduct.subtype}
+                                        onChange={e => setNewProduct({ ...newProduct, subtype: e.target.value })}
+                                        InputProps={{ disableUnderline: true }}
+                                        sx={{ bgcolor: 'rgba(223, 223, 223, 0.3)', '& .MuiFilledInput-root': { borderRadius: 0 } }}
+                                    />
+                                </Grid>
+                                <Grid item xs={12} md={6}>
                                     <TextField
                                         fullWidth
                                         label="CAS Number"
@@ -260,14 +288,14 @@ const AdminPanel = ({ products, onAdd, onDelete, onLogout }) => {
                     <Table>
                         <TableHead>
                             <TableRow sx={{ bgcolor: 'primary.main' }}>
-                                <TableCell sx={{ color: '#ffffff', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '0.1em' }}>Product</TableCell>
+                                <TableCell sx={{ color: '#ffffff', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '0.1em' }}>Product & Subtype</TableCell>
                                 <TableCell sx={{ color: '#ffffff', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '0.1em' }}>Category</TableCell>
                                 <TableCell sx={{ color: '#ffffff', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '0.1em' }}>CAS No.</TableCell>
                                 <TableCell align="right" sx={{ color: '#ffffff', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '0.1em' }}>Action</TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {products.map((product) => (
+                            {allProducts.map((product) => (
                                 <TableRow key={product.id} hover sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
                                     <TableCell>
                                         <Stack direction="row" spacing={3} alignItems="center">
@@ -276,9 +304,14 @@ const AdminPanel = ({ products, onAdd, onDelete, onLogout }) => {
                                                 variant="square"
                                                 sx={{ width: 48, height: 48, bgcolor: 'rgba(223, 223, 223, 0.3)', border: '1px solid', borderColor: 'divider' }}
                                             />
-                                            <Typography variant="subtitle2" sx={{ fontWeight: 800, textTransform: 'uppercase', color: 'primary.main' }}>
-                                                {product.name}
-                                            </Typography>
+                                            <Box>
+                                                <Typography variant="subtitle2" sx={{ fontWeight: 800, textTransform: 'uppercase', color: 'primary.main' }}>
+                                                    {product.name}
+                                                </Typography>
+                                                <Typography variant="caption" color="text.secondary" sx={{ fontWeight: 700 }}>
+                                                    Type: {product.subtypeName}
+                                                </Typography>
+                                            </Box>
                                         </Stack>
                                     </TableCell>
                                     <TableCell>
@@ -305,7 +338,7 @@ const AdminPanel = ({ products, onAdd, onDelete, onLogout }) => {
                                     </TableCell>
                                     <TableCell align="right">
                                         <IconButton
-                                            onClick={() => onDelete(product.id)}
+                                            onClick={() => onDelete(product.id, product.category, product.subtypeId)}
                                             sx={{ color: 'error.light', '&:hover': { color: 'error.main', bgcolor: 'transparent' } }}
                                         >
                                             <TrashIcon size={20} />

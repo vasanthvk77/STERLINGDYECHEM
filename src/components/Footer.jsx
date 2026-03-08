@@ -1,6 +1,7 @@
 import React from 'react';
 import { Box, Container, Grid, Typography, Link, Stack, Divider, List, ListItem, ListItemText } from '@mui/material';
-import { Globe } from 'lucide-react';
+import { Globe, Phone, Mail } from 'lucide-react';
+import AnimatedBullet from './AnimatedBullet';
 
 const Footer = ({ navigateTo }) => {
     return (
@@ -19,16 +20,13 @@ const Footer = ({ navigateTo }) => {
                 sx={{
                     position: 'absolute',
                     inset: 0,
-                    opacity: 0.4,
+                    opacity: 0.08,
                     pointerEvents: 'none',
                     backgroundImage: 'url(public/images/footer_texture_1.png)',
-                    opacity: "0.08",
-                    backgroundSize: '200px',
+                    backgroundSize: 'cover',
                     backgroundPosition: 'center',
                     backgroundRepeat: 'no-repeat',
-                    backgroundAttachment: 'fixed',
                     backgroundBlendMode: 'overlay',
-                    backgroundSize: 'cover',
                     zIndex: 0
                 }}
             />
@@ -36,7 +34,7 @@ const Footer = ({ navigateTo }) => {
             <Container maxWidth="lg" sx={{ position: 'relative', zIndex: 10 }}>
                 <Grid container spacing={8} sx={{ mb: 8 }}>
                     {/* BRAND SECTION */}
-                    <Grid item xs={12} md={6} lg={3}>
+                    <Grid item xs={12} sm={6} md={3}>
                         <Box
                             sx={{ mb: 4, cursor: 'pointer', display: 'flex' }}
                             onClick={() => navigateTo('HOME')}
@@ -61,7 +59,7 @@ const Footer = ({ navigateTo }) => {
                     </Grid>
 
                     {/* QUICK LINKS */}
-                    <Grid item xs={6} md={3} lg={2} sx={{ lg: { ml: 'auto' } }}>
+                    <Grid item xs={12} sm={6} md={3}>
                         <Typography
                             variant="subtitle2"
                             sx={{
@@ -74,7 +72,7 @@ const Footer = ({ navigateTo }) => {
                         >
                             Quick Links
                         </Typography>
-                        <Box sx={{ width: 40, height: '2px', bgcolor: '#fbbf24', mb: 3 }} />
+                        <Box sx={{ width: 40, height: '2px', bgcolor: '#000158', mb: 3 }} />
                         <Stack spacing={1.5}>
                             {['Home', 'About Us', 'Principles', 'Blog', 'Contact Us'].map((item) => (
                                 <Link
@@ -83,14 +81,17 @@ const Footer = ({ navigateTo }) => {
                                     onClick={() => navigateTo(item.toUpperCase())}
                                     underline="none"
                                     sx={{
+                                        display: 'flex',
+                                        alignItems: 'center',
                                         textAlign: 'left',
                                         fontSize: '13px',
                                         fontWeight: 600,
-                                        color: '#3b82f6',
-                                        '&:hover': { color: 'primary.main' },
+                                        color: '#64748b',
+                                        '&:hover': { color: '#000158' },
                                         transition: 'color 0.2s'
                                     }}
                                 >
+                                    <AnimatedBullet />
                                     {item}
                                 </Link>
                             ))}
@@ -98,7 +99,7 @@ const Footer = ({ navigateTo }) => {
                     </Grid>
 
                     {/* PRODUCT SECTION */}
-                    <Grid item xs={6} md={3} lg={2}>
+                    <Grid item xs={12} sm={6} md={3}>
                         <Typography
                             variant="subtitle2"
                             sx={{
@@ -111,7 +112,7 @@ const Footer = ({ navigateTo }) => {
                         >
                             Product
                         </Typography>
-                        <Box sx={{ width: 40, height: '2px', bgcolor: '#fbbf24', mb: 3 }} />
+                        <Box sx={{ width: 40, height: '2px', bgcolor: '#000158', mb: 3 }} />
                         <Stack spacing={1.5}>
                             {['Silicone Inks', 'Oilbase Non PVC', 'Specialitys', 'Waterbase Pigments', 'Eco friendly inks'].map((item) => (
                                 <Link
@@ -119,13 +120,16 @@ const Footer = ({ navigateTo }) => {
                                     href="#"
                                     underline="none"
                                     sx={{
+                                        display: 'flex',
+                                        alignItems: 'center',
                                         fontSize: '13px',
                                         fontWeight: 600,
-                                        color: '#3b82f6',
-                                        '&:hover': { color: 'primary.main' },
+                                        color: '#64748b',
+                                        '&:hover': { color: '#000158' },
                                         transition: 'color 0.2s'
                                     }}
                                 >
+                                    <AnimatedBullet />
                                     {item}
                                 </Link>
                             ))}
@@ -133,7 +137,7 @@ const Footer = ({ navigateTo }) => {
                     </Grid>
 
                     {/* CONTACT INFO */}
-                    <Grid item xs={12} md={6} lg={4}>
+                    <Grid item xs={12} sm={12} md={3}>
                         <Typography
                             variant="subtitle2"
                             sx={{
@@ -146,31 +150,37 @@ const Footer = ({ navigateTo }) => {
                         >
                             Contact Info
                         </Typography>
-                        <Box sx={{ width: 40, height: '2px', bgcolor: '#fbbf24', mb: 3 }} />
+                        <Box sx={{ width: 40, height: '2px', bgcolor: '#000158', mb: 3 }} />
                         <Stack spacing={3}>
                             <Box sx={{ display: 'flex', gap: 2 }}>
                                 <Globe size={18} color="#000158" style={{ marginTop: '2px', flexShrink: 0 }} />
                                 <Typography variant="body2" sx={{ fontWeight: 600, color: 'text.secondary', lineHeight: 1.4 }}>
-                                    124 INDUSTRIAL ESTATE, MUMBAI, MAHARASHTRA, INDIA - 400001
+                                    49, Nvp Garden St, Valai Tottam, Periyandipalayam, Tiruppur, Andipalayam, Tamil Nadu 641687
                                 </Typography>
                             </Box>
-                            <Box sx={{ display: 'flex', gap: 1 }}>
-                                <Typography variant="body2" sx={{ fontWeight: 800, color: 'primary.main' }}>Phone:</Typography>
-                                <Typography variant="body2" sx={{ fontWeight: 600, color: 'text.secondary' }}>+91 (22) 2345 6789</Typography>
+                            <Box sx={{ display: 'flex', gap: 2 }}>
+                                <Phone size={18} color="#000158" style={{ marginTop: '2px', flexShrink: 0 }} />
+                                <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
+                                    <Typography variant="body2" sx={{ fontWeight: 800, color: 'primary.main' }}></Typography>
+                                    <Typography variant="body2" sx={{ fontWeight: 600, color: 'text.secondary' }}>+91 (22) 2345 6789</Typography>
+                                </Box>
                             </Box>
-                            <Box sx={{ display: 'flex', gap: 1 }}>
-                                <Typography variant="body2" sx={{ fontWeight: 800, color: 'primary.main' }}>Email:</Typography>
-                                <Link
-                                    href="mailto:info@sdc.com"
-                                    sx={{
-                                        fontSize: '14px',
-                                        fontWeight: 600,
-                                        color: '#3b82f6',
-                                        '&:hover': { textDecoration: 'underline' }
-                                    }}
-                                >
-                                    info@sdc.com
-                                </Link>
+                            <Box sx={{ display: 'flex', gap: 2 }}>
+                                <Mail size={18} color="#000158" style={{ marginTop: '2px', flexShrink: 0 }} />
+                                <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
+                                    <Typography variant="body2" sx={{ fontWeight: 800, color: 'primary.main' }}></Typography>
+                                    <Link
+                                        href="mailto:info@sdc.com"
+                                        sx={{
+                                            fontSize: '14px',
+                                            fontWeight: 600,
+                                            color: '#64748b',
+                                            '&:hover': { color: '#000158', textDecoration: 'underline' }
+                                        }}
+                                    >
+                                        info@sdc.com
+                                    </Link>
+                                </Box>
                             </Box>
                         </Stack>
                     </Grid>
@@ -183,7 +193,7 @@ const Footer = ({ navigateTo }) => {
                         variant="caption"
                         sx={{
                             fontWeight: 800,
-                            color: '#3b82f6',
+                            color: '#94a3b8',
                             textTransform: 'uppercase',
                             letterSpacing: '0.1em'
                         }}

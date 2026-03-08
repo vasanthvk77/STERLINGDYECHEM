@@ -20,7 +20,6 @@ import {
 import { Mail, Phone, ArrowRight, CheckCircle2, X } from 'lucide-react';
 import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 import CheckBoxIcon from '@mui/icons-material/CheckBox';
-import ScrollReveal from './ScrollReveal';
 import emailjs from '@emailjs/browser';
 import db from '../data/db.json';
 
@@ -157,55 +156,58 @@ const Contact = () => {
     };
 
     return (
-        <Box
-            component="section"
-            sx={{
-                pt: { xs: 15, lg: 22 }, // Pushes content below navbar height (100px + 20px gap)
-                pb: { xs: 8, lg: 12 },
-                bgcolor: 'primary.main',
-                color: '#ffffff',
-                position: 'relative',
-                overflow: 'hidden',
-                minHeight: '100vh',
-                display: 'flex',
-                alignItems: 'center'
-            }}
-        >
-            {/* BACKGROUND IMAGE WITH OVERLAY */}
-            <Box sx={{ position: 'absolute', inset: 0, zIndex: 0 }}>
-                <Box
-                    component="img"
-                    src="/images/contact_bg_vibrant.png"
-                    alt="Vibrant Color Background"
-                    sx={{ width: '100%', height: '100%', objectFit: 'cover', opacity: 0.6 }}
-                />
+        <>
+            <Box
+                id="contact-section"
+                component="section"
+                sx={{
+                    height: { xs: "auto", md: "100vh", lg: "100vh" },
+
+                    pt: { xs: 15, lg: 22 }, // Pushes content below navbar height (100px + 20px gap)
+                    pb: { xs: 8, lg: 12 },
+                    bgcolor: 'primary.main',
+                    color: '#ffffff',
+                    position: 'relative',
+                    overflow: 'hidden',
+                    minHeight: '100vh',
+                    display: 'flex',
+                    alignItems: 'center'
+                }}
+            >
+                {/* BACKGROUND IMAGE WITH OVERLAY */}
+                <Box sx={{ position: 'absolute', inset: 0, zIndex: 0 }}>
+                    <Box
+                        component="img"
+                        src="/images/contact_bg_vibrant.png"
+                        alt="Vibrant Color Background"
+                        sx={{ width: '100%', height: '100%', objectFit: 'cover', opacity: 0.6 }}
+                    />
+                    <Box
+                        sx={{
+                            position: 'absolute',
+                            inset: 0,
+                            // background: 'linear-gradient(to right, #000158, rgba(0, 1, 88, 0.7), transparent)',
+                            zIndex: 1
+                        }}
+                    />
+                </Box>
+
+                {/* GRID PATTERN OVERLAY */}
                 <Box
                     sx={{
                         position: 'absolute',
                         inset: 0,
-                        // background: 'linear-gradient(to right, #000158, rgba(0, 1, 88, 0.7), transparent)',
-                        zIndex: 1
+                        opacity: 0.05,
+                        pointerEvents: 'none',
+                        zIndex: 0,
+                        backgroundImage: 'radial-gradient(#ffffff 1px, transparent 1px)',
+                        backgroundSize: '40px 40px',
                     }}
                 />
-            </Box>
 
-            {/* GRID PATTERN OVERLAY */}
-            <Box
-                sx={{
-                    position: 'absolute',
-                    inset: 0,
-                    opacity: 0.05,
-                    pointerEvents: 'none',
-                    zIndex: 0,
-                    backgroundImage: 'radial-gradient(#ffffff 1px, transparent 1px)',
-                    backgroundSize: '40px 40px',
-                }}
-            />
-
-            <Container maxWidth="lg" sx={{ position: 'relative', zIndex: 10 }}>
-                <Grid container spacing={{ xs: 4, lg: 6 }} alignItems="center">
-                    <Grid item xs={12} lg={6}>
-                        <ScrollReveal direction="left">
+                <Container maxWidth="lg" sx={{ position: 'relative', zIndex: 10 }}>
+                    <Grid container spacing={{ xs: 4, lg: 6 }} alignItems="center">
+                        <Grid item xs={12} lg={6}>
                             <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 4 }}>
                                 <Box sx={{ width: 48, height: '2px', bgcolor: '#ffffff' }} />
                                 <Typography
@@ -222,7 +224,7 @@ const Contact = () => {
                             </Box>
                             <Typography
                                 variant="h2"
-                                sx={{ color: '#ffffff', mb: 4, lineHeight: 1.1 }}
+                                sx={{ color: '#ffffff', mb: 4, lineHeight: 1.1, fontSize: { xs: '2rem', md: '2.5rem' } }}
                             >
                                 Request Technical Data & Samples
                             </Typography>
@@ -304,11 +306,9 @@ const Contact = () => {
                                     </Box>
                                 </Box>
                             </Stack>
-                        </ScrollReveal>
-                    </Grid>
+                        </Grid>
 
-                    <Grid item xs={12} lg={6}>
-                        <ScrollReveal direction="right" delay={0.2}>
+                        <Grid item xs={12} lg={6}>
                             <Paper
                                 elevation={0}
                                 sx={{
@@ -403,27 +403,25 @@ const Contact = () => {
                                                 }}
                                             />
                                             {formData.phone && (
-                                                <ScrollReveal direction="up" distance={10}>
-                                                    <FormControlLabel
-                                                        control={
-                                                            <Checkbox
-                                                                checked={syncWhatsApp}
-                                                                onChange={handleSyncToggle}
-                                                                size="small"
-                                                                sx={{
-                                                                    color: 'primary.main',
-                                                                    '&.Mui-checked': { color: 'primary.main' }
-                                                                }}
-                                                            />
-                                                        }
-                                                        label={
-                                                            <Typography sx={{ fontSize: '0.75rem', fontWeight: 600, color: 'primary.main', opacity: 0.8 }}>
-                                                                Use same for WhatsApp?
-                                                            </Typography>
-                                                        }
-                                                        sx={{ mt: 0.5, ml: 0 }}
-                                                    />
-                                                </ScrollReveal>
+                                                <FormControlLabel
+                                                    control={
+                                                        <Checkbox
+                                                            checked={syncWhatsApp}
+                                                            onChange={handleSyncToggle}
+                                                            size="small"
+                                                            sx={{
+                                                                color: 'primary.main',
+                                                                '&.Mui-checked': { color: 'primary.main' }
+                                                            }}
+                                                        />
+                                                    }
+                                                    label={
+                                                        <Typography sx={{ fontSize: '0.75rem', fontWeight: 600, color: 'primary.main', opacity: 0.8 }}>
+                                                            Use same for WhatsApp?
+                                                        </Typography>
+                                                    }
+                                                    sx={{ mt: 0.5, ml: 0 }}
+                                                />
                                             )}
                                         </Grid>
                                         <Grid item xs={12} sm={6}>
@@ -639,28 +637,41 @@ const Contact = () => {
                                     </Grid>
                                 </form>
                             </Paper>
-                        </ScrollReveal>
+                        </Grid>
                     </Grid>
-                </Grid>
-            </Container>
+                </Container>
 
-            {/* Success Feedback */}
-            <Snackbar
-                open={showSnackbar}
-                autoHideDuration={6000}
-                onClose={() => setShowSnackbar(false)}
-                anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
-            >
-                <Alert
+                {/* Success Feedback */}
+                <Snackbar
+                    open={showSnackbar}
+                    autoHideDuration={6000}
                     onClose={() => setShowSnackbar(false)}
-                    severity="success"
-                    icon={<CheckCircle2 size={20} />}
-                    sx={{ width: '100%', borderRadius: 0, bgcolor: 'success.main', color: '#fff' }}
+                    anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
                 >
-                    Thank you! Your inquiry has been sent. Check your email for confirmation.
-                </Alert>
-            </Snackbar>
-        </Box>
+                    <Alert
+                        onClose={() => setShowSnackbar(false)}
+                        severity="success"
+                        icon={<CheckCircle2 size={20} />}
+                        sx={{ width: '100%', borderRadius: 0, bgcolor: 'success.main', color: '#fff' }}
+                    >
+                        Thank you! Your inquiry has been sent. Check your email for confirmation.
+                    </Alert>
+                </Snackbar>
+            </Box>
+
+            {/* Google Map Embed (Full Width, below the Contact block) */}
+            <Box sx={{ width: '100%', height: 450, display: 'block' }}>
+                <iframe
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d5675.503814995908!2d77.31921810079999!3d11.089354854211928!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ba90753a25e39af%3A0xac2e355abbb6a30e!2sSTERLING%20DYE%20CHEM%20SHOP!5e0!3m2!1sen!2sin!4v1772892968105!5m2!1sen!2sin"
+                    width="100%"
+                    height="100%"
+                    style={{ border: 0, display: 'block' }}
+                    allowFullScreen=""
+                    loading="lazy"
+                    referrerPolicy="no-referrer-when-downgrade"
+                />
+            </Box>
+        </>
     );
 };
 

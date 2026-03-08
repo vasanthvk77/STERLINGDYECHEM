@@ -15,8 +15,9 @@ import {
     Typography,
     Container,
     useScrollTrigger,
+    Collapse
 } from '@mui/material';
-import { Menu as MenuIcon, X as CloseIcon, ChevronDown } from 'lucide-react';
+import { Menu as MenuIcon, X as CloseIcon, ChevronDown, ChevronUp } from 'lucide-react';
 
 const Navbar = ({ isScrolled, currentPage, navLinks, navigateTo, mobileMenuOpen, setMobileMenuOpen }) => {
     const [anchorEl, setAnchorEl] = useState(null);
@@ -126,6 +127,7 @@ const Navbar = ({ isScrolled, currentPage, navLinks, navigateTo, mobileMenuOpen,
                                                 onClick={() => {
                                                     navigateTo('PRODUCT');
                                                     window.dispatchEvent(new CustomEvent('setCategory', { detail: item }));
+                                                    window.dispatchEvent(new CustomEvent('setSubtype', { detail: null }));
                                                     handleCloseDropdown();
                                                 }}
                                                 sx={{
@@ -193,44 +195,104 @@ const Navbar = ({ isScrolled, currentPage, navLinks, navigateTo, mobileMenuOpen,
 
             {/* MOBILE MENU */}
             <Drawer
-                anchor="top"
+                anchor="right"
                 open={mobileMenuOpen}
                 onClose={() => setMobileMenuOpen(false)}
                 PaperProps={{
-                    sx: { height: '100%', p: 3, borderRadius: 0 }
+                    sx: {
+                        width: { xs: '75%', sm: '350px' },
+                        bgcolor: '#000158', // Deep blue premium look
+                        color: 'white',
+                    }
                 }}
             >
-                <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 6 }}>
-                    <Typography variant="h6" sx={{ fontWeight: 900, color: 'primary.main' }}>
-                        STERLING DYE CHEM
-                    </Typography>
-                    <IconButton onClick={() => setMobileMenuOpen(false)}>
+                <Box sx={{ p: { xs: 3, sm: 4 }, display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid rgba(255,255,255,0.1)' }}>
+                    <img src="/images/logo.png" alt="SDC" style={{ height: '40px', filter: 'brightness(0) invert(1)' }} />
+                    <IconButton onClick={() => setMobileMenuOpen(false)} sx={{ color: 'white' }}>
                         <CloseIcon size={32} />
                     </IconButton>
                 </Box>
-                <List sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-                    {navLinks.map((link) => (
-                        <ListItem key={link.name} disablePadding divider>
-                            <ListItemButton
-                                onClick={() => {
-                                    navigateTo(link.name);
-                                    setMobileMenuOpen(false);
-                                }}
-                                sx={{ py: 2 }}
-                            >
-                                <ListItemText
-                                    primary={link.name}
-                                    primaryTypographyProps={{
-                                        fontWeight: 900,
-                                        fontSize: '24px',
-                                        color: 'primary.main'
-                                    }}
-                                />
-                                {link.hasDropdown && <ChevronDown size={20} style={{ opacity: 0.5 }} />}
-                            </ListItemButton>
-                        </ListItem>
-                    ))}
-                </List>
+                <Box sx={{ p: { xs: 2.5, sm: 4 }, overflowY: 'auto', height: '100%' }}>
+                    <List sx={{ display: 'flex', flexDirection: 'column', gap: 0.5 }}>
+                        {navLinks.map((link) => (
+                            <React.Fragment key={link.name}>
+                                <ListItem disablePadding>
+                                    <ListItemButton
+                                        onClick={() => {
+                                            if (link.hasDropdown) {
+                                                setActiveDropdown(activeDropdown === link.name ? null : link.name);
+                                            } else {
+                                                navigateTo(link.name);
+                                                setMobileMenuOpen(false);
+                                                setActiveDropdown(null);
+                                            }
+                                        }}
+                                        sx={{
+                                            py: 1.5,
+                                            px: 2,
+                                            borderRadius: '8px',
+                                            bgcolor: currentPage === link.name ? 'rgba(255,255,255,0.05)' : 'transparent',
+                                            '&:hover': { bgcolor: 'rgba(255,255,255,0.1)' }
+                                        }}
+                                    >
+                                        <ListItemText
+                                            primary={link.name}
+                                            primaryTypographyProps={{
+                                                fontWeight: 700,
+                                                fontSize: '15px',
+                                                color: currentPage === link.name ? '#00d2ff' : 'white',
+                                                letterSpacing: '0.05em'
+                                            }}
+                                        />
+                                        {link.hasDropdown && (
+                                            activeDropdown === link.name ?
+                                                <ChevronUp size={20} style={{ color: 'rgba(255,255,255,0.7)' }} /> :
+                                                <ChevronDown size={20} style={{ color: 'rgba(255,255,255,0.7)' }} />
+                                        )}
+                                    </ListItemButton>
+                                </ListItem>
+                                {link.hasDropdown && (
+                                    <Collapse in={activeDropdown === link.name} timeout="auto" unmountOnExit>
+                                        <List component="div" disablePadding sx={{ pl: 4, mb: 2 }}>
+                                            {link.subItems.map((subItem) => (
+                                                <ListItemButton
+                                                    key={subItem}
+                                                    onClick={() => {
+                                                        navigateTo('PRODUCT');
+                                                        window.dispatchEvent(new CustomEvent('setCategory', { detail: subItem }));
+                                                        setMobileMenuOpen(false);
+                                                        setActiveDropdown(null);
+                                                    }}
+                                                    sx={{
+                                                        py: 1.5,
+                                                        px: 2,
+                                                        borderRadius: '6px',
+                                                        '&:hover': { bgcolor: 'rgba(255,255,255,0.05)' }
+                                                    }}
+                                                >
+                                                    <Box sx={{ width: 6, height: 6, borderRadius: '50%', bgcolor: '#00d2ff', mr: 2 }} />
+                                                    <ListItemText
+                                                        primary={subItem}
+                                                        primaryTypographyProps={{
+                                                            color: 'rgba(255,255,255,0.8)',
+                                                            fontSize: '13px',
+                                                            fontWeight: 500
+                                                        }}
+                                                    />
+                                                </ListItemButton>
+                                            ))}
+                                        </List>
+                                    </Collapse>
+                                )}
+                            </React.Fragment>
+                        ))}
+                    </List>
+
+                    <Box sx={{ mt: 6, pt: 4, borderTop: '1px solid rgba(255,255,255,0.1)' }}>
+                        <Typography variant="body2" sx={{ color: 'rgba(255,255,255,0.5)', mb: 1, fontWeight: 600, letterSpacing: '0.1em', fontSize: '11px' }}>GET IN TOUCH</Typography>
+                        <Typography variant="body1" sx={{ color: 'white', fontWeight: 700, fontSize: '15px' }}>info@sterlingdyechem.com</Typography>
+                    </Box>
+                </Box>
             </Drawer>
         </AppBar>
     );

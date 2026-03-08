@@ -1,18 +1,22 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import '../styles/animations.css';
 
 const CustomCursor = () => {
-    const particlesRef = useRef([]);
+    const cursorRef = useRef(null);
 
     useEffect(() => {
+        let animationFrameId;
+
         const moveCursor = (e) => {
             const { clientX, clientY } = e;
 
-            // DROPS - Instant follow (no delay) to maintain exact cardinal positions
-            particlesRef.current.forEach((p) => {
-                if (p) {
-                    p.style.left = `${clientX}px`;
-                    p.style.top = `${clientY}px`;
+            // Use requestAnimationFrame for smooth, non-blocking rendering
+            if (animationFrameId) cancelAnimationFrame(animationFrameId);
+
+            animationFrameId = requestAnimationFrame(() => {
+                if (cursorRef.current) {
+                    // Use GPU-accelerated translate3d instead of expensive left/top
+                    cursorRef.current.style.transform = `translate3d(${clientX}px, ${clientY}px, 0)`;
                 }
             });
         };
@@ -21,19 +25,30 @@ const CustomCursor = () => {
 
         return () => {
             window.removeEventListener('mousemove', moveCursor);
+            if (animationFrameId) cancelAnimationFrame(animationFrameId);
         };
     }, []);
 
     return (
         <div className="custom-cursor-container">
-            {/* 6 Cardinal/Hexagonal Rain Drops */}
-            {[...Array(6)].map((_, i) => (
-                <div
-                    key={i}
-                    ref={el => particlesRef.current[i] = el}
-                    className={`cursor-drop d-${i}`}
-                />
-            ))}
+            <div
+                ref={cursorRef}
+                style={{
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    pointerEvents: 'none',
+                    willChange: 'transform' // Hints browser to optimize this layer
+                }}
+            >
+                {/* 6 Cardinal/Hexagonal Rain Drops */}
+                {[...Array(6)].map((_, i) => (
+                    <div
+                        key={i}
+                        className={`cursor-drop d-${i}`}
+                    />
+                ))}
+            </div>
         </div>
     );
 };

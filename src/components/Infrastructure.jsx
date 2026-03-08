@@ -24,34 +24,35 @@ const Infrastructure = () => {
 
     return (
         <Box
-  component="section"
-  sx={{
-    py: { xs: 12, lg: 16 },
-    position: "relative",
-    overflow: "hidden",
-    backgroundImage: 'url("/images/hero_sustainable.png")',
-    backgroundSize: "cover",
-    backgroundPosition: "center",
-    color: "#ffffff",
+            id="certification-section"
+            component="section"
+            sx={{
+                py: { xs: 12, lg: 16 },
+                position: "relative",
+                overflow: "hidden",
+                backgroundImage: 'url("/images/hero_sustainable.png")',
+                backgroundSize: "cover",
+                backgroundPosition: "center",
+                color: "#ffffff",
 
-    "&::before": {
-      content: '""',
-      position: "absolute",
-      top: 0,
-      left: 0,
-      width: "100%",
-      height: "100%",
-      opacity: 0.6,
-      backgroundColor: "rgba(10, 14, 69, 0.6)", // blue overlay
-      zIndex: 1,
-    },
+                "&::before": {
+                    content: '""',
+                    position: "absolute",
+                    top: 0,
+                    left: 0,
+                    width: "100%",
+                    height: "100%",
+                    opacity: 0.6,
+                    backgroundColor: "rgba(10, 14, 69, 0.6)", // blue overlay
+                    zIndex: 1,
+                },
 
-    "& > *": {
-      position: "relative",
-      zIndex: 2, // keep content above overlay
-    },
-  }}
->
+                "& > *": {
+                    position: "relative",
+                    zIndex: 2, // keep content above overlay
+                },
+            }}
+        >
             {/* DEEP BLUE OVERLAY */}
             <Box sx={{ position: 'absolute', inset: 0, }} />
 

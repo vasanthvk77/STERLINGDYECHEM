@@ -29,9 +29,9 @@ const App = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [currentSlide, setCurrentSlide] = useState(0);
   const [activeCategory, setActiveCategory] = useState('All');
+  const [activeSubtype, setActiveSubtype] = useState(null);
   const [currentPage, setCurrentPage] = useState(sessionStorage.getItem('currentPage') || 'HOME');
-  const [productsList, setProductsList] = useState(dbData.products);
-  const [homePageProducts, setHomePageProducts] = useState(dbData.homePageProducts || []);
+  const [productsList, setProductsList] = useState(dbData.catalog || []);
   const [user, setUser] = useState(JSON.parse(localStorage.getItem('adminUser')));
 
   useEffect(() => {
@@ -61,41 +61,68 @@ const App = () => {
         'Eco friendly water based textile inks'
       ]
     },
-    { name: 'BLOG', hasDropdown: false },
+    { name: 'INSIGHTS', hasDropdown: false },
   ];
 
   // Hero Slider Data
+  const scrollToSection = (sectionId, fallbackPage) => {
+    if (currentPage !== 'HOME') {
+      navigateTo('HOME');
+      setTimeout(() => {
+        const el = document.getElementById(sectionId);
+        if (el) el.scrollIntoView({ behavior: 'smooth' });
+      }, 100);
+    } else {
+      const el = document.getElementById(sectionId);
+      if (el) el.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   const slides = [
     {
       title: "Welcome to Sterling Dyes Chem",
       subtitle: "Manufacturing world-class Dyestuffs and Specialty Chemicals for the global textile and ink industries.",
-      cta: "Quality Control",
-      image: "/public/images/hero_sdc.png"
+      cta: "Quality Products",
+      image: "/public/images/hero_sdc.png",
+      textColor: "#00d0ffff",
+      subtitleColor: "#ffffff",
+      action: () => navigateTo('PRODUCT')
     },
     {
       title: "Sustainable Chemical Solutions",
       subtitle: "Leading the way in eco-friendly chemical manufacturing and green chemistry innovations.",
       cta: "Go Green",
-      image: "/public/images/hero_sustainable.png"
+      image: "/public/images/hero_sustainable.png",
+      textColor: "#ffffff",
+      subtitleColor: "rgba(255, 255, 255, 0.9)",
+      action: () => scrollToSection('certification-section', 'HOME')
     },
     {
-      title: "ZDHC & ISO Certified Quality",
-      subtitle: "Committed to sustainable chemical management and international safety standards.",
-      cta: "Explore Our Range",
-      image: "/images/hero_pioneer.jpg"
+      title: "Global Reach & Performance",
+      subtitle: "Delivering high-performance, tailored chemical solutions for modern manufacturing challenges worldwide.",
+      cta: "Contact Us",
+      image: "/images/hero_pioneer.jpg",
+      textColor: "#00d0ffff",
+      subtitleColor: "#ffffff",
+      action: () => scrollToSection('contact-section', 'HOME')
     }
-
   ];
 
-  const categories = ['All'];
-  const filteredProducts = activeCategory === 'All' ? productsList : productsList.filter(p => p.category === activeCategory);
+  const categories = ['All', ...productsList.map(c => c.brand)];
+  const filteredProducts = activeCategory === 'All' ? productsList : productsList.filter(c => c.brand === activeCategory);
 
   useEffect(() => {
     const handleSetCategory = (e) => {
       setActiveCategory(e.detail);
+      setActiveSubtype(null);
+      window.scrollTo(0, 0);
+    };
+    const handleSetSubtype = (e) => {
+      setActiveSubtype(e.detail);
       window.scrollTo(0, 0);
     };
     window.addEventListener('setCategory', handleSetCategory);
+    window.addEventListener('setSubtype', handleSetSubtype);
 
     // Global error logger to help debug white screen on GitHub Pages
     window.onerror = function (msg, url, line, col, error) {
@@ -116,32 +143,57 @@ const App = () => {
     return () => {
       window.removeEventListener('scroll', handleScroll);
       window.removeEventListener('setCategory', handleSetCategory);
+      window.removeEventListener('setSubtype', handleSetSubtype);
       clearInterval(slideInterval);
     };
   }, [slides.length]);
 
   const fetchProducts = async () => {
     try {
-      // Fetch full products list
-      const response = await fetch('http://localhost:5000/products');
+      const response = await fetch('http://localhost:5000/catalog');
       const data = await response.json();
       setProductsList(data);
-
-      // Fetch specific home page products
-      const homeResponse = await fetch('http://localhost:5000/homePageProducts');
-      const homeData = await homeResponse.json();
-      setHomePageProducts(homeData);
     } catch (err) {
-      console.error("Failed to fetch products:", err);
+      console.error("Failed to fetch catalog:", err);
+      setProductsList(dbData.catalog || []);
     }
   };
 
-  const handleAddProduct = async (product) => {
+  const handleAddProduct = async (product, subtypeName) => {
     try {
-      const response = await fetch('http://localhost:5000/products', {
-        method: 'POST',
+      const category = productsList.find(c => c.brand === product.category);
+      if (!category) return;
+
+      const newProduct = { ...product, id: 'p_' + Date.now().toString() };
+
+      let subtypes = category.subtypes || [];
+      const subtypeIndex = subtypes.findIndex(s => s.name === subtypeName);
+
+      if (subtypeIndex !== -1) {
+        subtypes[subtypeIndex] = {
+          ...subtypes[subtypeIndex],
+          products: [...(subtypes[subtypeIndex].products || []), newProduct]
+        };
+      } else {
+        // Create new subtype if it doesn't exist
+        subtypes.push({
+          id: 'sub_' + Date.now().toString(),
+          name: subtypeName || product.name,
+          image: product.image,
+          description: product.app,
+          products: [newProduct]
+        });
+      }
+
+      const updatedCategory = {
+        ...category,
+        subtypes: subtypes
+      };
+
+      const response = await fetch(`http://localhost:5000/catalog/${category.id}`, {
+        method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...product, id: Date.now().toString() })
+        body: JSON.stringify(updatedCategory)
       });
       if (response.ok) fetchProducts();
     } catch (err) {
@@ -149,10 +201,30 @@ const App = () => {
     }
   };
 
-  const handleDeleteProduct = async (id) => {
+  const handleDeleteProduct = async (productId, categoryBrand, subtypeId) => {
     try {
-      const response = await fetch(`http://localhost:5000/products/${id}`, {
-        method: 'DELETE'
+      const category = productsList.find(c => c.brand === categoryBrand);
+      if (!category) return;
+
+      const subtypes = (category.subtypes || []).map(sub => {
+        if (sub.id === subtypeId) {
+          return {
+            ...sub,
+            products: (sub.products || []).filter(p => p.id !== productId)
+          };
+        }
+        return sub;
+      });
+
+      const updatedCategory = {
+        ...category,
+        subtypes: subtypes
+      };
+
+      const response = await fetch(`http://localhost:5000/catalog/${category.id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(updatedCategory)
       });
       if (response.ok) fetchProducts();
     } catch (err) {
@@ -203,10 +275,11 @@ const App = () => {
             <ScrollReveal>
               <ProductCatalog
                 isHomePage={true}
-                homePageProducts={homePageProducts}
                 categories={categories}
                 activeCategory={activeCategory}
                 setActiveCategory={setActiveCategory}
+                activeSubtype={activeSubtype}
+                setActiveSubtype={setActiveSubtype}
                 filteredProducts={filteredProducts}
               />
             </ScrollReveal>
@@ -241,12 +314,14 @@ const App = () => {
               categories={categories}
               activeCategory={activeCategory}
               setActiveCategory={setActiveCategory}
+              activeSubtype={activeSubtype}
+              setActiveSubtype={setActiveSubtype}
               filteredProducts={filteredProducts}
             />
           </Box>
         )}
 
-        {currentPage === 'BLOG' && (
+        {currentPage === 'INSIGHTS' && (
           <Box sx={{ pt: { xs: 12, lg: 20 }, minHeight: '100vh' }}>
             <BlogPage />
           </Box>
@@ -285,7 +360,7 @@ const App = () => {
         )}
 
         {/* --- RENDER FALLBACK FOR UNHANDLED ROUTES --- */}
-        {!['HOME', 'ABOUT US', 'PRINCIPLES', 'PRODUCT', 'BLOG', 'CONTACT US', 'LOGIN', 'ADMIN'].includes(currentPage) && (
+        {!['HOME', 'ABOUT US', 'PRINCIPLES', 'PRODUCT', 'INSIGHTS', 'CONTACT US', 'LOGIN', 'ADMIN'].includes(currentPage) && (
           <PlaceholderPage title={currentPage} />
         )}
 
