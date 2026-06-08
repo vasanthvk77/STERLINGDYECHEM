@@ -14,14 +14,9 @@ import {
     InputAdornment
 } from '@mui/material';
 import { ArrowRight, Search } from 'lucide-react';
+import levisBristleImage from '../assets/images/products/levis_bristle.png';
+import productsBgImage from '../assets/images/products/products_bg.png';
 
-const getImageUrl = (path) => {
-    if (!path) return '';
-    if (path.startsWith('http') || path.startsWith('data:')) return path;
-    const cleanPath = path.startsWith('/') ? path.substring(1) : path;
-    const finalPath = cleanPath.startsWith('public/') ? cleanPath.substring(7) : cleanPath;
-    return `${import.meta.env.BASE_URL}${finalPath}`;
-};
 
 const ProductCatalog = ({ categories, activeCategory, setActiveCategory, activeSubtype, setActiveSubtype, filteredProducts, isHomePage }) => {
     const [searchQuery, setSearchQuery] = useState('');
@@ -193,7 +188,7 @@ const ProductCatalog = ({ categories, activeCategory, setActiveCategory, activeS
                                     sx={{ color: 'primary.main', fontWeight: 700 }}
                                     startIcon={<ArrowRight size={18} style={{ transform: 'rotate(180deg)' }} />}
                                 >
-                                    BACK TO {activeCategory} 
+                                    BACK TO {activeCategory}
                                 </Button>
                                 <Typography variant="h6" color="primary" sx={{ fontWeight: 900, textTransform: 'uppercase' }}>
                                     / {activeSubtype}
@@ -325,7 +320,7 @@ const BrandCard = ({ brand, onClick }) => (
         <Box sx={{ position: 'relative', height: { xs: 220, md: 240 }, overflow: 'hidden' }}>
             <CardMedia
                 component="img"
-                image={getImageUrl(brand.image)}
+                src={brand.image || levisBristleImage}
                 alt={brand.brand}
                 sx={{
                     height: '100%',
@@ -405,7 +400,7 @@ const SubtypeCard = ({ subtype, onClick }) => (
         <Box sx={{ position: 'relative', height: { xs: 200, md: 220 }, overflow: 'hidden' }}>
             <CardMedia
                 component="img"
-                image={getImageUrl(subtype.image)}
+                src={subtype.image || levisBristleImage}
                 alt={subtype.name}
                 sx={{
                     height: '100%',
@@ -494,7 +489,7 @@ const ProductCard = ({ product }) => (
             />
             <CardMedia
                 component="img"
-                image={getImageUrl(product.image || "/public/images/products/levis_bristle.png")}
+                src={product.image || levisBristleImage}
                 alt={product.name}
                 sx={{
                     height: '100%',
@@ -538,13 +533,12 @@ const ProductCard = ({ product }) => (
                     content: '""',
                     position: 'absolute',
                     inset: 0,
-                    backgroundImage: 'url(/public/images/products/products_bg.png)',
+                    backgroundImage: `url(${productsBgImage})`,
                     backgroundSize: '140%',
                     backgroundPosition: 'center',
                     opacity: 0.40, // Maintaining user preference
                     zIndex: 0
                 },
-                // Solid-ish blue for legibility
             }}
         >
             <Box sx={{ position: 'relative', zIndex: 1, height: '100%', display: 'flex', flexDirection: 'column', flexGrow: 1 }}>

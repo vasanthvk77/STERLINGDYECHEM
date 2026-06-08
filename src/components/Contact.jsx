@@ -21,7 +21,8 @@ import { Mail, Phone, ArrowRight, CheckCircle2, X, MessageCircle } from 'lucide-
 import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 import CheckBoxIcon from '@mui/icons-material/CheckBox';
 import emailjs from '@emailjs/browser';
-import db from '../data/db.json';
+import dbData from '../data/data.js';
+import contactBgImage from '../assets/images/hero_pioneer.jpg';
 
 const Contact = () => {
     // --- EMAIL CONFIGURATION ---
@@ -111,7 +112,7 @@ const Contact = () => {
         try {
             if (SEND_METHOD === 1) {
                 // METHOD 1: EMAILJS (Frontend)
-                const { service_id, public_key, ack_template_id, admin_template_id } = db.emailjs_details;
+                const { service_id, public_key, ack_template_id, admin_template_id } = dbData.emailjs_details;
 
                 // 1. Send Admin Notification First
                 await emailjs.send(service_id, admin_template_id, templateParams, public_key);
@@ -178,7 +179,7 @@ const Contact = () => {
                 <Box sx={{ position: 'absolute', inset: 0, zIndex: 0 }}>
                     <Box
                         component="img"
-                        src={`${import.meta.env.BASE_URL}images/contact_bg_vibrant.png`}
+                        src={contactBgImage}
                         alt="Vibrant Color Background"
                         sx={{ width: '100%', height: '100%', objectFit: 'cover', opacity: 0.6 }}
                     />
@@ -224,7 +225,7 @@ const Contact = () => {
                             </Box>
                             <Typography
                                 variant="h2"
-                                sx={{ color: '#ffffff', mb: 4, lineHeight: 1.1, fontSize: { xs: '2rem', md: '2.5rem' } }}
+                                sx={{ color: '#ffffff', mb: 4, lineHeight: 1.1, fontSize: { xs: '2rem', md: '3rem' } }}
                             >
                                 Ask for Requirements
                             </Typography>
@@ -234,7 +235,7 @@ const Contact = () => {
                                     fontSize: '1.125rem',
                                     fontWeight: 300,
                                     lineHeight: 1.6,
-                                    color: 'rgba(255, 255, 255, 0.8)',
+                                    color: 'rgba(255, 255, 255, 1)',
                                     maxWidth: '500px',
                                     mb: 6,
                                     textAlign: 'justify',

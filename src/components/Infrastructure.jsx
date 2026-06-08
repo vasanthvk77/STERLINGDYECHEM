@@ -1,191 +1,239 @@
-import React from 'react';
-import { Box, Container, Typography, Grid, Avatar } from '@mui/material';
+import React, { useRef } from 'react';
+import { Box, Container, Typography, useTheme, useMediaQuery } from '@mui/material';
 import { CheckCircle2 } from 'lucide-react';
-import ScrollReveal from './ScrollReveal';
+import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
+import heroSustainableImage from '../assets/images/hero_sustainable.png';
+import certGots from '../assets/images/cert_gots.png';
+import certOekotex from '../assets/images/cert_oekotex.png';
+import certZdhc from '../assets/images/cert_zdhc.png';
 
 const Infrastructure = () => {
-    const getImageUrl = (path) => {
-        if (!path) return '';
-        if (path.startsWith('http') || path.startsWith('data:')) return path;
-        const cleanPath = path.startsWith('/') ? path.substring(1) : path;
-        return `${import.meta.env.BASE_URL}${cleanPath}`;
-    };
+    const theme = useTheme();
+    const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+    const sectionRef = useRef(null);
+
+    // We track the scroll progress of this specific section relative to the viewport
+    const { scrollYProgress } = useScroll({
+        target: sectionRef,
+        offset: ["start end", "end start"] 
+    });
+
+    // We use a spring for physics-based smoothness so the scroll feels premium
+    const smoothProgress = useSpring(scrollYProgress, {
+        stiffness: 100,
+        damping: 30,
+        restDelta: 0.001
+    });
+
+    // Map the scroll progress: 
+    // From 10% to 40% of the section's journey through the viewport, spread the cards.
+    const leftX = useTransform(smoothProgress, [0.1, 0.4], ["0%", "-115%"]);
+    const rightX = useTransform(smoothProgress, [0.1, 0.4], ["0%", "115%"]);
+    
+    // Vertical transforms for mobile
+    const upY = useTransform(smoothProgress, [0.1, 0.4], ["0%", "-115%"]);
+    const downY = useTransform(smoothProgress, [0.1, 0.4], ["0%", "115%"]);
+
+    const sideOpacity = useTransform(smoothProgress, [0.1, 0.25], [0, 1]);
+    const sideScale = useTransform(smoothProgress, [0.1, 0.4], [0.8, 1]);
 
     const certifications = [
-        {
-            name: "GOTS",
-            image: getImageUrl("/images/cert_gots.png"),
-            fullName: "Global Organic Textile Standard"
-        },
-        {
-            name: "OEKO-TEX",
-            image: getImageUrl("/images/cert_oekotex.png"),
-            fullName: "Standard 100 by OEKO-TEX"
-        },
-        {
-            name: "ZDHC",
-            image: getImageUrl("/images/cert_zdhc.png"),
-            fullName: "Zero Discharge of Hazardous Chemicals"
-        }
+        { name: "GOTS", image: certGots, fullName: "Global Organic Textile Standard", pos: 'left' },
+        { name: "OEKO-TEX", image: certOekotex, fullName: "Standard 100 by OEKO-TEX", pos: 'center' },
+        { name: "ZDHC", image: certZdhc, fullName: "Zero Discharge of Hazardous Chemicals", pos: 'right' }
     ];
 
     return (
-        <Box
-            id="certification-section"
+        <Box 
+            ref={sectionRef}
             component="section"
-            sx={{
-                py: { xs: 12, lg: 16 },
+            sx={{ 
+                height: { xs: "auto", md: "100vh" },
+                minHeight: { xs: "900px", md: "100vh" },
+                py: { xs: 8, md: 0 },
+                width: "100%",
                 position: "relative",
-                overflow: "hidden",
-                backgroundImage: `url("${import.meta.env.BASE_URL}images/hero_sustainable.png")`,
+                overflow: "hidden", // Prevents side cards from causing horizontal scroll
+                backgroundImage: `url("${heroSustainableImage}")`,
                 backgroundSize: "cover",
                 backgroundPosition: "center",
-                color: "#ffffff",
-
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
                 "&::before": {
                     content: '""',
                     position: "absolute",
-                    top: 0,
-                    left: 0,
-                    width: "100%",
-                    height: "100%",
-                    opacity: 0.6,
-                    backgroundColor: "rgba(10, 14, 69, 0.6)", // blue overlay
+                    inset: 0,
+                    backgroundColor: "rgba(10, 14, 69, 0.8)", // Deep blue overlay
                     zIndex: 1,
-                },
-
-                "& > *": {
-                    position: "relative",
-                    zIndex: 2, // keep content above overlay
                 },
             }}
         >
-            {/* DEEP BLUE OVERLAY */}
-            <Box sx={{ position: 'absolute', inset: 0, }} />
-
-            <Container maxWidth="lg" sx={{ position: 'relative', zIndex: 10 }}>
-                <Box sx={{ textAlign: 'center', mb: 12 }}>
-                    <Typography
-                        variant="overline"
-                        sx={{
-                            fontWeight: 900,
-                            textTransform: 'uppercase',
-                            letterSpacing: '0.5em',
-                            color: '#fbbf24',
-                            display: 'block',
-                            mb: 2,
-                            fontSize: '12px'
+            <Container maxWidth="lg" sx={{ position: "relative", zIndex: 2 }}>
+                
+                {}
+                <Box sx={{ textAlign: 'center', mb: { xs: 4, md: 10 } }}>
+                    <Typography 
+                        variant="overline" 
+                        sx={{ 
+                            fontWeight: 900, 
+                            textTransform: 'uppercase', 
+                            letterSpacing: '0.5em', 
+                            color: '#fbbf24', 
+                            display: 'block', 
+                            mb: 2, 
+                            fontSize: '12px' 
                         }}
                     >
                         Quality Assurance
                     </Typography>
-                    <Typography
-                        variant="h2"
-                        sx={{
-                            color: '#ffffff',
-                            fontWeight: 900,
-                            textTransform: 'uppercase',
-                            letterSpacing: '-0.02em',
-                            fontSize: { xs: '2.25rem', lg: '4.5rem' },
-                            lineHeight: 1
+                    <Typography 
+                        variant="h2" 
+                        sx={{ 
+                            color: '#ffffff', 
+                            fontWeight: 700, 
+                            textTransform: 'uppercase', 
+                            letterSpacing: '-0.02em', 
+                            fontSize: { xs: '2rem', md: '3.5rem', lg: '3.7rem' }, 
+                            lineHeight: 1.1 
                         }}
                     >
                         Official Certifications
                     </Typography>
                 </Box>
 
-                <Grid container spacing={8} justifyContent="center" alignItems="center">
-                    {certifications.map((cert, i) => (
-                        <Grid item key={i} xs={12} md={4}>
-                            <ScrollReveal
-                                direction={i === 0 ? 'left' : i === 1 ? 'up' : 'right'}
-                                delay={i * 0.1}
+                {}
+                <Box 
+                    sx={{ 
+                        position: 'relative', 
+                        height: { xs: '700px', md: '450px' }, 
+                        display: 'flex', 
+                        alignItems: 'center', 
+                        justifyContent: 'center' 
+                    }}
+                >
+                    {certifications.map((cert, i) => {
+                        let xValue = "0%";
+                        let yValue = "0%";
+                        let opacityValue = 1;
+                        let scaleValue = 1;
+                        let zIndexValue = 10;
+
+                        if (cert.pos === 'left') {
+                            if (isMobile) {
+                                yValue = upY;
+                            } else {
+                                xValue = leftX;
+                            }
+                            opacityValue = sideOpacity;
+                            scaleValue = sideScale;
+                            zIndexValue = 5;
+                        } else if (cert.pos === 'right') {
+                            if (isMobile) {
+                                yValue = downY;
+                            } else {
+                                xValue = rightX;
+                            }
+                            opacityValue = sideOpacity;
+                            scaleValue = sideScale;
+                            zIndexValue = 5;
+                        } else {
+                            zIndexValue = 15; // Middle stays on top initially
+                        }
+
+                        return (
+                            <Box
+                                key={i}
+                                component={motion.div}
+                                style={{ 
+                                    x: xValue, 
+                                    y: yValue,
+                                    opacity: opacityValue, 
+                                    scale: scaleValue,
+                                    position: 'absolute' 
+                                }}
+                                sx={{
+                                    width: { xs: '260px', md: '320px' },
+                                    display: 'flex',
+                                    flexDirection: 'column',
+                                    alignItems: 'center',
+                                    textAlign: 'center',
+                                    zIndex: zIndexValue,
+                                }}
                             >
-                                <Box sx={{ position: 'relative', mb: 4, display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center' }}>
-                                    <Box sx={{ position: 'relative', mb: 4 }}>
-                                        {/* CIRCULAR CONTAINER */}
-                                        <Box
-                                            sx={{
-                                                width: 240,
-                                                height: 240,
-                                                borderRadius: '50%',
-                                                bgcolor: '#ffffff',
-                                                boxShadow: '0 30px 60px rgba(0, 0, 0, 0.4)',
-                                                display: 'flex',
-                                                alignItems: 'center',
-                                                justifyContent: 'center',
-                                                p: 5,
-                                                position: 'relative',
-                                                zIndex: 10,
-                                                transition: 'transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)',
-                                                '&:hover': {
-                                                    transform: 'scale(1.05) translateY(-10px)',
-                                                }
-                                            }}
-                                        >
-                                            <img
-                                                src={cert.image}
-                                                alt={cert.name}
-                                                style={{
-                                                    maxWidth: '100%',
-                                                    height: 'auto',
-                                                    objectFit: 'contain'
-                                                }}
-                                            />
-                                        </Box>
-
-                                        {/* BADGE (CHECKMARK) */}
-                                        <Box
-                                            sx={{
-                                                position: 'absolute',
-                                                top: 0,
-                                                right: 0,
-                                                bgcolor: '#ffffff',
-                                                borderRadius: '50%',
-                                                width: 54,
-                                                height: 54,
-                                                display: 'flex',
-                                                alignItems: 'center',
-                                                justifyContent: 'center',
-                                                boxShadow: '0 10px 20px rgba(0, 0, 0, 0.2)',
-                                                zIndex: 20,
-                                                border: '2px solid #ffffff'
-                                            }}
-                                        >
-                                            <CheckCircle2 size={36} color="#16a34a" strokeWidth={2.5} />
-                                        </Box>
+                                <Box sx={{ position: 'relative', mb: 3 }}>
+                                    <Box
+                                        sx={{
+                                            width: { xs: 140, md: 240 },
+                                            height: { xs: 140, md: 240 },
+                                            borderRadius: '50%',
+                                            bgcolor: '#ffffff',
+                                            boxShadow: '0 20px 50px rgba(0, 0, 0, 0.4)',
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            justifyContent: 'center',
+                                            p: { xs: 3, md: 5 },
+                                            border: '8px solid rgba(255,255,255,0.1)',
+                                            transition: 'transform 0.3s ease',
+                                            '&:hover': {
+                                                transform: 'scale(1.05)'
+                                            }
+                                        }}
+                                    >
+                                        <img 
+                                            src={cert.image} 
+                                            alt={cert.name} 
+                                            style={{ maxWidth: '100%', height: 'auto', objectFit: 'contain' }} 
+                                        />
                                     </Box>
-
-                                    <Typography
-                                        variant="h5"
-                                        sx={{
-                                            fontWeight: 900,
-                                            color: '#ffffff',
-                                            mb: 1.5,
-                                            letterSpacing: '0.05em',
-                                            textTransform: 'uppercase'
+                                    {/* Badge Checkmark */}
+                                    <Box 
+                                        sx={{ 
+                                            position: 'absolute', 
+                                            top: 10, 
+                                            right: 10, 
+                                            bgcolor: '#ffffff', 
+                                            borderRadius: '50%', 
+                                            width: { xs: 35, md: 50 }, 
+                                            height: { xs: 35, md: 50 }, 
+                                            display: 'flex', 
+                                            alignItems: 'center', 
+                                            justifyContent: 'center', 
+                                            boxShadow: '0 5px 15px rgba(0,0,0,0.2)', 
+                                            border: '2px solid #ffffff' 
                                         }}
                                     >
-                                        {cert.name}
-                                    </Typography>
-                                    <Typography
-                                        variant="body2"
-                                        sx={{
-                                            color: '#fbbf24',
-
-                                            maxWidth: '280px',
-                                            fontWeight: 600,
-                                            fontSize: '13px',
-                                            lineHeight: 1.6
-                                        }}
-                                    >
-                                        {cert.fullName}
-                                    </Typography>
+                                        <CheckCircle2 size={28} color="#16a34a" />
+                                    </Box>
                                 </Box>
-                            </ScrollReveal>
-                        </Grid>
-                    ))}
-                </Grid>
+
+                                <Typography 
+                                    variant="h5" 
+                                    sx={{ 
+                                        fontWeight: 900, 
+                                        color: '#ffffff', 
+                                        mb: 0.5, 
+                                        fontSize: { xs: '1.1rem', md: '1.5rem' },
+                                        textShadow: '0 2px 4px rgba(0,0,0,0.3)'
+                                    }}
+                                >
+                                    {cert.name}
+                                </Typography>
+                                <Typography 
+                                    variant="body2" 
+                                    sx={{ 
+                                        color: '#fbbf24', 
+                                        maxWidth: '220px', 
+                                        fontWeight: 600, 
+                                        fontSize: '12px' 
+                                    }}
+                                >
+                                    {cert.fullName}
+                                </Typography>
+                            </Box>
+                        );
+                    })}
+                </Box>
             </Container>
         </Box>
     );

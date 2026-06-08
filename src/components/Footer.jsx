@@ -1,9 +1,10 @@
 import React from 'react';
 import { Box, Container, Grid, Typography, Link, Stack, Divider, List, ListItem, ListItemText } from '@mui/material';
 import { Globe, Phone, Mail } from 'lucide-react';
-import AnimatedBullet from './AnimatedBullet';
+import footerTexture from '../assets/images/footer_texture_1.png';
+import logo from '../assets/images/logo.png';
 
-const Footer = ({ navigateTo }) => {
+const Footer = ({ navigateTo, currentPage }) => {
     return (
         <Box
             component="footer"
@@ -22,7 +23,7 @@ const Footer = ({ navigateTo }) => {
                     inset: 0,
                     opacity: 0.08,
                     pointerEvents: 'none',
-                    backgroundImage: `url(${import.meta.env.BASE_URL}images/footer_texture_1.png)`,
+                    backgroundImage: `url(${footerTexture})`,
                     backgroundSize: 'cover',
                     backgroundPosition: 'center',
                     backgroundRepeat: 'no-repeat',
@@ -34,13 +35,13 @@ const Footer = ({ navigateTo }) => {
             <Container maxWidth="lg" sx={{ position: 'relative', zIndex: 10 }}>
                 <Grid container spacing={8} sx={{ mb: 8 }}>
                     {/* BRAND SECTION */}
-                    <Grid item xs={12} sm={6} md={3}>
+                    <Grid item xs={12} sm={6} md={3.5}>
                         <Box
                             sx={{ mb: 4, cursor: 'pointer', display: 'flex' }}
                             onClick={() => navigateTo('HOME')}
                         >
                             <img
-                                src={`${import.meta.env.BASE_URL}images/logo.png`}
+                                src={logo}
                                 alt="Sterling Dye Chem"
                                 style={{ height: '48px', width: 'auto', objectFit: 'contain' }}
                             />
@@ -55,12 +56,12 @@ const Footer = ({ navigateTo }) => {
                                 textAlign: 'justify'
                             }}
                         >
-                            Sterling Dye Chem is a highly renowned name of the industry which got established in the year 2012. We are based out as a sole proprietorship firm and have located our office at Mumbai.
+                            Sterling Dye Chem is a highly renowned name of the industry which got established in the year 2009. We are based out as a sole proprietorship firm and have located our office at Tirupur,Tamilnadu.
                         </Typography>
                     </Grid>
 
                     {/* QUICK LINKS */}
-                    <Grid item xs={12} sm={6} md={3}>
+                    <Grid item xs={6} sm={6} md={2}>
                         <Typography
                             variant="subtitle2"
                             sx={{
@@ -75,32 +76,34 @@ const Footer = ({ navigateTo }) => {
                         </Typography>
                         <Box sx={{ width: 40, height: '2px', bgcolor: '#000158', mb: 3 }} />
                         <Stack spacing={1.5}>
-                            {['Home', 'About Us', 'Principles', 'Blog', 'Contact Us'].map((item) => (
-                                <Link
-                                    key={item}
-                                    component="button"
-                                    onClick={() => navigateTo(item.toUpperCase())}
-                                    underline="none"
-                                    sx={{
-                                        display: 'flex',
-                                        alignItems: 'center',
-                                        textAlign: 'left',
-                                        fontSize: '13px',
-                                        fontWeight: 600,
-                                        color: '#64748b',
-                                        '&:hover': { color: '#000158' },
-                                        transition: 'color 0.2s'
-                                    }}
-                                >
-                                    <AnimatedBullet />
-                                    {item}
-                                </Link>
-                            ))}
+                            {['Home', 'About Us', 'Principles', 'Insights', 'Contact Us'].map((item) => {
+                                const isActive = currentPage === item.toUpperCase();
+                                return (
+                                    <Link
+                                        key={item}
+                                        component="button"
+                                        onClick={() => navigateTo(item.toUpperCase())}
+                                        underline="none"
+                                        sx={{
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            textAlign: 'left',
+                                            fontSize: '13px',
+                                            fontWeight: isActive ? 800 : 600,
+                                            color: isActive ? '#000158' : '#64748b',
+                                            transition: 'all 0.2s',
+                                            '&:hover': { color: '#000158' }
+                                        }}
+                                    >
+                                        {item}
+                                    </Link>
+                                );
+                            })}
                         </Stack>
                     </Grid>
 
                     {/* PRODUCT SECTION */}
-                    <Grid item xs={12} sm={6} md={3}>
+                    <Grid item xs={6} sm={6} md={2.5}>
                         <Typography
                             variant="subtitle2"
                             sx={{
@@ -130,7 +133,6 @@ const Footer = ({ navigateTo }) => {
                                         transition: 'color 0.2s'
                                     }}
                                 >
-                                    <AnimatedBullet />
                                     {item}
                                 </Link>
                             ))}
@@ -138,7 +140,7 @@ const Footer = ({ navigateTo }) => {
                     </Grid>
 
                     {/* CONTACT INFO */}
-                    <Grid item xs={12} sm={12} md={3}>
+                    <Grid item xs={12} sm={12} md={4}>
                         <Typography
                             variant="subtitle2"
                             sx={{
@@ -163,7 +165,18 @@ const Footer = ({ navigateTo }) => {
                                 <Phone size={18} color="#000158" style={{ marginTop: '2px', flexShrink: 0 }} />
                                 <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
                                     <Typography variant="body2" sx={{ fontWeight: 800, color: 'primary.main' }}></Typography>
-                                    <Typography variant="body2" sx={{ fontWeight: 600, color: 'text.secondary' }}>+91 (22) 2345 6789</Typography>
+                                    <Link
+                                        href="tel:+912223456789"
+                                        underline="none"
+                                        sx={{
+                                            fontSize: '14px',
+                                            fontWeight: 600,
+                                            color: 'text.secondary',
+                                            '&:hover': { color: '#000158', textDecoration: 'underline' }
+                                        }}
+                                    >
+                                        +91 (22) 2345 6789
+                                    </Link>
                                 </Box>
                             </Box>
                             <Box sx={{ display: 'flex', gap: 2 }}>
@@ -194,11 +207,11 @@ const Footer = ({ navigateTo }) => {
                         variant="caption"
                         sx={{
 
-                            fontWeight: { xs: 500, sm: 600, md: 800 },
-                            fontSize: { xs: '10px', sm: '12px', md: '14px' },
+                            fontWeight: { xs: 500, sm: 600, md: 700 },
+                            fontSize: { xs: '10px', sm: '12px', md: '12px' },
                             color: '#000158',
                             textTransform: 'uppercase',
-                            letterSpacing: '0.1em'
+                            letterSpacing: '-0.01rem'
                         }}
                     >
                         Copyright © 2026 Sterling Dye Chem. All rights reserved.

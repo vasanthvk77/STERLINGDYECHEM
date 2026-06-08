@@ -17,7 +17,8 @@ import {
 } from '@mui/material';
 import { Calendar, ArrowRight, CheckCircle2, ChevronLeft, ChevronRight } from 'lucide-react';
 import emailjs from '@emailjs/browser';
-import db from '../data/db.json';
+import dbData from '../data/data.js';
+import blogNewsImage from '../assets/images/blog_news.png';
 
 const ImageSlider = ({ images, title }) => {
     const [currentIndex, setCurrentIndex] = useState(0);
@@ -118,7 +119,7 @@ const ImageSlider = ({ images, title }) => {
                         }}
                     >
                         <img
-                            src={getImageUrl(img)}
+                            src={img}
                             alt={`${title} - image ${idx + 1}`}
                             style={{
                                 width: '100%',
@@ -237,13 +238,7 @@ const ImageSlider = ({ images, title }) => {
     );
 };
 
-const getImageUrl = (path) => {
-    if (!path) return '';
-    if (path.startsWith('http') || path.startsWith('data:')) return path;
-    const cleanPath = path.startsWith('/') ? path.substring(1) : path;
-    const finalPath = cleanPath.startsWith('public/') ? cleanPath.substring(7) : cleanPath;
-    return `${import.meta.env.BASE_URL}${finalPath}`;
-};
+
 
 const BlogPage = () => {
     const [username, setUsername] = useState('');
@@ -254,23 +249,7 @@ const BlogPage = () => {
     const [posts, setPosts] = useState([]);
 
     React.useEffect(() => {
-        const fetchInsights = async () => {
-            try {
-                // Try to fetch from JSON server
-                const response = await fetch('http://localhost:5000/insights');
-                if (response.ok) {
-                    const data = await response.json();
-                    setPosts(data);
-                } else {
-                    // Fallback to static import if server is down
-                    setPosts(db.insights || []);
-                }
-            } catch (err) {
-                console.error("Failed to fetch insights:", err);
-                setPosts(db.insights || []);
-            }
-        };
-        fetchInsights();
+        setPosts(dbData.insights || []);
     }, []);
 
     const handleSubscribe = async (e) => {
@@ -321,7 +300,7 @@ const BlogPage = () => {
     return (
         <Box sx={{ bgcolor: '#ffffff' }}>
             {/* HERO SECTION */}
-            <Box sx={{ py: { xs: 8, lg: 12 }, borderBottom: '1px solid', borderColor: 'divider' }}>
+            <Box sx={{ py: { xs: 2, lg: 6 }, borderBottom: '1px solid', borderColor: 'divider' }}>
                 <Container maxWidth="lg">
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 4 }}>
                         <Box sx={{ width: 48, height: '2px', bgcolor: 'primary.main' }} />
@@ -341,8 +320,8 @@ const BlogPage = () => {
                         variant="h1"
                         color="primary"
                         sx={{
-                            fontSize: { xs: '3rem', md: '5rem' },
-                            fontWeight: 900,
+                            fontSize: { xs: '3rem', md: '3.9rem' },
+                            fontWeight: 700,
                             textTransform: 'uppercase',
                             letterSpacing: '-0.05em'
                         }}
@@ -359,7 +338,7 @@ const BlogPage = () => {
                         <Grid item xs={12} lg={8}>
                             <Stack spacing={12}>
                                 {posts.map((post, i) => (
-                                    <Box component="article" key={i} sx={{ group: true }}>
+                                    <Box component="article" key={i} sx={{ group: true,fontSize: { xs: '3rem', lg: '3.9rem' } } }>
                                         <ImageSlider
                                             images={post.images || (post.image ? [post.image] : [])}
                                             title={post.title}
@@ -437,8 +416,21 @@ const BlogPage = () => {
                             </Stack>
                         </Grid>
 
-                        <Grid item xs={12} lg={4}>
-                            <Stack spacing={8}>
+                        <Grid item xs={12} lg={4} sx={{
+                            position: { lg: 'sticky' },
+                            top: { lg: '90px' },
+                            alignSelf: { lg: 'flex-start' },
+                            display: 'flex',
+                            justifyContent: 'center'
+                        }}>
+                            <Stack
+                                spacing={8}
+                                sx={{
+                                    mx: 'auto',
+                                    maxWidth: { xs: '480px', lg: '100%' },
+                                    width: '100%'
+                                }}
+                            >
                                 {/* NEWSLETTER BOX */}
                                 <Paper
                                     elevation={0}
@@ -456,7 +448,7 @@ const BlogPage = () => {
                                 >
                                     <Box
                                         component="img"
-                                        src={`${import.meta.env.BASE_URL}images/blog_news.png`}
+                                        src={blogNewsImage}
                                         alt="Newsletter"
                                         sx={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', opacity: 0.3, filter: 'grayscale(1)' }}
                                     />

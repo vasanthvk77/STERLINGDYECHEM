@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import {
     AppBar,
     Toolbar,
@@ -15,15 +15,19 @@ import {
     Typography,
     Container,
     useScrollTrigger,
-    Collapse
+    Collapse,
+    Fade
 } from '@mui/material';
 import { Menu as MenuIcon, X as CloseIcon, ChevronDown, ChevronUp } from 'lucide-react';
+import logo from '../assets/images/logo.png';
 
 const Navbar = ({ isScrolled, currentPage, navLinks, navigateTo, mobileMenuOpen, setMobileMenuOpen }) => {
     const [anchorEl, setAnchorEl] = useState(null);
     const [activeDropdown, setActiveDropdown] = useState(null);
+    const timeoutRef = useRef(null);
 
     const handleOpenDropdown = (event, linkName) => {
+        if (timeoutRef.current) clearTimeout(timeoutRef.current);
         setAnchorEl(event.currentTarget);
         setActiveDropdown(linkName);
     };
@@ -31,6 +35,16 @@ const Navbar = ({ isScrolled, currentPage, navLinks, navigateTo, mobileMenuOpen,
     const handleCloseDropdown = () => {
         setAnchorEl(null);
         setActiveDropdown(null);
+    };
+
+    const handleMouseLeave = () => {
+        timeoutRef.current = setTimeout(() => {
+            handleCloseDropdown();
+        }, 150);
+    };
+
+    const handleMouseEnterMenu = () => {
+        if (timeoutRef.current) clearTimeout(timeoutRef.current);
     };
 
     const textColor = '#ffffff';
@@ -45,8 +59,8 @@ const Navbar = ({ isScrolled, currentPage, navLinks, navigateTo, mobileMenuOpen,
                 left: { xs: 0, lg: '50%' },
                 right: { xs: 0, lg: 'auto' },
                 transform: { xs: 'none', lg: 'translateX(-50%)' },
-                width: { xs: '100%', lg: 'calc(100% - 80px)' },
-                maxWidth: 'lg',
+                width: { xs: '100%', lg: 'calc(100% - 40px)' },
+                maxWidth: 'xl',
                 height: '80px',
                 bgcolor: 'rgba(223, 223, 223, 0.85)',
                 backdropFilter: 'blur(10px)',
@@ -69,7 +83,7 @@ const Navbar = ({ isScrolled, currentPage, navLinks, navigateTo, mobileMenuOpen,
                         onClick={() => navigateTo('HOME')}
                     >
                         <img
-                            src={`${import.meta.env.BASE_URL}images/logo.png`}
+                            src={logo}
                             alt="Sterling Dye Chem"
                             style={{ height: '48px', width: 'auto' }}
                         />
@@ -82,6 +96,7 @@ const Navbar = ({ isScrolled, currentPage, navLinks, navigateTo, mobileMenuOpen,
                                 <Button
                                     onClick={() => link.hasDropdown ? null : navigateTo(link.name)}
                                     onMouseEnter={(e) => link.hasDropdown && handleOpenDropdown(e, link.name)}
+                                    onMouseLeave={link.hasDropdown ? handleMouseLeave : undefined}
                                     sx={{
                                         color: currentPage === link.name ? 'rgba(255, 255, 255, 0.95)' : 'rgba(0, 1, 88, 0.95)',
                                         bgcolor: currentPage === link.name ? 'rgba(0, 1, 88, 0.95)' : 'transparent',
@@ -107,10 +122,19 @@ const Navbar = ({ isScrolled, currentPage, navLinks, navigateTo, mobileMenuOpen,
                                         anchorEl={anchorEl}
                                         open={Boolean(anchorEl)}
                                         onClose={handleCloseDropdown}
-                                        MenuListProps={{ onMouseLeave: handleCloseDropdown }}
+                                        sx={{ pointerEvents: 'none' }}
+                                        disableScrollLock={true}
+                                        disableRestoreFocus={true}
+                                        TransitionComponent={Fade}
+                                        transitionDuration={350}
+                                        MenuListProps={{
+                                            onMouseEnter: handleMouseEnterMenu,
+                                            onMouseLeave: handleCloseDropdown
+                                        }}
                                         PaperProps={{
                                             elevation: 20,
                                             sx: {
+                                                pointerEvents: 'auto',
                                                 minWidth: 260,
                                                 borderRadius: 0,
                                                 mt: 2,
@@ -207,7 +231,7 @@ const Navbar = ({ isScrolled, currentPage, navLinks, navigateTo, mobileMenuOpen,
                 }}
             >
                 <Box sx={{ p: { xs: 3, sm: 4 }, display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid rgba(255,255,255,0.1)' }}>
-                    <img src={`${import.meta.env.BASE_URL}images/logo.png`} alt="SDC" style={{ height: '40px', filter: 'brightness(0) invert(1)' }} />
+                    <img src={logo} alt="SDC" style={{ height: '40px', filter: 'brightness(0) invert(1)' }} />
                     <IconButton onClick={() => setMobileMenuOpen(false)} sx={{ color: 'white' }}>
                         <CloseIcon size={32} />
                     </IconButton>
@@ -289,8 +313,23 @@ const Navbar = ({ isScrolled, currentPage, navLinks, navigateTo, mobileMenuOpen,
                     </List>
 
                     <Box sx={{ mt: 6, pt: 4, borderTop: '1px solid rgba(255,255,255,0.1)' }}>
-                        <Typography variant="body2" sx={{ color: 'rgba(255,255,255,0.5)', mb: 1, fontWeight: 600, letterSpacing: '0.1em', fontSize: '11px' }}>GET IN TOUCH</Typography>
-                        <Typography variant="body1" sx={{ color: 'white', fontWeight: 700, fontSize: '15px' }}>info@sterlingdyechem.com</Typography>
+                        <Typography variant="body2" sx={{ color: 'rgba(255,255,255,0.5)', mb: 1.5, fontWeight: 600, letterSpacing: '0.1em', fontSize: '11px' }}>GET IN TOUCH</Typography>
+                        <Typography 
+                            variant="body1" 
+                            component="a" 
+                            href="mailto:info@sterlingdyechem.com" 
+                            sx={{ color: 'white', fontWeight: 700, fontSize: '15px', display: 'block', mb: 1, textDecoration: 'none', '&:hover': { textDecoration: 'underline' } }}
+                        >
+                            info@sterlingdyechem.com
+                        </Typography>
+                        <Typography 
+                            variant="body1" 
+                            component="a" 
+                            href="tel:+912223456789" 
+                            sx={{ color: 'white', fontWeight: 700, fontSize: '15px', display: 'block', textDecoration: 'none', '&:hover': { textDecoration: 'underline' } }}
+                        >
+                            +91 (22) 2345 6789
+                        </Typography>
                     </Box>
                 </Box>
             </Drawer>

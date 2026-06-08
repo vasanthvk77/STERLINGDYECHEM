@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import '../styles/animations.css';
 
-const ScrollReveal = ({ children, delay = 0, direction = 'up' }) => {
+const ScrollReveal = ({ children, delay = 0, direction = 'up', style = {} }) => {
     const [isVisible, setIsVisible] = useState(false);
     const domRef = useRef();
 
@@ -41,7 +41,7 @@ const ScrollReveal = ({ children, delay = 0, direction = 'up' }) => {
         <div
             ref={domRef}
             className={`reveal-hidden reveal-${direction} ${isVisible ? 'reveal-visible' : ''} ${getDelayClass()}`}
-            style={{ width: '100%' }}
+            style={{ width: '100%', ...style }}
         >
             {children}
         </div>

@@ -8,6 +8,9 @@ import ProductCatalog from './components/ProductCatalog';
 import Infrastructure from './components/Infrastructure';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
+import heroSdcImage from './assets/images/hero_sdc.png';
+import heroSustainableImage from './assets/images/hero_sustainable.png';
+import heroPioneerImage from './assets/images/hero_pioneer.jpg';
 import PlaceholderPage from './components/PlaceholderPage';
 import AboutPage from './components/AboutPage';
 import PrinciplesPage from './components/PrinciplesPage';
@@ -18,7 +21,7 @@ import BrandsTicker from './components/BrandsTicker';
 import ScrollReveal from './components/ScrollReveal';
 import CustomCursor from './components/CustomCursor';
 import './styles/animations.css';
-import dbData from './data/db.json';
+import dbData from './data/data.js';
 import { ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import Box from '@mui/material/Box';
@@ -32,6 +35,13 @@ const App = () => {
   const [activeSubtype, setActiveSubtype] = useState(null);
   const [currentPage, setCurrentPage] = useState(sessionStorage.getItem('currentPage') || 'HOME');
   const [productsList, setProductsList] = useState(dbData.catalog || []);
+
+  // Sync state if static data changes (important for HMR)
+  useEffect(() => {
+    if (dbData.catalog) {
+      setProductsList(dbData.catalog);
+    }
+  }, [dbData.catalog]);
   const [user, setUser] = useState(JSON.parse(localStorage.getItem('adminUser')));
 
   useEffect(() => {
@@ -84,7 +94,7 @@ const App = () => {
       title: "Welcome to Sterling Dyes Chem",
       subtitle: "Manufacturing world-class Dyestuffs and Specialty Chemicals for the global textile and ink industries.",
       cta: "Quality Products",
-      image: `${import.meta.env.BASE_URL}images/hero_sdc.png`,
+      image: heroSdcImage,
       textColor: "#ffffff",
       subtitleColor: "#ffffff",
       action: () => navigateTo('PRODUCT')
@@ -93,7 +103,7 @@ const App = () => {
       title: "Sustainable Chemical Solutions",
       subtitle: "Leading the way in eco-friendly chemical manufacturing and green chemistry innovations.",
       cta: "Go Green",
-      image: `${import.meta.env.BASE_URL}images/hero_sustainable.png`,
+      image: heroSustainableImage,
       textColor: "#ffffff",
       subtitleColor: "rgba(255, 255, 255, 0.9)",
       action: () => scrollToSection('certification-section', 'HOME')
@@ -102,7 +112,7 @@ const App = () => {
       title: "Global Reach & Performance",
       subtitle: "Delivering high-performance, tailored chemical solutions for modern manufacturing challenges worldwide.",
       cta: "Contact Us",
-      image: `${import.meta.env.BASE_URL}images/hero_pioneer.jpg`,
+      image: heroPioneerImage,
       textColor: "#ffffff",
       subtitleColor: "#ffffff",
       action: () => scrollToSection('contact-section', 'HOME')
@@ -130,9 +140,7 @@ const App = () => {
       console.log('UNCAUGHT ERROR:', msg, 'at', url, ':', line, ':', col);
     };
 
-    if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
-      fetchProducts();
-    }
+    // API fetches removed. Data comes directly from static data.js
 
     const handleScroll = () => setIsScrolled(window.scrollY > 20);
     window.addEventListener('scroll', handleScroll);
@@ -149,16 +157,7 @@ const App = () => {
     };
   }, [slides.length]);
 
-  const fetchProducts = async () => {
-    try {
-      const response = await fetch('http://localhost:5000/catalog');
-      const data = await response.json();
-      setProductsList(data);
-    } catch (err) {
-      console.error("Failed to fetch catalog:", err);
-      setProductsList(dbData.catalog || []);
-    }
-  };
+
 
   const handleAddProduct = async (product, subtypeName) => {
     try {
@@ -191,12 +190,7 @@ const App = () => {
         subtypes: subtypes
       };
 
-      const response = await fetch(`http://localhost:5000/catalog/${category.id}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(updatedCategory)
-      });
-      if (response.ok) fetchProducts();
+      setProductsList(prevList => prevList.map(c => c.id === category.id ? updatedCategory : c));
     } catch (err) {
       console.error("Failed to add product:", err);
     }
@@ -222,12 +216,7 @@ const App = () => {
         subtypes: subtypes
       };
 
-      const response = await fetch(`http://localhost:5000/catalog/${category.id}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(updatedCategory)
-      });
-      if (response.ok) fetchProducts();
+      setProductsList(prevList => prevList.map(c => c.id === category.id ? updatedCategory : c));
     } catch (err) {
       console.error("Failed to delete product:", err);
     }
@@ -246,7 +235,7 @@ const App = () => {
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <CustomCursor />
-      <div className="min-h-screen text-[#000158] font-sans selection:bg-[#000158] selection:text-[#ffffff]" style={{ overflowX: 'hidden' }}>
+      <div className="min-h-screen text-[#000158] font-sans selection:bg-[#000158] selection:text-[#ffffff]">
 
         {/* Hide navbar on Login page for clean UI */}
         {currentPage !== 'LOGIN' && (
@@ -304,7 +293,7 @@ const App = () => {
         )}
 
         {currentPage === 'PRINCIPLES' && (
-          <Box sx={{ pt: { xs: 12, lg: 20 }, minHeight: '100vh' }}>
+          <Box sx={{ minHeight: '100vh' }}>
             <PrinciplesPage />
           </Box>
         )}
@@ -365,7 +354,7 @@ const App = () => {
           <PlaceholderPage title={currentPage} />
         )}
 
-        {currentPage !== 'LOGIN' && <Footer navigateTo={navigateTo} />}
+        {currentPage !== 'LOGIN' && <Footer navigateTo={navigateTo} currentPage={currentPage} />}
       </div>
     </ThemeProvider>
   );

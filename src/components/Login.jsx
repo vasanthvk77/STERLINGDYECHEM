@@ -11,6 +11,7 @@ import {
     Container
 } from '@mui/material';
 import { Lock, User, ArrowRight } from 'lucide-react';
+import dbData from '../data/data.js';
 
 const Login = ({ onLogin }) => {
     const [username, setUsername] = useState('');
@@ -20,10 +21,7 @@ const Login = ({ onLogin }) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            // Note: Keeping original fetch for consistency with existing logic, 
-            // though the app seems to be moving towards db.json
-            const response = await fetch('http://localhost:5000/users');
-            const users = await response.json();
+            const users = dbData.users;
 
             const user = users.find(u => u.username === username && u.password === password);
 

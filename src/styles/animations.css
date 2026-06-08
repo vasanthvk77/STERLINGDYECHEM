@@ -68,11 +68,8 @@ select {
     position: fixed;
     top: 0;
     left: 0;
-    width: 100%;
-    height: 100vh;
     pointer-events: none;
     z-index: 10000;
-    mix-blend-mode: difference;
 }
 
 /* INWARD-FACING TEARDROP RAIN DROPS */

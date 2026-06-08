@@ -1,10 +1,11 @@
 import React from 'react';
 import { Box, Container, Grid, Typography, Stack, Divider } from '@mui/material';
 import ScrollReveal from './ScrollReveal';
+import profileBgImage from '../assets/images/corporate_profile.png';
 
 const CorporateProfile = () => {
     return (
-        <Box component="section" sx={{ py: { xs: 8, lg: 12 }, bgcolor: '#ffffff', borderBottom: '1px solid', borderColor: 'divider', overflow: 'hidden' }}>
+        <Box component="section" sx={{ py: { xs: 8, lg:4 }, bgcolor: '#ffffff', borderBottom: '1px solid', borderColor: 'divider', overflow: 'hidden' }}>
             <Container maxWidth="lg">
                 <Grid container spacing={8} alignItems="center">
                     <Grid item xs={12} lg={5}>
@@ -15,7 +16,7 @@ const CorporateProfile = () => {
                                         aspectRatio: { xs: '1/1', sm: '4/3', lg: '3/4' },
                                         position: 'relative',
                                         zIndex: 10,
-                                        backgroundImage: `url("${import.meta.env.BASE_URL}images/corporate_profile.png")`,
+                                        backgroundImage: `url("${profileBgImage}")`,
                                         backgroundSize: 'cover',
                                         backgroundPosition: 'center',
                                     }}
@@ -83,7 +84,9 @@ const CorporateProfile = () => {
                             <Typography
                                 variant="h2"
                                 color="primary"
-                                sx={{ mb: 4, lineHeight: 1.1 }}
+                                fontWeight="700"
+                                sx={{ mb: 4, lineHeight: 1.1,fontSize: { xs: '3rem', lg: '3.9rem' } }}
+                                
                             >
                                 Engineering the <br /> Molecules of Tomorrow
                             </Typography>
@@ -98,7 +101,7 @@ const CorporateProfile = () => {
                                         textAlign: 'justify',
                                     }}
                                 >
-                                    Since 2008, Sterling Dye Chem has been at the forefront of chemical innovation,
+                                    Since 2009, Sterling Dye Chem has been at the forefront of chemical innovation,
                                     transforming industrial manufacturing with a focus on precision and sustainability.
                                 </Typography>
 

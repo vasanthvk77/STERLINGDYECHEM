@@ -1,20 +1,18 @@
 import React from 'react';
 import { Box, Container, Typography } from '@mui/material';
+import aquasolLogo from '../assets/images/brands/aquasol.png';
+import flexkonLogo from '../assets/images/brands/flexkon.png';
+import magnaLogo from '../assets/images/brands/magna.png';
+import nanotechLogo from '../assets/images/brands/nanotech.png';
+import fiberchemLogo from '../assets/images/brands/fiberchem.png';
 
 const BrandsTicker = () => {
-    const getImageUrl = (path) => {
-        if (!path) return '';
-        if (path.startsWith('http') || path.startsWith('data:')) return path;
-        const cleanPath = path.startsWith('/') ? path.substring(1) : path;
-        return `${import.meta.env.BASE_URL}${cleanPath}`;
-    };
-
     const brands = [
-        { name: 'Aquasol', logo: getImageUrl('/images/brands/aquasol.png') },
-        { name: 'Flexkon', logo: getImageUrl('/images/brands/flexkon.png') },
-        { name: 'Magna', logo: getImageUrl('/images/brands/magna.png') },
-        { name: 'Nanotech', logo: getImageUrl('/images/brands/nanotech.png') },
-        { name: 'Fiberchem', logo: getImageUrl('/images/brands/fiberchem.png') },
+        { name: 'Aquasol', logo: aquasolLogo },
+        { name: 'Flexkon', logo: flexkonLogo },
+        { name: 'Magna', logo: magnaLogo },
+        { name: 'Nanotech', logo: nanotechLogo },
+        { name: 'Fiberchem', logo: fiberchemLogo },
     ];
 
     // Multiple sets for seamless loop

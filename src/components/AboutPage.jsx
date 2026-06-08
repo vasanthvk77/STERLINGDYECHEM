@@ -3,14 +3,10 @@ import { Box, Container, Typography, Grid, Paper, Stack } from '@mui/material';
 import { Eye, Target } from 'lucide-react';
 import CorporateProfile from './CorporateProfile';
 import Infrastructure from './Infrastructure';
+import visionMenImage from '../assets/images/vision_ascending_men.png';
+import sdcLogoShort from '../assets/images/SDC_LOGO_short_bg_removed.png';
 
-const getImageUrl = (path) => {
-    if (!path) return '';
-    if (path.startsWith('http') || path.startsWith('data:')) return path;
-    const cleanPath = path.startsWith('/') ? path.substring(1) : path;
-    const finalPath = cleanPath.startsWith('public/') ? cleanPath.substring(7) : cleanPath;
-    return `${import.meta.env.BASE_URL}${finalPath}`;
-};
+
 
 const AboutPage = () => {
     return (
@@ -51,11 +47,11 @@ const AboutPage = () => {
                                 variant="h2"
                                 color="primary"
                                 sx={{
-                                    fontWeight: 900,
+                                    fontWeight: 700,
                                     textTransform: 'uppercase',
                                     letterSpacing: '-0.03em',
                                     mb: 6,
-                                    fontSize: { xs: '3rem', md: '4rem' }
+                                    fontSize: { xs: '3rem', md: '3.7rem' }
                                 }}
                             >
                                 Vision & Mission
@@ -174,7 +170,7 @@ const AboutPage = () => {
                                 >
                                     <Box
                                         component="img"
-                                        src={getImageUrl("images/vision_ascending_men.png")}
+                                        src={visionMenImage}
                                         alt="Elevating Customers to Success"
                                         sx={{
                                             width: '100%',
@@ -228,11 +224,11 @@ const AboutPage = () => {
                                     }}
                                 >
                                     <Box sx={{ width: 56, height: 56, borderRadius: '50%', bgcolor: 'rgba(0,1,88,0.04)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                                        <img src={getImageUrl("images/SDC_LOGO_short_bg_removed.png")} alt="SDC" style={{ width: 32, height: 32, objectFit: 'contain', transform: 'scale(2.5)' }} />
+                                        <img src={sdcLogoShort} alt="SDC" style={{ width: 32, height: 32, objectFit: 'contain', transform: 'scale(2.5)' }} />
                                     </Box>
                                     <Box>
                                         <Typography variant="subtitle1" color="primary" sx={{ fontWeight: 900, lineHeight: 1.2, display: 'block', mb: 0.5 }}>
-                                            Est. 2008
+                                            Est. 2009
                                         </Typography>
                                         <Typography variant="caption" color="text.secondary" sx={{ fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
                                             Legacy of Excellence

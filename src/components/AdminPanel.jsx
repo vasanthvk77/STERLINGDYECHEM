@@ -26,6 +26,10 @@ import {
     LogOut as LogOutIcon,
     Image as ImageIcon
 } from 'lucide-react';
+import imgReactive from '../assets/images/products/reactive.png';
+import imgAcid from '../assets/images/products/acid.png';
+import imgPigments from '../assets/images/products/pigments.png';
+import imgAuxiliaries from '../assets/images/products/auxiliaries.png';
 
 const AdminPanel = ({ products, onAdd, onDelete, onLogout }) => {
     const [isAdding, setIsAdding] = useState(false);
@@ -35,7 +39,7 @@ const AdminPanel = ({ products, onAdd, onDelete, onLogout }) => {
         subtype: '',
         cas: '',
         app: '',
-        image: '/images/products/reactive.png'
+        image: imgReactive
     });
     const [selectedFile, setSelectedFile] = useState(null);
     const [loading, setLoading] = useState(false);
@@ -62,23 +66,9 @@ const AdminPanel = ({ products, onAdd, onDelete, onLogout }) => {
 
         let finalImageUrl = newProduct.image;
 
-        // Upload image first if a file is selected
+        // Since there is no backend API anymore, convert the selected file to a temporary Object URL
         if (selectedFile) {
-            const formData = new FormData();
-            formData.append('image', selectedFile);
-
-            try {
-                const uploadRes = await fetch('http://localhost:5000/api/upload', {
-                    method: 'POST',
-                    body: formData
-                });
-                const uploadData = await uploadRes.json();
-                finalImageUrl = uploadData.url;
-            } catch (err) {
-                console.error("Upload failed", err);
-                setLoading(false);
-                return; // Stop further execution if upload fails
-            }
+            finalImageUrl = URL.createObjectURL(selectedFile);
         }
 
         await onAdd({ ...newProduct, image: finalImageUrl }, newProduct.subtype);
@@ -92,7 +82,7 @@ const AdminPanel = ({ products, onAdd, onDelete, onLogout }) => {
             subtype: '',
             cas: '',
             app: '',
-            image: '/images/products/reactive.png'
+            image: imgReactive
         });
     };
 
@@ -174,10 +164,10 @@ const AdminPanel = ({ products, onAdd, onDelete, onLogout }) => {
                                         variant="filled"
                                         value={newProduct.category}
                                         onChange={e => {
-                                            let img = '/images/products/reactive.png';
-                                            if (e.target.value === 'Acid Dyes') img = '/images/products/acid.png';
-                                            if (e.target.value === 'Pigments') img = '/images/products/pigments.png';
-                                            if (e.target.value === 'Auxiliaries') img = '/images/products/auxiliaries.png';
+                                            let img = imgReactive;
+                                            if (e.target.value === 'Acid Dyes') img = imgAcid;
+                                            if (e.target.value === 'Pigments') img = imgPigments;
+                                            if (e.target.value === 'Auxiliaries') img = imgAuxiliaries;
                                             setNewProduct({ ...newProduct, category: e.target.value, image: img });
                                         }}
                                         InputProps={{ disableUnderline: true }}

@@ -4,20 +4,15 @@ import tailwindcss from '@tailwindcss/vite'
 
 // https://vite.dev/config/
 export default defineConfig({
-  base: '/STERLINGDYECHEM/',
+  base: '/',
   plugins: [
     react(),
     tailwindcss(),
   ],
   server: {
-    proxy: {
-      '/api': 'http://localhost:5000',
-      '/products': 'http://localhost:5000',
-      '/catalog': 'http://localhost:5000',
-      '/insights': 'http://localhost:5000'
-    },
+
     watch: {
-      ignored: ['**/src/data/**', '**/public/images/**']
+      ignored: ['**/public/images/**']
     }
   }
 })
