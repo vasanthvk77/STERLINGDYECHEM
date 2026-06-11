@@ -286,7 +286,7 @@ const Navbar = ({ isScrolled, currentPage, navLinks, navigateTo, mobileMenuOpen,
                                                         '&:hover': { bgcolor: 'rgba(255,255,255,0.05)' }
                                                     }}
                                                 >
-                                                    <Box sx={{ width: 6, height: 6, borderRadius: '50%', bgcolor: '#00d2ff', mr: 2 }} />
+                                                    <Box sx={{ width: 6, height: 6, bgcolor: '#00d2ff', mr: 2 }} />
                                                     <ListItemText
                                                         primary={subItem}
                                                         primaryTypographyProps={{

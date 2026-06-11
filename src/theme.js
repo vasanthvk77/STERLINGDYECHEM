@@ -20,7 +20,7 @@ const theme = createTheme({
         },
     },
     typography: {
-        fontFamily: '"Inter", "Roboto", "Helvetica", "Arial", sans-serif',
+        fontFamily: '"Poppins", "Inter", "Roboto", "Helvetica", "Arial", sans-serif',
         h1: {
             fontWeight: 900,
             letterSpacing: '-0.02em',

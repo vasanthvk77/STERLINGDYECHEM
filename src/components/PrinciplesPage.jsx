@@ -187,7 +187,6 @@ const PrinciplesPage = () => {
                                 fontSize: { xs: '2rem', md: '3rem' },
                                 letterSpacing: '-0.02em',
                                 position: 'relative',
-                                textAlign: 'justify',
                             }}
                         >
                             "We believe that industrial progress must not come at the cost of our planet's future.

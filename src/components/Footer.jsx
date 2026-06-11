@@ -206,7 +206,7 @@ const Footer = ({ navigateTo, currentPage }) => {
                     <Typography
                         variant="caption"
                         sx={{
-                            fontWeight: { xs: 500, sm: 600, md: 700 },
+                            fontWeight: { xs: 500 },
                             fontSize: { xs: '10px', sm: '12px', md: '12px' },
                             color: 'rgba(255, 255, 255, 0.5)',
                             textTransform: 'uppercase',

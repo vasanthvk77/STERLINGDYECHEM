@@ -333,10 +333,10 @@ const Contact = () => {
                                 elevation={0}
                                 sx={{
                                     p: { xs: 4, lg: 6 },
-                                    borderRadius: '8px',
+                                    borderRadius: '1px',
                                     border: '1px solid rgba(255, 255, 255, 0.1)',
                                     boxShadow: '0 30px 60px rgba(0, 1, 88, 0.15)',
-                                    backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.29), rgba(0, 0, 0, 0.65)), url(${contactBgVibrant})`,
+                                    backgroundImage: `linear-gradient(rgba(0, 1, 88, 0.7), rgba(0, 1, 88, 0.9)), url(${contactBgVibrant})`,
                                     backgroundSize: 'cover',
                                     backgroundPosition: 'center',
                                 }}
@@ -623,10 +623,10 @@ const Contact = () => {
                                                 type="submit"
                                                 disabled={status === 'loading'}
                                                 showArrow={status !== 'success' && status !== 'loading'}
-                                                baseBg={status === 'success' ? '#b9bd62ff' : '#000158'}
-                                                slideBg={status === 'success' ? '#000158' : '#b9bd62ff'}
-                                                baseColor="#ffffff"
-                                                slideColor="#ffffff"
+                                                baseBg={status === 'success' ? '#b9bd62ff' : '#ffffff'}
+                                                slideBg={status === 'success' ? '#ffffff' : '#b9bd62ff'}
+                                                baseColor={status === 'success' ? '#ffffff' : '#000158'}
+                                                slideColor={status === 'success' ? '#000158' : '#ffffff'}
                                                 sx={{
                                                     py: 2,
                                                     mt: 1,

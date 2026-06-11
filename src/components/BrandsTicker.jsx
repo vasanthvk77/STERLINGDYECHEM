@@ -8,11 +8,11 @@ import fiberchemLogo from '../assets/images/brands/fiberchem.png';
 
 const BrandsTicker = () => {
     const brands = [
-        { name: 'Aquasol', logo: aquasolLogo },
-        { name: 'Flexkon', logo: flexkonLogo },
-        { name: 'Magna', logo: magnaLogo },
-        { name: 'Nanotech', logo: nanotechLogo },
-        { name: 'Fiberchem', logo: fiberchemLogo },
+        { name: 'Aquasol', logo: aquasolLogo, height: { xs: 70, md: 100 }, width: 'auto' },
+        { name: 'Flexkon', logo: flexkonLogo, height: { xs: 80, md: 120 }, width: 'auto' },
+        { name: 'Magna', logo: magnaLogo, height: { xs: 90, md: 135 }, width: { xs: 90, md: 135 } },
+        { name: 'Nanotech', logo: nanotechLogo, height: { xs: 80, md: 180 }, width: "auto" },
+        { name: 'Fiberchem', logo: fiberchemLogo, height: { xs: 75, md: 110 }, width: 'auto' },
     ];
 
     // Multiple sets for seamless loop
@@ -22,26 +22,27 @@ const BrandsTicker = () => {
         <Box
             component="section"
             sx={{
-                 py: 8,
+                 py: 5,
                 bgcolor: '#ffffff',
                 overflow: 'hidden'
             }}
         >
-            <Container maxWidth={false} sx={{ mb: 6, textAlign: 'center', maxWidth: '1350px', width: { xs: '100%', lg: 'calc(100% - 80px)' }, px: { xs: 2, lg: 2 }, mx: 'auto' }}>
+            <Container maxWidth={false} sx={{ mb: 2, textAlign: 'center', maxWidth: '1350px', width: { xs: '100%', lg: 'calc(100% - 80px)' }, px: { xs: 2, lg: 2 }, mx: 'auto' }}>
                 <Box sx={{ display: 'inline-flex', alignItems: 'center', gap: 2 }}>
-                    <Box sx={{ width: 150, height: '2px', bgcolor: 'primary.main' }} />
+                    <Box sx={{ width: { xs: 100, md:500 }, height: '2px', bgcolor: 'primary.main' }} />
                     <Typography
                         variant="caption"
                         sx={{
-                            fontWeight: 900,
-                            letterSpacing: '0.3em',
+                            fontWeight: 700,
+                            letterSpacing: '0.1em',
                             textTransform: 'uppercase',
-                            color: 'primary.main'
+                            color: 'primary.main',
+                            fontSize:'1rem'
                         }}
                     >
                         Authorized Distributor
                     </Typography>
-                    <Box sx={{ width: 150, height: '2px', bgcolor: 'primary.main' }} />
+                    <Box sx={{ width: { xs: 100, md: 500 }, height: '2px', bgcolor: 'primary.main' }} />
                 </Box>
             </Container>
 
@@ -50,7 +51,7 @@ const BrandsTicker = () => {
                     sx={{
                         display: 'flex',
                         whiteSpace: 'nowrap',
-                        py: 4,
+                        py: 2,
                         alignItems: 'center',
                         animation: 'ticker 30s linear infinite',
                         willChange: 'transform',
@@ -75,8 +76,8 @@ const BrandsTicker = () => {
                                 src={brand.logo}
                                 alt={brand.name}
                                 sx={{
-                                    height: { xs: 80, md: 120 },
-                                    width: 'auto',
+                                    height: brand.height,
+                                    width: brand.width,
                                     objectFit: 'contain',
                                     maxWidth: '80%',
                                     filter: 'none',
@@ -90,21 +91,23 @@ const BrandsTicker = () => {
                 </Box>
             </Box>
 
-            <Container maxWidth={false} sx={{ mt: 6, textAlign: 'center', maxWidth: '1350px', width: { xs: '100%', lg: 'calc(100% - 80px)' }, px: { xs: 2, lg: 2 }, mx: 'auto' }}>
+            <Container maxWidth={false} sx={{ mt: 2, textAlign: 'center', maxWidth: '1350px', width: { xs: '100%', lg: 'calc(100% - 80px)' }, px: { xs: 2, lg: 2 }, mx: 'auto' }}>
                 <Box sx={{ display: 'inline-flex', alignItems: 'center', gap: 2 }}>
-                    <Box sx={{ width: 150, height: '2px', bgcolor: 'primary.main' }} />
+                    <Box sx={{ width: { xs: 100, md: 500 }, height: '2px', bgcolor: 'primary.main' }} />
                     <Typography
                         variant="caption"
                         sx={{
-                            fontWeight: 900,
-                            letterSpacing: '0.3em',
+                            fontWeight: 700,
+                            letterSpacing: '0.1em',
                             textTransform: 'uppercase',
-                            color: 'primary.main'
+                            color: 'primary.main',
+                            fontSize:'1rem'
+
                         }}
                     >
                         Authorized Distributor
                     </Typography>
-                    <Box sx={{ width: 150, height: '2px', bgcolor: 'primary.main' }} />
+                    <Box sx={{ width: { xs: 100, md: 500 }, height: '2px', bgcolor: 'primary.main' }} />
                 </Box>
             </Container>
         </Box>
