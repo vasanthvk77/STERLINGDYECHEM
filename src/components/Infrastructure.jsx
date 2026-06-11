@@ -1,8 +1,8 @@
-import React, { useRef } from 'react';
-import { Box, Container, Typography, useTheme, useMediaQuery } from '@mui/material';
-import { CheckCircle2 } from 'lucide-react';
-import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
-import heroSustainableImage from '../assets/images/hero_sustainable.png';
+import React, { useState } from 'react';
+import { Box, Container, Grid, Typography, Stack, useTheme, useMediaQuery } from '@mui/material';
+import { Leaf, ShieldCheck, Droplet } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import ScrollReveal from './ScrollReveal';
 import certGots from '../assets/images/cert_gots.png';
 import certOekotex from '../assets/images/cert_oekotex.png';
 import certZdhc from '../assets/images/cert_zdhc.png';
@@ -10,43 +10,35 @@ import certZdhc from '../assets/images/cert_zdhc.png';
 const Infrastructure = () => {
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down('md'));
-    const sectionRef = useRef(null);
-
-    // We track the scroll progress of this specific section relative to the viewport
-    const { scrollYProgress } = useScroll({
-        target: sectionRef,
-        offset: ["start end", "end start"] 
-    });
-
-    // We use a spring for physics-based smoothness so the scroll feels premium
-    const smoothProgress = useSpring(scrollYProgress, {
-        stiffness: 100,
-        damping: 30,
-        restDelta: 0.001
-    });
-
-    // Map the scroll progress: 
-    // From 10% to 40% of the section's journey through the viewport, spread the cards.
-    const leftX = useTransform(smoothProgress, [0.1, 0.4], ["0%", "-115%"]);
-    const rightX = useTransform(smoothProgress, [0.1, 0.4], ["0%", "115%"]);
-    
-    // Vertical transforms for mobile
-    const upY = useTransform(smoothProgress, [0.1, 0.4], ["0%", "-115%"]);
-    const downY = useTransform(smoothProgress, [0.1, 0.4], ["0%", "115%"]);
-
-    const sideOpacity = useTransform(smoothProgress, [0.1, 0.25], [0, 1]);
-    const sideScale = useTransform(smoothProgress, [0.1, 0.4], [0.8, 1]);
+    const [activeIndex, setActiveIndex] = useState(0);
 
     const certifications = [
-        { name: "GOTS", image: certGots, fullName: "Global Organic Textile Standard", pos: 'left' },
-        { name: "OEKO-TEX", image: certOekotex, fullName: "Standard 100 by OEKO-TEX", pos: 'center' },
-        { name: "ZDHC", image: certZdhc, fullName: "Zero Discharge of Hazardous Chemicals", pos: 'right' }
+        {
+            name: "GOTS",
+            fullName: "Global Organic Textile Standard",
+            description: "The worldwide leading textile processing standard for organic fibers, including ecological and social criteria, backed up by independent certification of the entire supply chain.",
+            image: certGots,
+            icon: Leaf
+        },
+        {
+            name: "OEKO-TEX",
+            fullName: "Standard 100 by OEKO-TEX",
+            description: "One of the world's best-known labels for textiles tested for harmful substances. It stands for customer confidence and high product safety, ensuring our products are completely safe for human contact.",
+            image: certOekotex,
+            icon: ShieldCheck
+        },
+        {
+            name: "ZDHC",
+            fullName: "Zero Discharge of Hazardous Chemicals",
+            description: "Leading the global apparel and footwear industry to systemically eliminate hazardous chemicals and implement sustainable chemistry, protecting workers, consumers, and our planet's water systems.",
+            image: certZdhc,
+            icon: Droplet
+        }
     ];
 
     return (
         <Box 
             id="certification-section"
-            ref={sectionRef}
             component="section"
             sx={{ 
                 py: { xs: 10, md: 16 },
@@ -59,7 +51,7 @@ const Infrastructure = () => {
             }}
         >
             <Container maxWidth={false} sx={{ position: "relative", zIndex: 3, maxWidth: '1350px', width: { xs: '100%', lg: 'calc(100% - 80px)' }, px: { xs: 2, lg: 2 }, mx: 'auto' }}>
-                <Box sx={{ textAlign: 'center', mb: { xs: 6, md: 12 } }}>
+                <Box sx={{ textAlign: 'center', mb: { xs: 6, md: 10 } }}>
                     <Typography 
                         variant="overline" 
                         sx={{ 
@@ -89,138 +81,196 @@ const Infrastructure = () => {
                     </Typography>
                 </Box>
 
-                <Box 
-                    sx={{ 
-                        position: 'relative', 
-                        height: { xs: '700px', md: '450px' }, 
-                        display: 'flex', 
-                        alignItems: 'center', 
-                        justifyContent: 'center' 
-                    }}
-                >
-                    {certifications.map((cert, i) => {
-                        let xValue = "0%";
-                        let yValue = "0%";
-                        let opacityValue = 1;
-                        let scaleValue = 1;
-                        let zIndexValue = 10;
-
-                        if (cert.pos === 'left') {
-                            if (isMobile) {
-                                yValue = upY;
-                            } else {
-                                xValue = leftX;
-                            }
-                            opacityValue = sideOpacity;
-                            scaleValue = sideScale;
-                            zIndexValue = 5;
-                        } else if (cert.pos === 'right') {
-                            if (isMobile) {
-                                yValue = downY;
-                            } else {
-                                xValue = rightX;
-                            }
-                            opacityValue = sideOpacity;
-                            scaleValue = sideScale;
-                            zIndexValue = 5;
-                        } else {
-                            zIndexValue = 15; // Middle stays on top initially
-                        }
-
-                        return (
-                            <Box
-                                key={i}
-                                component={motion.div}
-                                style={{ 
-                                    x: xValue, 
-                                    y: yValue,
-                                    opacity: opacityValue, 
-                                    scale: scaleValue,
-                                    position: 'absolute' 
-                                }}
-                                sx={{
-                                    width: { xs: '260px', md: '320px' },
-                                    display: 'flex',
-                                    flexDirection: 'column',
-                                    alignItems: 'center',
-                                    textAlign: 'center',
-                                    zIndex: zIndexValue,
-                                    willChange: 'transform, opacity',
+                <Grid container spacing={{ xs: 4, md: 6 }} alignItems="center">
+                    {/* LEFT COLUMN: ACTIVE IMAGE SHOWCASE */}
+                    <Grid item xs={12} md={5}>
+                        <ScrollReveal direction="left">
+                            <Box 
+                                sx={{ 
+                                    position: 'relative', 
+                                    width: '100%', 
+                                    height: { xs: '280px', md: '450px' }, 
+                                    overflow: 'hidden', 
+                                    display: 'flex', 
+                                    alignItems: 'center', 
+                                    justifyContent: 'center', 
+                                    p: { xs: 1, md: 2 }, 
                                 }}
                             >
-                                <Box sx={{ position: 'relative', mb: 3 }}>
+                                <AnimatePresence mode="wait">
                                     <Box
+                                        key={activeIndex}
+                                        component={motion.div}
+                                        initial={{ opacity: 0, scale: 0.95 }}
+                                        animate={{ opacity: 1, scale: 1 }}
+                                        exit={{ opacity: 0, scale: 1.05 }}
+                                        transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
                                         sx={{
-                                            width: { xs: 140, md: 240 },
-                                            height: { xs: 140, md: 240 },
-                                            borderRadius: '50%',
-                                            bgcolor: '#ffffff',
-                                            boxShadow: '0 20px 40px rgba(0, 1, 88, 0.06)',
+                                            width: '100%',
+                                            height: '100%',
                                             display: 'flex',
                                             alignItems: 'center',
                                             justifyContent: 'center',
-                                            p: { xs: 3, md: 5 },
-                                            border: '1px solid rgba(0, 1, 88, 0.08)',
-                                            transition: 'transform 0.3s ease',
-                                            willChange: 'transform',
-                                            '&:hover': {
-                                                transform: 'scale(1.05) translate3d(0,0,0)'
-                                            }
                                         }}
                                     >
                                         <img 
-                                            src={cert.image} 
-                                            alt={cert.name} 
-                                            style={{ maxWidth: '100%', height: 'auto', objectFit: 'contain' }} 
+                                            src={certifications[activeIndex].image} 
+                                            alt={certifications[activeIndex].name} 
+                                            style={{ 
+                                                maxWidth: '90%', 
+                                                maxHeight: '90%', 
+                                                objectFit: 'contain'
+                                            }} 
                                         />
                                     </Box>
-                                    {/* Badge Checkmark */}
-                                    <Box 
-                                        sx={{ 
-                                            position: 'absolute', 
-                                            top: 10, 
-                                            right: 10, 
-                                            bgcolor: '#ffffff', 
-                                            borderRadius: '50%', 
-                                            width: { xs: 35, md: 50 }, 
-                                            height: { xs: 35, md: 50 }, 
-                                            display: 'flex', 
-                                            alignItems: 'center', 
-                                            justifyContent: 'center', 
-                                            boxShadow: '0 5px 15px rgba(0, 1, 88, 0.08)', 
-                                            border: '1px solid rgba(0, 1, 88, 0.08)' 
-                                        }}
-                                    >
-                                        <CheckCircle2 size={28} color="#16a34a" />
-                                    </Box>
-                                </Box>
-
-                                <Typography 
-                                    variant="h5" 
-                                    sx={{ 
-                                        fontWeight: 900, 
-                                        color: 'primary.main', 
-                                        mb: 0.5, 
-                                        fontSize: { xs: '1.1rem', md: '1.5rem' },
-                                    }}
-                                >
-                                    {cert.name}
-                                </Typography>
-                                <Typography 
-                                    variant="body2" 
-                                    sx={{ 
-                                        color: '#b9bd62', 
-                                        maxWidth: '220px', 
-                                        fontWeight: 600, 
-                                        fontSize: '12px' 
-                                    }}
-                                >
-                                    {cert.fullName}
-                                </Typography>
+                                </AnimatePresence>
                             </Box>
-                        );
-                    })}
-                </Box>
+                        </ScrollReveal>
+                    </Grid>
+
+                    {/* RIGHT COLUMN: LIST ITEMS */}
+                    <Grid item xs={12} md={7}>
+                        <ScrollReveal direction="right" delay={0.15}>
+                            <Stack spacing={3}>
+                                {certifications.map((cert, index) => {
+                                    const isActive = index === activeIndex;
+                                    const IconComponent = cert.icon;
+
+                                    return (
+                                        <Box
+                                            key={index}
+                                            onClick={() => setActiveIndex(index)}
+                                            onMouseEnter={() => setActiveIndex(index)}
+                                            sx={{
+                                                display: 'flex',
+                                                gap: { xs: 2.5, md: 3 },
+                                                alignItems: 'flex-start',
+                                                p: { xs: 3, md: 3.5 },
+                                                borderRadius: 0,
+                                                cursor: 'pointer',
+                                                position: 'relative',
+                                                overflow: 'hidden',
+                                                transition: isActive ? 'border-color 0.8s, box-shadow 0.8s' : 'none',
+                                                bgcolor: 'transparent',
+                                                border: '1px solid',
+                                                borderColor: isActive ? '#000158' : 'rgba(0, 1, 88, 0.08)',
+                                                boxShadow: isActive ? '0 20px 40px rgba(0, 1, 88, 0.15)' : 'none',
+                                                '&::before': {
+                                                    content: '""',
+                                                    position: 'absolute',
+                                                    top: 0,
+                                                    left: 0,
+                                                    width: '100%',
+                                                    height: '100%',
+                                                    bgcolor: '#000158',
+                                                    zIndex: 0,
+                                                    transform: isActive ? 'scaleX(1)' : 'scaleX(0)',
+                                                    transformOrigin: 'left',
+                                                    transition: isActive 
+                                                        ? 'transform 0.85s cubic-bezier(0.16, 1, 0.3, 1)' 
+                                                        : 'transform 0s',
+                                                },
+                                                '&:hover': {
+                                                    borderColor: '#000158',
+                                                    '&::before': {
+                                                        transform: 'scaleX(1)',
+                                                        transition: 'transform 0.85s cubic-bezier(0.16, 1, 0.3, 1)',
+                                                    },
+                                                    '& .cert-title': {
+                                                        color: '#ffffff',
+                                                        transition: 'color 0.8s ease',
+                                                    },
+                                                    '& .cert-desc': {
+                                                        color: 'rgba(255, 255, 255, 0.8)',
+                                                        transition: 'color 0.8s ease',
+                                                    },
+                                                    '& .cert-icon-box': {
+                                                        bgcolor: 'rgba(255, 255, 255, 0.1)',
+                                                        color: '#b9bd62',
+                                                        transition: 'all 0.8s cubic-bezier(0.16, 1, 0.3, 1)',
+                                                    },
+                                                    '& .cert-sub': {
+                                                        color: '#b9bd62',
+                                                        transition: 'all 0.8s cubic-bezier(0.16, 1, 0.3, 1)',
+                                                    }
+                                                }
+                                            }}
+                                        >
+                                            {/* Icon Circle */}
+                                            <Box
+                                                className="cert-icon-box"
+                                                sx={{
+                                                    display: 'flex',
+                                                    alignItems: 'center',
+                                                    justifyContent: 'center',
+                                                    width: 48,
+                                                    height: 48,
+                                                    borderRadius: '50%',
+                                                    bgcolor: isActive ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 1, 88, 0.05)',
+                                                    color: isActive ? '#b9bd62' : '#000158',
+                                                    transition: isActive ? 'all 0.8s cubic-bezier(0.16, 1, 0.3, 1)' : 'none',
+                                                    flexShrink: 0,
+                                                    position: 'relative',
+                                                    zIndex: 1
+                                                }}
+                                            >
+                                                <IconComponent size={isActive ? 24 : 20} strokeWidth={isActive ? 2.5 : 2} />
+                                            </Box>
+
+                                            {/* Text Content */}
+                                            <Box sx={{ flexGrow: 1, position: 'relative', zIndex: 1 }}>
+                                                <Typography
+                                                    variant="h5"
+                                                    className="cert-title"
+                                                    sx={{
+                                                        fontWeight: 900,
+                                                        color: isActive ? '#ffffff' : '#000158',
+                                                        fontSize: { xs: '1.15rem', md: '1.4rem' },
+                                                        mb: 0.5,
+                                                        transition: isActive ? 'color 0.8s ease' : 'none'
+                                                    }}
+                                                >
+                                                    {cert.name}
+                                                </Typography>
+                                                <Typography
+                                                    variant="subtitle2"
+                                                    className="cert-sub"
+                                                    sx={{
+                                                        fontWeight: 700,
+                                                        color: isActive ? '#b9bd62' : 'rgba(0, 1, 88, 0.5)',
+                                                        fontSize: '11px',
+                                                        textTransform: 'uppercase',
+                                                        letterSpacing: '0.1em',
+                                                        mb: isActive ? 1.5 : 0,
+                                                        height: isActive ? 'auto' : '0px',
+                                                        opacity: isActive ? 1 : 0,
+                                                        overflow: 'hidden',
+                                                        transition: isActive ? 'all 0.8s cubic-bezier(0.16, 1, 0.3, 1)' : 'none',
+                                                    }}
+                                                >
+                                                    {cert.fullName}
+                                                </Typography>
+                                                <Typography
+                                                    variant="body2"
+                                                    className="cert-desc"
+                                                    sx={{
+                                                        color: isActive ? 'rgba(255, 255, 255, 0.8)' : 'rgba(0, 1, 88, 0.7)',
+                                                        lineHeight: 1.6,
+                                                        fontSize: '13px',
+                                                        fontWeight: isActive ? 500 : 400,
+                                                        transition: isActive ? 'color 0.8s ease' : 'none'
+                                                    }}
+                                                >
+                                                    {cert.description}
+                                                </Typography>
+                                            </Box>
+                                        </Box>
+                                    );
+                                })}
+                            </Stack>
+                        </ScrollReveal>
+                    </Grid>
+                </Grid>
             </Container>
         </Box>
     );

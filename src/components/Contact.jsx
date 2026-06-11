@@ -24,6 +24,7 @@ import emailjs from '@emailjs/browser';
 import dbData from '../data/data.js';
 import contactBgVibrant from '../assets/images/contact_bg_vibrant.png';
 import AnimatedButton from './AnimatedButton';
+import ScrollReveal from './ScrollReveal';
 
 const Contact = () => {
     // --- EMAIL CONFIGURATION ---
@@ -192,10 +193,11 @@ const Contact = () => {
                 <Container maxWidth={false} sx={{ position: 'relative', zIndex: 10, maxWidth: '1350px', width: { xs: '100%', lg: 'calc(100% - 80px)' }, px: { xs: 2, lg: 2 }, mx: 'auto' }}>
                     <Grid container spacing={{ xs: 6, lg: 8 }} alignItems="center">
                         <Grid item xs={12} lg={6}>
-                            <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 4 }}>
-                                <Box sx={{ width: 48, height: '2px', bgcolor: 'primary.main' }} />
-                                <Typography
-                                    variant="caption"
+                            <ScrollReveal direction="far-up">
+                                <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 4 }}>
+                                    <Box sx={{ width: 48, height: '2px', bgcolor: 'primary.main' }} />
+                                    <Typography
+                                        variant="caption"
                                     sx={{
                                         fontWeight: 900,
                                         letterSpacing: '0.3em',
@@ -325,11 +327,13 @@ const Contact = () => {
                                     </Box>
                                 </Box>
                             </Stack>
-                        </Grid>
+                        </ScrollReveal>
+                    </Grid>
 
                         <Grid item xs={12} lg={6}>
-                            <Paper
-                                id="contact-form-card"
+                            <ScrollReveal direction="far-right">
+                                <Paper
+                                    id="contact-form-card"
                                 elevation={0}
                                 sx={{
                                     p: { xs: 4, lg: 6 },
@@ -644,7 +648,8 @@ const Contact = () => {
                                     </Grid>
                                 </form>
                             </Paper>
-                        </Grid>
+                        </ScrollReveal>
+                    </Grid>
                     </Grid>
                 </Container>
 
