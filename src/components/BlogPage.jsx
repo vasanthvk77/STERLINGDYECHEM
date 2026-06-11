@@ -304,8 +304,8 @@ const BlogPage = () => {
     return (
         <Box sx={{ bgcolor: '#ffffff' }}>
             {/* HERO SECTION */}
-            <Box sx={{ py: { xs: 2, lg: 6 }, borderBottom: '1px solid', borderColor: 'divider' }}>
-                <Container maxWidth="lg">
+            <Box sx={{ pt: { xs: 15, lg: 22 }, pb: { xs: 8, lg: 12 }, bgcolor: '#f8fafc' }}>
+                <Container maxWidth={false} sx={{ maxWidth: '1350px', width: { xs: '100%', lg: 'calc(100% - 80px)' }, px: { xs: 2, lg: 2 }, mx: 'auto' }}>
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 4 }}>
                         <Box sx={{ width: 48, height: '2px', bgcolor: 'primary.main' }} />
                         <Typography
@@ -337,7 +337,7 @@ const BlogPage = () => {
 
             {/* MAIN CONTENT */}
             <Box sx={{ py: { xs: 8, lg: 12 } }}>
-                <Container maxWidth="lg">
+                <Container maxWidth={false} sx={{ maxWidth: '1350px', width: { xs: '100%', lg: 'calc(100% - 80px)' }, px: { xs: 2, lg: 2 }, mx: 'auto' }}>
                     <Grid container spacing={10}>
                         <Grid item xs={12} lg={8}>
                             <Stack spacing={12}>

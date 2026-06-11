@@ -1,12 +1,84 @@
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Box, Container, Grid, Typography, Stack, Divider } from '@mui/material';
 import ScrollReveal from './ScrollReveal';
 import profileBgImage from '../assets/images/corporate_profile.png';
 
+const CountUp = ({ val, duration = 2000 }) => {
+    const [count, setCount] = useState(0);
+    const [hasAnimated, setHasAnimated] = useState(false);
+    const elementRef = useRef(null);
+
+    const parsed = React.useMemo(() => {
+        const match = String(val).match(/^([^0-9]*)(0*[0-9]+)([^0-9]*)$/);
+        if (match) {
+            const prefix = match[1];
+            const numStr = match[2];
+            const suffix = match[3];
+            const isLeadingZero = numStr.startsWith('0');
+            const num = parseInt(numStr, 10);
+            return { isNumber: true, num, prefix, suffix, isLeadingZero, length: numStr.length };
+        }
+        return { isNumber: false, val };
+    }, [val]);
+
+    useEffect(() => {
+        if (!parsed.isNumber || hasAnimated) return;
+
+        const observer = new IntersectionObserver(
+            ([entry]) => {
+                if (entry.isIntersecting) {
+                    setHasAnimated(true);
+                    let startTimestamp = null;
+                    const step = (timestamp) => {
+                        if (!startTimestamp) startTimestamp = timestamp;
+                        const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+                        const easedProgress = progress * (2 - progress); // outQuad
+                        setCount(Math.floor(easedProgress * parsed.num));
+                        if (progress < 1) {
+                            window.requestAnimationFrame(step);
+                        } else {
+                            setCount(parsed.num);
+                        }
+                    };
+                    window.requestAnimationFrame(step);
+                }
+            },
+            { threshold: 0.1 }
+        );
+
+        const currentEl = elementRef.current;
+        if (currentEl) {
+            observer.observe(currentEl);
+        }
+
+        return () => {
+            if (currentEl) {
+                observer.unobserve(currentEl);
+            }
+        };
+    }, [parsed, duration, hasAnimated]);
+
+    if (!parsed.isNumber) {
+        return <span>{val}</span>;
+    }
+
+    const displayVal = parsed.isLeadingZero
+        ? count.toString().padStart(parsed.length, '0')
+        : count;
+
+    return (
+        <span ref={elementRef}>
+            {parsed.prefix}
+            {displayVal}
+            {parsed.suffix}
+        </span>
+    );
+};
+
 const CorporateProfile = () => {
     return (
         <Box component="section" sx={{ py: { xs: 8, lg:4 }, bgcolor: '#ffffff', borderBottom: '1px solid', borderColor: 'divider', overflow: 'hidden' }}>
-            <Container maxWidth="lg">
+            <Container maxWidth={false} sx={{ maxWidth: '1350px', width: { xs: '100%', lg: 'calc(100% - 80px)' }, px: { xs: 2, lg: 2 }, mx: 'auto' }}>
                 <Grid container spacing={8} alignItems="center">
                     <Grid item xs={12} lg={5}>
                         <ScrollReveal direction="left">
@@ -45,7 +117,7 @@ const CorporateProfile = () => {
                                             letterSpacing: '-0.05em'
                                         }}
                                     >
-                                        15<Box component="span" sx={{ opacity: 0.5 }}>+</Box>
+                                        <CountUp val="15" /><Box component="span" sx={{ opacity: 0.5 }}>+</Box>
                                     </Typography>
                                     <Typography
                                         variant="caption"
@@ -133,7 +205,7 @@ const CorporateProfile = () => {
                                             color="primary"
                                             sx={{ fontWeight: 900, mb: 0.5 }}
                                         >
-                                            {stat.val}
+                                            <CountUp val={stat.val} />
                                         </Typography>
                                         <Typography
                                             variant="caption"

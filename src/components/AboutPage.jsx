@@ -31,7 +31,7 @@ const AboutPage = () => {
                         display: { xs: 'none', lg: 'block' }
                     }}
                 />
-                <Container maxWidth="lg" sx={{ position: 'relative', zIndex: 1 }}>
+                <Container maxWidth={false} sx={{ position: 'relative', zIndex: 1, maxWidth: '1350px', width: { xs: '100%', lg: 'calc(100% - 80px)' }, px: { xs: 2, lg: 2 }, mx: 'auto' }}>
                     <Grid container spacing={{ xs: 8, lg: 12 }} alignItems="center">
                         <Grid item xs={12} lg={6}>
                             <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 2 }}>

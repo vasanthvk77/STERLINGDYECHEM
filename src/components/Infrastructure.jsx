@@ -49,63 +49,24 @@ const Infrastructure = () => {
             ref={sectionRef}
             component="section"
             sx={{ 
-                height: { xs: "auto", md: "100vh" },
-                minHeight: { xs: "900px", md: "100vh" },
-                py: { xs: 8, md: 0 },
+                py: { xs: 10, md: 16 },
                 width: "100%",
                 position: "relative",
-                overflow: "hidden", // Prevents side cards from causing horizontal scroll
-                backgroundImage: `url("${heroSustainableImage}")`,
-                backgroundSize: "cover",
-                backgroundPosition: "center",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                "&::before": {
-                    content: '""',
-                    position: "absolute",
-                    inset: 0,
-                    backgroundColor: "rgba(10, 14, 69, 0.8)", // Deep blue overlay
-                    zIndex: 1,
-                },
+                overflow: "hidden",
+                bgcolor: '#ffffff',
+                borderBottom: '1px solid',
+                borderColor: 'divider',
             }}
         >
-            {/* Top Edge Fade */}
-            <Box
-                sx={{
-                    position: 'absolute',
-                    top: 0,
-                    left: 0,
-                    right: 0,
-                    height: { xs: '100px', md: '180px' },
-                    background: 'linear-gradient(to bottom, #f8f8f8 0%, rgba(248, 248, 248, 0.95) 0%, rgba(248, 248, 248, 0) 40%)',
-                    zIndex: 2,
-                    pointerEvents: 'none'
-                }}
-            />
-            {/* Bottom Edge Fade */}
-            <Box
-                sx={{
-                    position: 'absolute',
-                    bottom: 0,
-                    left: 0,
-                    right: 0,
-                    height: { xs: '100px', md: '180px' },
-                    background: 'linear-gradient(to top, #ffffff 0%, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0) 40%)',
-                    zIndex: 2,
-                    pointerEvents: 'none'
-                }}
-            />
-            <Container maxWidth="lg" sx={{ position: "relative", zIndex: 3 }}>
-                {}
-                <Box sx={{ textAlign: 'center', mb: { xs: 4, md: 10 } }}>
+            <Container maxWidth={false} sx={{ position: "relative", zIndex: 3, maxWidth: '1350px', width: { xs: '100%', lg: 'calc(100% - 80px)' }, px: { xs: 2, lg: 2 }, mx: 'auto' }}>
+                <Box sx={{ textAlign: 'center', mb: { xs: 6, md: 12 } }}>
                     <Typography 
                         variant="overline" 
                         sx={{ 
                             fontWeight: 900, 
                             textTransform: 'uppercase', 
                             letterSpacing: '0.5em', 
-                            color: '#fbbf24', 
+                            color: 'primary.main', 
                             display: 'block', 
                             mb: 2, 
                             fontSize: '12px' 
@@ -116,11 +77,11 @@ const Infrastructure = () => {
                     <Typography 
                         variant="h2" 
                         sx={{ 
-                            color: '#ffffff', 
+                            color: 'primary.main', 
                             fontWeight: 700, 
                             textTransform: 'uppercase', 
                             letterSpacing: '-0.02em', 
-                            fontSize: { xs: '2rem', md: '3.5rem', lg: '3.7rem' }, 
+                            fontSize: { xs: '2.5rem', md: '3.5rem', lg: '3.7rem' }, 
                             lineHeight: 1.1 
                         }}
                     >
@@ -128,7 +89,6 @@ const Infrastructure = () => {
                     </Typography>
                 </Box>
 
-                {}
                 <Box 
                     sx={{ 
                         position: 'relative', 
@@ -195,12 +155,12 @@ const Infrastructure = () => {
                                             height: { xs: 140, md: 240 },
                                             borderRadius: '50%',
                                             bgcolor: '#ffffff',
-                                            boxShadow: '0 20px 50px rgba(0, 0, 0, 0.4)',
+                                            boxShadow: '0 20px 40px rgba(0, 1, 88, 0.06)',
                                             display: 'flex',
                                             alignItems: 'center',
                                             justifyContent: 'center',
                                             p: { xs: 3, md: 5 },
-                                            border: '8px solid rgba(255,255,255,0.1)',
+                                            border: '1px solid rgba(0, 1, 88, 0.08)',
                                             transition: 'transform 0.3s ease',
                                             willChange: 'transform',
                                             '&:hover': {
@@ -227,8 +187,8 @@ const Infrastructure = () => {
                                             display: 'flex', 
                                             alignItems: 'center', 
                                             justifyContent: 'center', 
-                                            boxShadow: '0 5px 15px rgba(0,0,0,0.2)', 
-                                            border: '2px solid #ffffff' 
+                                            boxShadow: '0 5px 15px rgba(0, 1, 88, 0.08)', 
+                                            border: '1px solid rgba(0, 1, 88, 0.08)' 
                                         }}
                                     >
                                         <CheckCircle2 size={28} color="#16a34a" />
@@ -239,10 +199,9 @@ const Infrastructure = () => {
                                     variant="h5" 
                                     sx={{ 
                                         fontWeight: 900, 
-                                        color: '#ffffff', 
+                                        color: 'primary.main', 
                                         mb: 0.5, 
                                         fontSize: { xs: '1.1rem', md: '1.5rem' },
-                                        textShadow: '0 2px 4px rgba(0,0,0,0.3)'
                                     }}
                                 >
                                     {cert.name}
@@ -250,7 +209,7 @@ const Infrastructure = () => {
                                 <Typography 
                                     variant="body2" 
                                     sx={{ 
-                                        color: '#fbbf24', 
+                                        color: '#b9bd62', 
                                         maxWidth: '220px', 
                                         fontWeight: 600, 
                                         fontSize: '12px' 

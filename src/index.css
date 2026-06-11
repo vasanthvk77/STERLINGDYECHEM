@@ -7,12 +7,10 @@
 }
 
 html {
-  overflow-x: clip;
 }
 
 body {
   margin: 0;
-  overflow-x: clip;
 }
 
 /* Global transitions */

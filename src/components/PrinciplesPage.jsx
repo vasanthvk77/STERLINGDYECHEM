@@ -9,11 +9,12 @@ const PrinciplesPage = () => {
         <Box sx={{ bgcolor: '#ffffff', minHeight: '100vh'}}>
             {/* HERO HEADER */}
             <Box
+                id="principles-banner"
                 sx={{
                     pt: { xs: 15, lg: 22 },
                     pb: { xs: 8, lg: 12 },
                     bgcolor: 'primary.main',
-                    backgroundImage: `linear-gradient(rgba(0, 1, 88, 0.85), rgba(0, 1, 88, 0.85)), url(${principlesBG})`,
+                    backgroundImage: 'linear-gradient(135deg, #000158 0%, #0002b3 100%)',
                     backgroundSize: 'cover',
                     backgroundPosition: 'center',
                     position: 'relative',
@@ -29,12 +30,12 @@ const PrinciplesPage = () => {
                         opacity: 0.05,
                         pointerEvents: 'none',
                         zIndex: 0,
-                        backgroundImage: 'radial-gradient(#ffffff 1px, transparent 1px)',
+                        backgroundImage: 'radial-gradient(rgba(255, 255, 255, 0.15) 1px, transparent 1px)',
                         backgroundSize: '40px 40px',
                     }}
                 />
 
-                <Container maxWidth="lg" sx={{ position: 'relative', zIndex: 10 }}>
+                <Container maxWidth={false} sx={{ position: 'relative', zIndex: 10, maxWidth: '1350px', width: { xs: '100%', lg: 'calc(100% - 80px)' }, px: { xs: 2, lg: 2 }, mx: 'auto' }}>
                     <ScrollReveal>
                         <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 4 }}>
                             <Box sx={{ width: 48, height: '2px', bgcolor: '#ffffff' }} />
@@ -199,8 +200,8 @@ const PrinciplesPage = () => {
             </Box>
 
             {/* PRINCIPLES GRID SECTION */}
-            <Box sx={{ py: { xs: 10, lg: 16 }, bgcolor: 'rgba(223, 223, 223, 0.2)' }}>
-                <Container maxWidth="lg">
+            <Box sx={{ py: { xs: 10, lg: 16 }, bgcolor: '#f8fafc', borderTop: '1px solid rgba(0, 1, 88, 0.05)' }}>
+                <Container maxWidth={false} sx={{ maxWidth: '1350px', width: { xs: '100%', lg: 'calc(100% - 80px)' }, px: { xs: 2, lg: 2 }, mx: 'auto' }}>
                     <Grid container spacing={4}>
                         {[
                             {

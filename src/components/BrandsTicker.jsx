@@ -24,14 +24,12 @@ const BrandsTicker = () => {
             sx={{
                  py: 8,
                 bgcolor: '#ffffff',
-                borderTop: '1px solid',
-                borderColor: 'divider',
                 overflow: 'hidden'
             }}
         >
-            <Container maxWidth="lg" sx={{ mb: 6, textAlign: 'center' }}>
+            <Container maxWidth={false} sx={{ mb: 6, textAlign: 'center', maxWidth: '1350px', width: { xs: '100%', lg: 'calc(100% - 80px)' }, px: { xs: 2, lg: 2 }, mx: 'auto' }}>
                 <Box sx={{ display: 'inline-flex', alignItems: 'center', gap: 2 }}>
-                    <Box sx={{ width: 32, height: '2px', bgcolor: 'primary.main' }} />
+                    <Box sx={{ width: 150, height: '2px', bgcolor: 'primary.main' }} />
                     <Typography
                         variant="caption"
                         sx={{
@@ -43,7 +41,7 @@ const BrandsTicker = () => {
                     >
                         Authorized Distributor
                     </Typography>
-                    <Box sx={{ width: 32, height: '2px', bgcolor: 'primary.main' }} />
+                    <Box sx={{ width: 150, height: '2px', bgcolor: 'primary.main' }} />
                 </Box>
             </Container>
 
@@ -91,6 +89,24 @@ const BrandsTicker = () => {
                     ))}
                 </Box>
             </Box>
+
+            <Container maxWidth={false} sx={{ mt: 6, textAlign: 'center', maxWidth: '1350px', width: { xs: '100%', lg: 'calc(100% - 80px)' }, px: { xs: 2, lg: 2 }, mx: 'auto' }}>
+                <Box sx={{ display: 'inline-flex', alignItems: 'center', gap: 2 }}>
+                    <Box sx={{ width: 150, height: '2px', bgcolor: 'primary.main' }} />
+                    <Typography
+                        variant="caption"
+                        sx={{
+                            fontWeight: 900,
+                            letterSpacing: '0.3em',
+                            textTransform: 'uppercase',
+                            color: 'primary.main'
+                        }}
+                    >
+                        Authorized Distributor
+                    </Typography>
+                    <Box sx={{ width: 150, height: '2px', bgcolor: 'primary.main' }} />
+                </Box>
+            </Container>
         </Box>
     );
 };

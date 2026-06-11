@@ -45,27 +45,19 @@ const Hero = ({ slides, currentSlide, setCurrentSlide, nextSlide, prevSlide }) =
                         }}
                     />
 
-                    {/* PROFESSIONAL BLUE OVERLAY (Matches Certifications Section) */}
+                    {/* BLACK OVERLAY */}
                     <Box
                         sx={{
                             position: 'absolute',
                             inset: 0,
-                            // Deep navy matching brand core
+                            bgcolor: 'rgba(0, 0, 0, 0.5)',
                             zIndex: 20,
-                        }}
-                    />
-                    <Box
-                        sx={{
-                            position: 'absolute',
-                            inset: 0,
-
-                            zIndex: 21,
                         }}
                     />
 
                     {/* CONTENT */}
                     <Container
-                        maxWidth="xl"
+                        maxWidth={false}
                         sx={{
                             position: 'relative',
                             zIndex: 30,
@@ -75,6 +67,10 @@ const Hero = ({ slides, currentSlide, setCurrentSlide, nextSlide, prevSlide }) =
                             justifyContent: 'center',
                             alignItems: 'center',
                             textAlign: 'center',
+                            maxWidth: '1350px',
+                            width: { xs: '100%', lg: 'calc(100% - 80px)' },
+                            px: { xs: 2, lg: 2 },
+                            mx: 'auto'
                         }}
                     >
                         <Box
@@ -149,7 +145,7 @@ const Hero = ({ slides, currentSlide, setCurrentSlide, nextSlide, prevSlide }) =
                     zIndex: 40,
                 }}
             >
-                <Container maxWidth="xl">
+                <Container maxWidth={false} sx={{ maxWidth: '1350px', width: { xs: '100%', lg: 'calc(100% - 80px)' }, px: { xs: 2, lg: 2 }, mx: 'auto' }}>
                     <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
                         {/* PROGRESS INDICATORS (Bottom Left) */}
                         <Stack direction="row" spacing={2} sx={{ mb: 1.5 }}>

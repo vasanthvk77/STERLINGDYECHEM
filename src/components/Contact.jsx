@@ -22,7 +22,7 @@ import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 import CheckBoxIcon from '@mui/icons-material/CheckBox';
 import emailjs from '@emailjs/browser';
 import dbData from '../data/data.js';
-import contactBgImage from '../assets/images/hero_pioneer.jpg';
+import contactBgVibrant from '../assets/images/contact_bg_vibrant.png';
 import AnimatedButton from './AnimatedButton';
 
 const Contact = () => {
@@ -165,63 +165,17 @@ const Contact = () => {
                 id="contact-section"
                 component="section"
                 sx={{
-                    height: { xs: "auto", md: "auto", lg: "100vh" },
-
-                    pt: { xs: 15, lg: 22 }, // Pushes content below navbar height (100px + 20px gap)
-                    pb: { xs: 8, lg: 12 },
-                    bgcolor: 'primary.main',
-                    color: '#ffffff',
+                    py: { xs: 10, lg: 16 },
+                    bgcolor: '#ffffffff',
+                    color: 'primary.main',
                     position: 'relative',
                     overflow: 'hidden',
-                    minHeight: '100vh',
                     display: 'flex',
-                    alignItems: 'center'
+                    alignItems: 'center',
+                    borderBottom: '1px solid',
+                    borderColor: 'divider',
                 }}
             >
-                {/* BACKGROUND IMAGE WITH OVERLAY */}
-                <Box sx={{ position: 'absolute', inset: 0, zIndex: 0 }}>
-                    <Box
-                        component="img"
-                        src={contactBgImage}
-                        alt="Vibrant Color Background"
-                        sx={{ width: '100%', height: '100%', objectFit: 'cover', opacity: 0.6 }}
-                    />
-                    <Box
-                        sx={{
-                            position: 'absolute',
-                            inset: 0,
-                            // background: 'linear-gradient(to right, #000158, rgba(0, 1, 88, 0.7), transparent)',
-                            zIndex: 1
-                        }}
-                    />
-                    {/* Top Edge Fade */}
-                    <Box
-                        sx={{
-                            position: 'absolute',
-                            top: 0,
-                            left: 0,
-                            right: 0,
-                            height: { xs: '100px', md: '180px' },
-                            background: 'linear-gradient(to bottom, #ffffff 0%, rgba(255, 255, 255, 0.95) 1%, rgba(255, 255, 255, 0) 40%)',
-                            zIndex: 2,
-                            pointerEvents: 'none'
-                        }}
-                    />
-                    {/* Bottom Edge Fade */}
-                    <Box
-                        sx={{
-                            position: 'absolute',
-                            bottom: 0,
-                            left: 0,
-                            right: 0,
-                            height: { xs: '100px', md: '180px' },
-                            background: 'linear-gradient(to top, #f8f9fa 0%, rgba(248, 249, 250, 0.95) 1%, rgba(248, 249, 250, 0) 40%)',
-                            zIndex: 2,
-                            pointerEvents: 'none'
-                        }}
-                    />
-                </Box>
-
                 {/* GRID PATTERN OVERLAY */}
                 <Box
                     sx={{
@@ -230,23 +184,23 @@ const Contact = () => {
                         opacity: 0.05,
                         pointerEvents: 'none',
                         zIndex: 0,
-                        backgroundImage: 'radial-gradient(#ffffff 1px, transparent 1px)',
+                        backgroundImage: 'radial-gradient(rgba(0, 1, 88, 0.15) 1px, transparent 1px)',
                         backgroundSize: '40px 20px',
                     }}
                 />
 
-                <Container maxWidth="lg" sx={{ position: 'relative', zIndex: 10 }}>
-                    <Grid container spacing={{ xs: 4, lg: 6 }} alignItems="center">
+                <Container maxWidth={false} sx={{ position: 'relative', zIndex: 10, maxWidth: '1350px', width: { xs: '100%', lg: 'calc(100% - 80px)' }, px: { xs: 2, lg: 2 }, mx: 'auto' }}>
+                    <Grid container spacing={{ xs: 6, lg: 8 }} alignItems="center">
                         <Grid item xs={12} lg={6}>
                             <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 4 }}>
-                                <Box sx={{ width: 48, height: '2px', bgcolor: '#ffffff' }} />
+                                <Box sx={{ width: 48, height: '2px', bgcolor: 'primary.main' }} />
                                 <Typography
                                     variant="caption"
                                     sx={{
                                         fontWeight: 900,
                                         letterSpacing: '0.3em',
                                         textTransform: 'uppercase',
-                                        color: '#ffffff'
+                                        color: 'primary.main'
                                     }}
                                 >
                                     Connect With Us
@@ -254,7 +208,7 @@ const Contact = () => {
                             </Box>
                             <Typography
                                 variant="h2"
-                                sx={{ color: '#ffffff', mb: 4, lineHeight: 1.1, fontSize: { xs: '2rem', md: '3rem' } }}
+                                sx={{ color: 'primary.main', mb: 4, lineHeight: 1.1, fontSize: { xs: '2.5rem', md: '3.5rem' }, fontWeight: 700 }}
                             >
                                 Ask for Requirements
                             </Typography>
@@ -262,9 +216,9 @@ const Contact = () => {
                                 variant="body1"
                                 sx={{
                                     fontSize: '1.125rem',
-                                    fontWeight: 300,
-                                    lineHeight: 1.6,
-                                    color: 'rgba(255, 255, 255, 1)',
+                                    fontWeight: 400,
+                                    lineHeight: 1.7,
+                                    color: 'text.secondary',
                                     maxWidth: '500px',
                                     mb: 6,
                                     textAlign: 'justify',
@@ -279,13 +233,14 @@ const Contact = () => {
                                         sx={{
                                             width: 48,
                                             height: 48,
-                                            border: '1px solid rgba(255, 255, 255, 0.3)',
+                                            border: '1px solid rgba(0, 1, 88, 0.15)',
                                             display: 'flex',
                                             alignItems: 'center',
-                                            justifyContent: 'center'
+                                            justifyContent: 'center',
+                                            bgcolor: 'rgba(0, 1, 88, 0.02)'
                                         }}
                                     >
-                                        <Mail size={20} color="#ffffff" />
+                                        <Mail size={20} color="#000158" />
                                     </Box>
                                     <Box>
                                         <Typography
@@ -294,13 +249,13 @@ const Contact = () => {
                                                 fontWeight: 700,
                                                 textTransform: 'uppercase',
                                                 letterSpacing: '0.1em',
-                                                opacity: 0.6,
+                                                color: '#b9bd62',
                                                 display: 'block'
                                             }}
                                         >
                                             General Inquiries
                                         </Typography>
-                                        <Typography variant="h6" sx={{ fontWeight: 700 }}>
+                                        <Typography variant="h6" sx={{ fontWeight: 700, color: 'primary.main' }}>
                                             sales@sterlingdyechem.com
                                         </Typography>
                                     </Box>
@@ -310,13 +265,14 @@ const Contact = () => {
                                         sx={{
                                             width: 48,
                                             height: 48,
-                                            border: '1px solid rgba(255, 255, 255, 0.3)',
+                                            border: '1px solid rgba(0, 1, 88, 0.15)',
                                             display: 'flex',
                                             alignItems: 'center',
-                                            justifyContent: 'center'
+                                            justifyContent: 'center',
+                                            bgcolor: 'rgba(0, 1, 88, 0.02)'
                                         }}
                                     >
-                                        <Phone size={20} color="#ffffff" />
+                                        <Phone size={20} color="#000158" />
                                     </Box>
                                     <Box>
                                         <Typography
@@ -325,13 +281,13 @@ const Contact = () => {
                                                 fontWeight: 700,
                                                 textTransform: 'uppercase',
                                                 letterSpacing: '0.1em',
-                                                opacity: 0.6,
+                                                color: '#b9bd62',
                                                 display: 'block'
                                             }}
                                         >
                                             Direct Support
                                         </Typography>
-                                        <Typography variant="h6" sx={{ fontWeight: 700 }}>
+                                        <Typography variant="h6" sx={{ fontWeight: 700, color: 'primary.main' }}>
                                             +91 8749432456
                                         </Typography>
                                     </Box>
@@ -341,13 +297,14 @@ const Contact = () => {
                                         sx={{
                                             width: 48,
                                             height: 48,
-                                            border: '1px solid rgba(255, 255, 255, 0.3)',
+                                            border: '1px solid rgba(0, 1, 88, 0.15)',
                                             display: 'flex',
                                             alignItems: 'center',
-                                            justifyContent: 'center'
+                                            justifyContent: 'center',
+                                            bgcolor: 'rgba(0, 1, 88, 0.02)'
                                         }}
                                     >
-                                        <MessageCircle size={20} color="#ffffff" />
+                                        <MessageCircle size={20} color="#000158" />
                                     </Box>
                                     <Box>
                                         <Typography
@@ -356,13 +313,13 @@ const Contact = () => {
                                                 fontWeight: 700,
                                                 textTransform: 'uppercase',
                                                 letterSpacing: '0.1em',
-                                                opacity: 0.6,
+                                                color: '#b9bd62',
                                                 display: 'block'
                                             }}
                                         >
                                             Connect via WhatsApp
                                         </Typography>
-                                        <Typography variant="h6" sx={{ fontWeight: 700 }}>
+                                        <Typography variant="h6" sx={{ fontWeight: 700, color: 'primary.main' }}>
                                             +91 93240 12345
                                         </Typography>
                                     </Box>
@@ -372,18 +329,19 @@ const Contact = () => {
 
                         <Grid item xs={12} lg={6}>
                             <Paper
+                                id="contact-form-card"
                                 elevation={0}
                                 sx={{
                                     p: { xs: 4, lg: 6 },
-                                    borderRadius: '0px',
-                                    bgcolor: 'rgba(223, 223, 223, 0.85)',
-                                    backdropFilter: 'blur(10px)',
-                                    color: 'primary.main',
-                                    border: '1px solid rgba(255, 255, 255, 0.2)',
-                                    boxShadow: '0 25px 50px -12px rgba(0, 1, 88, 0.2)'
+                                    borderRadius: '8px',
+                                    border: '1px solid rgba(255, 255, 255, 0.1)',
+                                    boxShadow: '0 30px 60px rgba(0, 1, 88, 0.15)',
+                                    backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.29), rgba(0, 0, 0, 0.65)), url(${contactBgVibrant})`,
+                                    backgroundSize: 'cover',
+                                    backgroundPosition: 'center',
                                 }}
                             >
-                                <Typography variant="h5" sx={{ fontWeight: 900, mb: 4, textTransform: 'uppercase', letterSpacing: '-0.02em' }}>
+                                <Typography variant="h5" sx={{ fontWeight: 900, mb: 4, textTransform: 'uppercase', letterSpacing: '-0.02em', color: '#ffffff' }}>
                                     Business Inquiry
                                 </Typography>
 
@@ -393,8 +351,8 @@ const Contact = () => {
                                     </Alert>
                                 )}
 
-                                <form onSubmit={handleSubmit}>
-                                    <Grid container spacing={2}>
+                                <form onSubmit={handleSubmit}>  
+                                    <Grid container spacing={2.5}>
                                         <Grid item xs={6}>
                                             <TextField
                                                 fullWidth
@@ -404,18 +362,19 @@ const Contact = () => {
                                                 onChange={handleChange}
                                                 error={!!errors.firstName}
                                                 helperText={errors.firstName}
-                                                variant="filled"
+                                                variant="outlined"
                                                 size="small"
-                                                InputProps={{
-                                                    disableUnderline: true,
-                                                    sx: { borderRadius: 0, color: 'white' }
-                                                }}
                                                 sx={{
-                                                    bgcolor: '#b9bd62ff',
-                                                    '& .MuiInputLabel-root': { color: 'white' },
-                                                    '& .MuiInputLabel-root.Mui-focused': { color: 'white' },
-                                                    '& .MuiFilledInput-root:hover': { bgcolor: '#9ba035ff' },
-                                                    '& .MuiFilledInput-root.Mui-focused': { bgcolor: '#9ba035ff' }
+                                                    '& .MuiOutlinedInput-root': {
+                                                        bgcolor: 'transparent',
+                                                        borderRadius: '4px',
+                                                        '& fieldset': { borderColor: 'rgba(255, 255, 255, 0.3)' },
+                                                        '&:hover fieldset': { borderColor: 'rgba(255, 255, 255, 0.6)' },
+                                                        '&.Mui-focused fieldset': { borderColor: '#ffffff' },
+                                                        '& input': { color: '#ffffff' }
+                                                    },
+                                                    '& .MuiInputLabel-root': { color: 'rgba(255, 255, 255, 0.7)', fontWeight: 500 },
+                                                    '& .MuiInputLabel-root.Mui-focused': { color: '#ffffff' }
                                                 }}
                                             />
                                         </Grid>
@@ -426,18 +385,19 @@ const Contact = () => {
                                                 name="lastName"
                                                 value={formData.lastName}
                                                 onChange={handleChange}
-                                                variant="filled"
+                                                variant="outlined"
                                                 size="small"
-                                                InputProps={{
-                                                    disableUnderline: true,
-                                                    sx: { borderRadius: 0, color: 'white' }
-                                                }}
                                                 sx={{
-                                                    bgcolor: '#b9bd62ff',
-                                                    '& .MuiInputLabel-root': { color: 'white' },
-                                                    '& .MuiInputLabel-root.Mui-focused': { color: 'white' },
-                                                    '& .MuiFilledInput-root:hover': { bgcolor: '#9ba035ff' },
-                                                    '& .MuiFilledInput-root.Mui-focused': { bgcolor: '#9ba035ff' }
+                                                    '& .MuiOutlinedInput-root': {
+                                                        bgcolor: 'transparent',
+                                                        borderRadius: '4px',
+                                                        '& fieldset': { borderColor: 'rgba(255, 255, 255, 0.3)' },
+                                                        '&:hover fieldset': { borderColor: 'rgba(255, 255, 255, 0.6)' },
+                                                        '&.Mui-focused fieldset': { borderColor: '#ffffff' },
+                                                        '& input': { color: '#ffffff' }
+                                                    },
+                                                    '& .MuiInputLabel-root': { color: 'rgba(255, 255, 255, 0.7)', fontWeight: 500 },
+                                                    '& .MuiInputLabel-root.Mui-focused': { color: '#ffffff' }
                                                 }}
                                             />
                                         </Grid>
@@ -450,18 +410,19 @@ const Contact = () => {
                                                 onChange={handleChange}
                                                 error={!!errors.phone}
                                                 helperText={errors.phone}
-                                                variant="filled"
+                                                variant="outlined"
                                                 size="small"
-                                                InputProps={{
-                                                    disableUnderline: true,
-                                                    sx: { borderRadius: 0, color: 'white' }
-                                                }}
                                                 sx={{
-                                                    bgcolor: '#b9bd62ff',
-                                                    '& .MuiInputLabel-root': { color: 'white' },
-                                                    '& .MuiInputLabel-root.Mui-focused': { color: 'white' },
-                                                    '& .MuiFilledInput-root:hover': { bgcolor: '#9ba035ff' },
-                                                    '& .MuiFilledInput-root.Mui-focused': { bgcolor: '#9ba035ff' }
+                                                    '& .MuiOutlinedInput-root': {
+                                                        bgcolor: 'transparent',
+                                                        borderRadius: '4px',
+                                                        '& fieldset': { borderColor: 'rgba(255, 255, 255, 0.3)' },
+                                                        '&:hover fieldset': { borderColor: 'rgba(255, 255, 255, 0.6)' },
+                                                        '&.Mui-focused fieldset': { borderColor: '#ffffff' },
+                                                        '& input': { color: '#ffffff' }
+                                                    },
+                                                    '& .MuiInputLabel-root': { color: 'rgba(255, 255, 255, 0.7)', fontWeight: 500 },
+                                                    '& .MuiInputLabel-root.Mui-focused': { color: '#ffffff' }
                                                 }}
                                             />
                                             {formData.phone && (
@@ -472,13 +433,13 @@ const Contact = () => {
                                                             onChange={handleSyncToggle}
                                                             size="small"
                                                             sx={{
-                                                                color: 'primary.main',
-                                                                '&.Mui-checked': { color: 'primary.main' }
+                                                                color: 'rgba(255, 255, 255, 0.7)',
+                                                                '&.Mui-checked': { color: '#b9bd62' }
                                                             }}
                                                         />
                                                     }
                                                     label={
-                                                        <Typography sx={{ fontSize: '0.75rem', fontWeight: 600, color: 'primary.main', opacity: 0.8 }}>
+                                                        <Typography sx={{ fontSize: '0.75rem', fontWeight: 600, color: 'rgba(255, 255, 255, 0.85)' }}>
                                                             Use same for WhatsApp?
                                                         </Typography>
                                                     }
@@ -494,20 +455,19 @@ const Contact = () => {
                                                 value={formData.whatsapp}
                                                 onChange={handleChange}
                                                 disabled={syncWhatsApp}
-                                                variant="filled"
+                                                variant="outlined"
                                                 size="small"
-                                                InputProps={{
-                                                    disableUnderline: true,
-                                                    sx: { borderRadius: 0, color: 'white' }
-                                                }}
                                                 sx={{
-                                                    bgcolor: '#b9bd62ff',
-                                                    opacity: syncWhatsApp ? 0.7 : 1,
-                                                    '& .MuiInputLabel-root': { color: 'white' },
-                                                    '& .MuiInputLabel-root.Mui-focused': { color: 'white' },
-                                                    '& .MuiFilledInput-root:hover': { bgcolor: '#9ba035ff' },
-                                                    '& .MuiFilledInput-root.Mui-focused': { bgcolor: '#9ba035ff' },
-                                                    '& .Mui-disabled': { WebkitTextFillColor: 'rgba(255, 255, 255, 0.5)' }
+                                                    '& .MuiOutlinedInput-root': {
+                                                        bgcolor: 'transparent',
+                                                        borderRadius: '4px',
+                                                        '& fieldset': { borderColor: 'rgba(255, 255, 255, 0.3)' },
+                                                        '&:hover fieldset': { borderColor: 'rgba(255, 255, 255, 0.6)' },
+                                                        '&.Mui-focused fieldset': { borderColor: '#ffffff' },
+                                                        '& input': { color: '#ffffff' }
+                                                    },
+                                                    '& .MuiInputLabel-root': { color: 'rgba(255, 255, 255, 0.7)', fontWeight: 500 },
+                                                    '& .MuiInputLabel-root.Mui-focused': { color: '#ffffff' }
                                                 }}
                                             />
                                         </Grid>
@@ -520,18 +480,19 @@ const Contact = () => {
                                                 onChange={handleChange}
                                                 error={!!errors.email}
                                                 helperText={errors.email}
-                                                variant="filled"
+                                                variant="outlined"
                                                 size="small"
-                                                InputProps={{
-                                                    disableUnderline: true,
-                                                    sx: { borderRadius: 0, color: 'white' }
-                                                }}
                                                 sx={{
-                                                    bgcolor: '#b9bd62ff',
-                                                    '& .MuiInputLabel-root': { color: 'white' },
-                                                    '& .MuiInputLabel-root.Mui-focused': { color: 'white' },
-                                                    '& .MuiFilledInput-root:hover': { bgcolor: '#9ba035ff' },
-                                                    '& .MuiFilledInput-root.Mui-focused': { bgcolor: '#9ba035ff' }
+                                                    '& .MuiOutlinedInput-root': {
+                                                        bgcolor: 'transparent',
+                                                        borderRadius: '4px',
+                                                        '& fieldset': { borderColor: 'rgba(255, 255, 255, 0.3)' },
+                                                        '&:hover fieldset': { borderColor: 'rgba(255, 255, 255, 0.6)' },
+                                                        '&.Mui-focused fieldset': { borderColor: '#ffffff' },
+                                                        '& input': { color: '#ffffff' }
+                                                    },
+                                                    '& .MuiInputLabel-root': { color: 'rgba(255, 255, 255, 0.7)', fontWeight: 500 },
+                                                    '& .MuiInputLabel-root.Mui-focused': { color: '#ffffff' }
                                                 }}
                                             />
                                         </Grid>
@@ -570,9 +531,9 @@ const Contact = () => {
                                                                 variant="filled"
                                                                 label={option}
                                                                 {...tagProps}
-                                                                deleteIcon={<X size={14} color="#fff" />}
+                                                                deleteIcon={<X size={14} color="#000158" />}
                                                                 sx={{
-                                                                    bgcolor: '#ffffffff',
+                                                                    bgcolor: '#b9bd62',
                                                                     color: '#000158',
                                                                     borderRadius: '20px',
                                                                     height: '28px',
@@ -580,7 +541,7 @@ const Contact = () => {
                                                                     fontWeight: 700,
                                                                     '& .MuiChip-label': { px: 2 },
                                                                     '& .MuiChip-deleteIcon': {
-                                                                        color: '#fff !important',
+                                                                        color: '#000158 !important',
                                                                         opacity: 0.8,
                                                                     }
                                                                 }}
@@ -591,28 +552,24 @@ const Contact = () => {
                                                 renderInput={(params) => (
                                                     <TextField
                                                         {...params}
-                                                        variant="filled"
+                                                        variant="outlined"
                                                         label="Product Interest"
                                                         placeholder={formData.products.length === 0 ? "Select products..." : ""}
                                                         size="small"
                                                         error={!!errors.products}
                                                         helperText={errors.products}
-                                                        InputProps={{
-                                                            ...params.InputProps,
-                                                            disableUnderline: true,
-                                                            sx: {
-                                                                borderRadius: 0,
-                                                                bgcolor: '#b9bd62ff',
-                                                                color: 'white',
-                                                                pt: '24px !important',
-                                                                pb: '8px !important',
-                                                                px: '12px !important'
-                                                            }
-                                                        }}
                                                         sx={{
-                                                            '& .MuiInputLabel-root': { color: 'white' },
-                                                            '& .MuiInputLabel-root.Mui-focused': { color: 'main.primary' },
-                                                            '& .MuiAutocomplete-endAdornment .MuiIconButton-root': { color: 'main.primary' }
+                                                            '& .MuiOutlinedInput-root': {
+                                                                bgcolor: 'transparent',
+                                                                borderRadius: '4px',
+                                                                '& fieldset': { borderColor: 'rgba(255, 255, 255, 0.3)' },
+                                                                '&:hover fieldset': { borderColor: 'rgba(255, 255, 255, 0.6)' },
+                                                                '&.Mui-focused fieldset': { borderColor: '#ffffff' },
+                                                                '& input': { color: '#ffffff' }
+                                                            },
+                                                            '& .MuiInputLabel-root': { color: 'rgba(255, 255, 255, 0.7)', fontWeight: 500 },
+                                                            '& .MuiInputLabel-root.Mui-focused': { color: '#ffffff' },
+                                                            '& .MuiAutocomplete-popupIndicator, & .MuiAutocomplete-clearIndicator': { color: 'rgba(255, 255, 255, 0.7)' }
                                                         }}
                                                     />
                                                 )}
@@ -631,27 +588,6 @@ const Contact = () => {
                                                         }
                                                     }
                                                 }}
-                                                sx={{
-                                                    '& .MuiAutocomplete-inputRoot': {
-                                                        bgcolor: '#b9bd62ff',
-                                                        borderRadius: 0,
-                                                        pt: '24px !important',
-                                                        pb: '8px !important',
-                                                        px: '12px !important',
-                                                        display: 'flex',
-                                                        flexWrap: 'wrap',
-                                                        gap: '8px'
-                                                    },
-                                                    '& .MuiAutocomplete-endAdornment': {
-                                                        top: '50%',
-                                                        transform: 'translateY(-50%)',
-                                                        right: '8px',
-                                                        '& .MuiIconButton-root': {
-                                                            padding: '4px',
-                                                            color: '#000158'
-                                                        }
-                                                    }
-                                                }}
                                             />
                                         </Grid>
                                         <Grid item xs={12}>
@@ -663,18 +599,21 @@ const Contact = () => {
                                                 name="message"
                                                 value={formData.message}
                                                 onChange={handleChange}
-                                                variant="filled"
+                                                error={!!errors.message}
+                                                helperText={errors.message}
+                                                variant="outlined"
                                                 size="small"
-                                                InputProps={{
-                                                    disableUnderline: true,
-                                                    sx: { borderRadius: 0, color: 'white' }
-                                                }}
                                                 sx={{
-                                                    bgcolor: '#b9bd62ff',
-                                                    '& .MuiInputLabel-root': { color: 'white' },
-                                                    '& .MuiInputLabel-root.Mui-focused': { color: 'white' },
-                                                    '& .MuiFilledInput-root:hover': { bgcolor: '#9ba035ff' },
-                                                    '& .MuiFilledInput-root.Mui-focused': { bgcolor: '#9ba035ff' }
+                                                    '& .MuiOutlinedInput-root': {
+                                                        bgcolor: 'transparent',
+                                                        borderRadius: '4px',
+                                                        '& fieldset': { borderColor: 'rgba(255, 255, 255, 0.3)' },
+                                                        '&:hover fieldset': { borderColor: 'rgba(255, 255, 255, 0.6)' },
+                                                        '&.Mui-focused fieldset': { borderColor: '#ffffff' },
+                                                        '& textarea': { color: '#ffffff' }
+                                                    },
+                                                    '& .MuiInputLabel-root': { color: 'rgba(255, 255, 255, 0.7)', fontWeight: 500 },
+                                                    '& .MuiInputLabel-root.Mui-focused': { color: '#ffffff' }
                                                 }}
                                             />
                                         </Grid>
@@ -684,8 +623,8 @@ const Contact = () => {
                                                 type="submit"
                                                 disabled={status === 'loading'}
                                                 showArrow={status !== 'success' && status !== 'loading'}
-                                                baseBg={status === 'success' ? '#b9bd62ff' : '#b9bd62ff'}
-                                                slideBg={status === 'success' ? '#000158' : '#000158'}
+                                                baseBg={status === 'success' ? '#b9bd62ff' : '#000158'}
+                                                slideBg={status === 'success' ? '#000158' : '#b9bd62ff'}
                                                 baseColor="#ffffff"
                                                 slideColor="#ffffff"
                                                 sx={{

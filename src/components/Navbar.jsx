@@ -60,8 +60,8 @@ const Navbar = ({ isScrolled, currentPage, navLinks, navigateTo, mobileMenuOpen,
                 left: { xs: 0, lg: '50%' },
                 right: { xs: 0, lg: 'auto' },
                 transform: { xs: 'none', lg: 'translateX(-50%)' },
-                width: { xs: '100%', lg: 'calc(100% - 40px)' },
-                maxWidth: 'xl',
+                width: { xs: '100%', lg: 'calc(100% - 80px)' },
+                maxWidth: '1350px',
                 height: '80px',
                 bgcolor: 'rgba(223, 223, 223, 0.85)',
                 backdropFilter: 'blur(10px)',
@@ -73,7 +73,7 @@ const Navbar = ({ isScrolled, currentPage, navLinks, navigateTo, mobileMenuOpen,
             }}
         >
             <Container maxWidth={false}>
-                <Toolbar disableGutters sx={{ justifyContent: 'space-between', minHeight: '100px', px: 2 }}>
+                <Toolbar disableGutters sx={{ justifyContent: 'space-between', minHeight: '80px', px: 2 }}>
                     {/* LOGO */}
                     <Box
                         sx={{

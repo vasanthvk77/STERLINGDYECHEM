@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
     Box,
     Container,
@@ -21,6 +21,49 @@ import AnimatedButton from './AnimatedButton';
 
 const ProductCatalog = ({ categories, activeCategory, setActiveCategory, activeSubtype, setActiveSubtype, filteredProducts, isHomePage }) => {
     const [searchQuery, setSearchQuery] = useState('');
+    const pinRef = useRef(null);
+    const scrollRef = useRef(null);
+    const [translateX, setTranslateX] = useState(0);
+    const [scrollProgress, setScrollProgress] = useState(0);
+
+    useEffect(() => {
+        if (!isHomePage) return;
+
+        const handleScroll = () => {
+            const pinEl = pinRef.current;
+            const scrollEl = scrollRef.current;
+            if (!pinEl || !scrollEl) return;
+
+            const rect = pinEl.getBoundingClientRect();
+            const viewHeight = window.innerHeight;
+            
+            const totalScroll = pinEl.offsetHeight - viewHeight;
+            if (totalScroll <= 0) return;
+
+            const scrolled = -rect.top;
+            const progress = Math.max(0, Math.min(1, scrolled / totalScroll));
+            setScrollProgress(progress);
+
+            const parentWidth = scrollEl.parentElement ? scrollEl.parentElement.clientWidth : window.innerWidth;
+            const maxTranslation = scrollEl.scrollWidth - parentWidth;
+
+            if (maxTranslation > 0) {
+                setTranslateX(progress * maxTranslation);
+            } else {
+                setTranslateX(0);
+            }
+        };
+
+        window.addEventListener('scroll', handleScroll);
+        window.addEventListener('resize', handleScroll);
+        const timer = setTimeout(handleScroll, 100);
+
+        return () => {
+            window.removeEventListener('scroll', handleScroll);
+            window.removeEventListener('resize', handleScroll);
+            clearTimeout(timer);
+        };
+    }, [isHomePage, filteredProducts, activeCategory, activeSubtype]);
 
 
     // Determine what mode we are rendering
@@ -79,9 +122,20 @@ const ProductCatalog = ({ categories, activeCategory, setActiveCategory, activeS
         return [];
     }, [searchQuery, renderMode, filteredProducts, allProducts, activeSubtype, isHomePage]);
 
-    return (
-        <Box component="section" sx={{ pt: isHomePage ? { xs: 8, lg: 12 } : { xs: 4, lg: 6 }, pb: { xs: 8, lg: 12 }, bgcolor: 'rgba(223, 223, 223, 0.2)' }}>
-            <Container maxWidth="lg">
+    const catalogContent = (
+        <Box 
+            component="section" 
+            sx={{ 
+                pt: isHomePage ? { xs: 8, lg: 0 } : { xs: 4, lg: 6 }, 
+                pb: isHomePage ? { xs: 8, lg: 0 } : { xs: 8, lg: 12 }, 
+                bgcolor: isHomePage ? 'transparent' : '#f8fafc',
+                width: '100%',
+                display: 'flex',
+                alignItems: 'center',
+                minHeight: isHomePage ? { lg: '100vh' } : 'auto'
+            }}
+        >
+            <Container maxWidth={false} sx={{ maxWidth: '1350px', width: { xs: '100%', lg: 'calc(100% - 80px)' }, px: { xs: 2, lg: 2 }, mx: 'auto', overflow: 'hidden' }}>
                 <Stack
                     direction={{ xs: 'column', md: 'row' }}
                     justifyContent="space-between"
@@ -143,8 +197,6 @@ const ProductCatalog = ({ categories, activeCategory, setActiveCategory, activeS
                                     }}
                                 />
                             </Box>
-
-
                         </Stack>
                     )}
                 </Stack>
@@ -196,18 +248,33 @@ const ProductCatalog = ({ categories, activeCategory, setActiveCategory, activeS
                             </Box>
                         )}
                         {isHomePage ? (
-                            <Box
+                            <>
+                                <Box
+                                    ref={scrollRef}
                                 sx={{
                                     display: 'flex',
                                     gap: 3,
-                                    overflowX: 'auto',
                                     pb: 4,
                                     px: 1,
                                     mx: -1,
-                                    scrollBehavior: 'smooth',
+                                    scrollBehavior: { xs: 'smooth', lg: 'auto' },
                                     WebkitOverflowScrolling: 'touch',
+                                    width: { xs: 'auto', lg: 'max-content' },
+                                    transform: {
+                                        xs: 'none',
+                                        lg: `translate3d(-${translateX}px, 0, 0)`
+                                    },
+                                    transition: {
+                                        xs: 'none',
+                                        lg: 'transform 0.1s ease-out'
+                                    },
+                                    overflowX: {
+                                        xs: 'auto',
+                                        lg: 'visible'
+                                    },
                                     '&::-webkit-scrollbar': {
                                         height: '6px',
+                                        display: { xs: 'block', lg: 'none' }
                                     },
                                     '&::-webkit-scrollbar-track': {
                                         bgcolor: 'rgba(0, 1, 88, 0.05)',
@@ -240,14 +307,40 @@ const ProductCatalog = ({ categories, activeCategory, setActiveCategory, activeS
                                     </Box>
                                 ))}
                             </Box>
+                            <Box 
+                                sx={{ 
+                                    display: { xs: 'none', lg: 'block' }, 
+                                    width: '100%', 
+                                    height: '6px', 
+                                    bgcolor: 'rgba(0, 1, 88, 0.05)', 
+                                    mt: 4, 
+                                    borderRadius: '10px',
+                                    position: 'relative',
+                                    overflow: 'hidden'
+                                }}
+                            >
+                                <Box 
+                                    sx={{ 
+                                        position: 'absolute', 
+                                        left: 0, 
+                                        top: 0, 
+                                        height: '100%', 
+                                        width: `${scrollProgress * 100}%`, 
+                                        bgcolor: 'primary.main', 
+                                        borderRadius: '10px',
+                                        transition: 'width 0.1s ease-out'
+                                    }}
+                                />
+                            </Box>
+                        </>
                         ) : (
                             <Box
                                 sx={{
-                                    maxHeight: '915px', // Precisely fits 2 rows (444px card + 24px gap = 912px)
+                                    maxHeight: '915px',
                                     overflowY: 'auto',
                                     overflowX: 'hidden',
                                     pr: 2,
-                                    mr: -2, // Offset the padding so the grid doesn't shift
+                                    mr: -2,
                                     pb: 2,
                                     '&::-webkit-scrollbar': {
                                         width: '6px',
@@ -287,6 +380,36 @@ const ProductCatalog = ({ categories, activeCategory, setActiveCategory, activeS
             </Container>
         </Box>
     );
+
+    if (isHomePage) {
+        return (
+            <Box 
+                ref={pinRef} 
+                sx={{ 
+                    position: 'relative', 
+                    height: { xs: 'auto', lg: '180vh' },
+                    bgcolor: '#f8fafc'
+                }}
+            >
+                <Box 
+                    sx={{ 
+                        position: { xs: 'relative', lg: 'sticky' }, 
+                        top: 0, 
+                        height: { xs: 'auto', lg: '100vh' }, 
+                        display: 'flex', 
+                        alignItems: 'center', 
+                        overflow: 'hidden',
+                        width: '100%',
+                        bgcolor: '#f8fafc'
+                    }}
+                >
+                    {catalogContent}
+                </Box>
+            </Box>
+        );
+    }
+
+    return catalogContent;
 };
 
 const BrandCard = ({ brand, onClick }) => (

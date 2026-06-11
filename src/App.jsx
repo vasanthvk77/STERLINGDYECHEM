@@ -262,7 +262,6 @@ const App = () => {
 
             <CorporateProfile />
 
-            <ScrollReveal>
               <ProductCatalog
                 isHomePage={true}
                 categories={categories}
@@ -272,7 +271,6 @@ const App = () => {
                 setActiveSubtype={setActiveSubtype}
                 filteredProducts={filteredProducts}
               />
-            </ScrollReveal>
 
             <Infrastructure />
 
@@ -299,7 +297,7 @@ const App = () => {
         )}
 
         {currentPage === 'PRODUCT' && (
-          <Box sx={{ pt: { xs: '80px', lg: '100px' }, minHeight: '100vh', bgcolor: 'rgba(223, 223, 223, 0.2)' }}>
+          <Box sx={{ pt: { xs: '80px', lg: '100px' }, minHeight: '100vh', bgcolor: '#f8fafc' }}>
             <ProductCatalog
               categories={categories}
               activeCategory={activeCategory}
