@@ -78,7 +78,7 @@ const Infrastructure = () => {
                     left: 0,
                     right: 0,
                     height: { xs: '100px', md: '180px' },
-                    background: 'linear-gradient(to bottom, #f8f8f8 0%, rgba(248, 248, 248, 0.95) 10%, rgba(248, 248, 248, 0) 80%)',
+                    background: 'linear-gradient(to bottom, #f8f8f8 0%, rgba(248, 248, 248, 0.95) 0%, rgba(248, 248, 248, 0) 40%)',
                     zIndex: 2,
                     pointerEvents: 'none'
                 }}
@@ -91,7 +91,7 @@ const Infrastructure = () => {
                     left: 0,
                     right: 0,
                     height: { xs: '100px', md: '180px' },
-                    background: 'linear-gradient(to top, #ffffff 0%, rgba(255, 255, 255, 0.95) 10%, rgba(255, 255, 255, 0) 80%)',
+                    background: 'linear-gradient(to top, #ffffff 0%, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0) 40%)',
                     zIndex: 2,
                     pointerEvents: 'none'
                 }}

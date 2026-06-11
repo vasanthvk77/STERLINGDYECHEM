@@ -202,7 +202,7 @@ const Contact = () => {
                             left: 0,
                             right: 0,
                             height: { xs: '100px', md: '180px' },
-                            background: 'linear-gradient(to bottom, #ffffff 0%, rgba(255, 255, 255, 0.95) 10%, rgba(255, 255, 255, 0) 80%)',
+                            background: 'linear-gradient(to bottom, #ffffff 0%, rgba(255, 255, 255, 0.95) 1%, rgba(255, 255, 255, 0) 40%)',
                             zIndex: 2,
                             pointerEvents: 'none'
                         }}
@@ -215,7 +215,7 @@ const Contact = () => {
                             left: 0,
                             right: 0,
                             height: { xs: '100px', md: '180px' },
-                            background: 'linear-gradient(to top, #f8f9fa 0%, rgba(248, 249, 250, 0.95) 10%, rgba(248, 249, 250, 0) 80%)',
+                            background: 'linear-gradient(to top, #f8f9fa 0%, rgba(248, 249, 250, 0.95) 1%, rgba(248, 249, 250, 0) 40%)',
                             zIndex: 2,
                             pointerEvents: 'none'
                         }}
@@ -231,7 +231,7 @@ const Contact = () => {
                         pointerEvents: 'none',
                         zIndex: 0,
                         backgroundImage: 'radial-gradient(#ffffff 1px, transparent 1px)',
-                        backgroundSize: '40px 40px',
+                        backgroundSize: '40px 20px',
                     }}
                 />
 
