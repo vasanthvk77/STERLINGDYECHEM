@@ -30,6 +30,7 @@ import imgReactive from '../assets/images/products/reactive.png';
 import imgAcid from '../assets/images/products/acid.png';
 import imgPigments from '../assets/images/products/pigments.png';
 import imgAuxiliaries from '../assets/images/products/auxiliaries.png';
+import AnimatedButton from './AnimatedButton';
 
 const AdminPanel = ({ products, onAdd, onDelete, onLogout }) => {
     const [isAdding, setIsAdding] = useState(false);
@@ -104,22 +105,22 @@ const AdminPanel = ({ products, onAdd, onDelete, onLogout }) => {
                             </Box>
                         </Box>
                         <Stack direction="row" spacing={2}>
-                            <Button
-                                variant="contained"
-                                startIcon={isAdding ? null : <PlusIcon size={18} />}
+                            <AnimatedButton
+                                lightBg={false}
+                                showArrow={false}
                                 onClick={() => setIsAdding(!isAdding)}
-                                sx={{ borderRadius: 0, fontWeight: 900, textTransform: 'uppercase', letterSpacing: '0.1em', px: 4 }}
+                                sx={{ px: 4 }}
                             >
                                 {isAdding ? 'Cancel' : 'Add Product'}
-                            </Button>
-                            <Button
-                                variant="outlined"
-                                startIcon={<LogOutIcon size={18} />}
+                            </AnimatedButton>
+                            <AnimatedButton
+                                lightBg={true}
+                                showArrow={false}
                                 onClick={onLogout}
-                                sx={{ borderRadius: 0, fontWeight: 900, textTransform: 'uppercase', letterSpacing: '0.1em', px: 4, borderWidth: 2, '&:hover': { borderWidth: 2 } }}
+                                sx={{ px: 4, border: '1px solid #000158' }}
                             >
                                 Logout
-                            </Button>
+                            </AnimatedButton>
                         </Stack>
                     </Stack>
                 </Container>
@@ -260,15 +261,15 @@ const AdminPanel = ({ products, onAdd, onDelete, onLogout }) => {
                                     </Stack>
                                 </Grid>
                             </Grid>
-                            <Button
+                            <AnimatedButton
                                 type="submit"
-                                variant="contained"
                                 disabled={loading}
-                                startIcon={loading ? <CircularProgress size={18} color="inherit" /> : <PlusIcon size={18} />}
-                                sx={{ mt: 6, px: 8, py: 2, borderRadius: 0, fontWeight: 900, textTransform: 'uppercase', letterSpacing: '0.1em' }}
+                                lightBg={false}
+                                showArrow={!loading}
+                                sx={{ mt: 6, px: 8, py: 2 }}
                             >
-                                Publish to Catalog
-                            </Button>
+                                {loading ? 'Publishing...' : 'Publish to Catalog'}
+                            </AnimatedButton>
                         </Box>
                     </Paper>
                 )}

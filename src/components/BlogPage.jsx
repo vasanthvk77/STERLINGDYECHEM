@@ -19,6 +19,7 @@ import { Calendar, ArrowRight, CheckCircle2, ChevronLeft, ChevronRight } from 'l
 import emailjs from '@emailjs/browser';
 import dbData from '../data/data.js';
 import blogNewsImage from '../assets/images/blog_news.png';
+import AnimatedButton from './AnimatedButton';
 
 const ImageSlider = ({ images, title }) => {
     const [currentIndex, setCurrentIndex] = useState(0);
@@ -275,21 +276,24 @@ const BlogPage = () => {
 
             if (SEND_METHOD === 1) {
                 const { service_id, public_key, admin_template_id } = db.emailjs_details;
-                await emailjs.send(service_id, admin_template_id, templateParams, public_key);
+                emailjs.send(service_id, admin_template_id, templateParams, public_key)
+                    .catch(err => console.error('Background EmailJS Error:', err));
             } else {
-                const response = await fetch('/api/sendEmail', {
+                fetch('/api/sendEmail', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(templateParams)
-                });
-                if (!response.ok) throw new Error('API Error');
+                }).catch(err => console.error('Background API Error:', err));
             }
 
-            setStatus('success');
-            setUsername('');
-            setEmail('');
-            setMessage('');
-            setShowSnackbar(true);
+            // Show success message after exactly 1 second optimistic delay
+            setTimeout(() => {
+                setStatus('success');
+                setUsername('');
+                setEmail('');
+                setMessage('');
+                setShowSnackbar(true);
+            }, 1000);
         } catch (error) {
             console.error('Subscription Error:', error);
             setStatus('error');
@@ -391,26 +395,17 @@ const BlogPage = () => {
                                         >
                                             {post.excerpt}
                                         </Typography>
-                                        <Button
-                                            variant="text"
-                                            color="primary"
+                                        <AnimatedButton
+                                            lightBg={false}
                                             sx={{
-                                                p: 0,
-                                                minWidth: 0,
-                                                fontWeight: 900,
-                                                textTransform: 'uppercase',
-                                                letterSpacing: '0.2em',
+                                                py: 1,
+                                                px: 3,
                                                 fontSize: '10px',
-                                                borderBottom: '2px solid',
-                                                borderColor: 'primary.main',
-                                                borderRadius: 0,
-                                                '&:hover': { bgcolor: 'transparent', gap: 2 },
-                                                transition: 'all 0.3s'
+                                                width: 'fit-content'
                                             }}
-                                            endIcon={<ArrowRight size={14} />}
                                         >
                                             Read Analysis
-                                        </Button>
+                                        </AnimatedButton>
                                     </Box>
                                 ))}
                             </Stack>
@@ -527,35 +522,25 @@ const BlogPage = () => {
                                                     '& textarea::placeholder': { color: 'rgba(255, 255, 255, 0.6)', opacity: 1 }
                                                 }}
                                             />
-                                            <Button
+                                            <AnimatedButton
                                                 type="submit"
-                                                variant="contained"
                                                 disabled={status === 'loading'}
+                                                lightBg={true}
+                                                showArrow={status !== 'loading'}
                                                 sx={{
                                                     py: 1.5,
                                                     px: 3,
                                                     mt: 1,
-                                                    bgcolor: '#ffffff',
-                                                    color: 'primary.main',
-                                                    fontWeight: 800,
-                                                    letterSpacing: '0.1em',
-                                                    borderRadius: '4px',
                                                     display: 'flex',
                                                     justifyContent: 'space-between',
-                                                    '&:hover': {
-                                                        bgcolor: 'rgba(255, 255, 255, 0.9)'
-                                                    }
                                                 }}
                                             >
                                                 {status === 'loading' ? (
                                                     <CircularProgress size={24} color="inherit" sx={{ mx: 'auto' }} />
                                                 ) : (
-                                                    <>
-                                                        <span>SEND INQUIRY</span>
-                                                        <ArrowRight size={20} />
-                                                    </>
+                                                    'SEND INQUIRY'
                                                 )}
-                                            </Button>
+                                            </AnimatedButton>
                                         </form>
                                         {status === 'error' && email && (
                                             <Typography variant="caption" sx={{ color: '#fca5a5', display: 'block', mt: 1, fontWeight: 700 }}>

@@ -16,6 +16,7 @@ import {
 import { ArrowRight, Search } from 'lucide-react';
 import levisBristleImage from '../assets/images/products/levis_bristle.png';
 import productsBgImage from '../assets/images/products/products_bg.png';
+import AnimatedButton from './AnimatedButton';
 
 
 const ProductCatalog = ({ categories, activeCategory, setActiveCategory, activeSubtype, setActiveSubtype, filteredProducts, isHomePage }) => {
@@ -79,7 +80,7 @@ const ProductCatalog = ({ categories, activeCategory, setActiveCategory, activeS
     }, [searchQuery, renderMode, filteredProducts, allProducts, activeSubtype, isHomePage]);
 
     return (
-        <Box component="section" sx={{ py: { xs: 8, lg: 12 }, bgcolor: 'rgba(223, 223, 223, 0.2)' }}>
+        <Box component="section" sx={{ pt: isHomePage ? { xs: 8, lg: 12 } : { xs: 4, lg: 6 }, pb: { xs: 8, lg: 12 }, bgcolor: 'rgba(223, 223, 223, 0.2)' }}>
             <Container maxWidth="lg">
                 <Stack
                     direction={{ xs: 'column', md: 'row' }}
@@ -156,14 +157,13 @@ const ProductCatalog = ({ categories, activeCategory, setActiveCategory, activeS
                         <Typography variant="body1" color="text.secondary" sx={{ mb: 4 }}>
                             We couldn't find anything matching "{searchQuery}".
                         </Typography>
-                        <Button
-                            variant="outlined"
-                            color="primary"
+                        <AnimatedButton
+                            lightBg={false}
                             onClick={() => setSearchQuery('')}
-                            sx={{ borderRadius: 0, px: 4, py: 1, fontWeight: 800 }}
+                            sx={{ px: 4, py: 1 }}
                         >
                             Clear Search
-                        </Button>
+                        </AnimatedButton>
                     </Box>
                 ) : (
                     <>
@@ -214,10 +214,10 @@ const ProductCatalog = ({ categories, activeCategory, setActiveCategory, activeS
                                         borderRadius: '10px',
                                     },
                                     '&::-webkit-scrollbar-thumb': {
-                                        bgcolor: 'rgba(0, 1, 88, 0.1)',
+                                        bgcolor: 'primary.main',
                                         borderRadius: '10px',
                                         '&:hover': {
-                                            bgcolor: 'rgba(0, 1, 88, 0.2)',
+                                            bgcolor: 'rgba(0, 1, 88, 0.8)',
                                         }
                                     }
                                 }}
@@ -301,17 +301,18 @@ const BrandCard = ({ brand, onClick }) => (
             bgcolor: '#ffffff',
             cursor: 'pointer',
             boxShadow: '0 4px 20px rgba(0,0,0,0.05)',
-            transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+            transition: 'transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+            willChange: 'transform, box-shadow',
             position: 'relative',
             overflow: 'hidden',
             '&:hover': {
-                transform: 'translateY(-10px)',
+                transform: 'translate3d(0, -10px, 0)',
                 boxShadow: '0 20px 40px rgba(0, 0, 0, 0.1)',
                 '& .MuiCardMedia-root': {
-                    transform: 'scale(1.05)',
+                    transform: 'scale(1.05) translate3d(0,0,0)',
                 },
                 '& .brand-arrow': {
-                    transform: 'translateX(5px)',
+                    transform: 'translate3d(5px, 0, 0)',
                     color: 'primary.main'
                 }
             }
@@ -326,7 +327,8 @@ const BrandCard = ({ brand, onClick }) => (
                     height: '100%',
                     width: '100%',
                     objectFit: 'cover',
-                    transition: 'transform 0.5s ease'
+                    transition: 'transform 0.5s ease',
+                    willChange: 'transform'
                 }}
             />
             <Box
@@ -363,7 +365,7 @@ const BrandCard = ({ brand, onClick }) => (
             </Typography>
             <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', color: 'text.secondary', fontWeight: 700, fontSize: '0.875rem' }}>
                 <Typography variant="caption" sx={{ textTransform: 'uppercase', letterSpacing: '0.1em' }}>View More</Typography>
-                <ArrowRight className="brand-arrow" size={18} style={{ transition: 'all 0.3s ease' }} />
+                <ArrowRight className="brand-arrow" size={18} style={{ transition: 'transform 0.3s ease, color 0.3s ease', willChange: 'transform' }} />
             </Box>
         </CardContent>
     </Card>
@@ -381,17 +383,18 @@ const SubtypeCard = ({ subtype, onClick }) => (
             bgcolor: '#ffffff',
             cursor: 'pointer',
             boxShadow: '0 4px 20px rgba(0,0,0,0.05)',
-            transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+            transition: 'transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+            willChange: 'transform, box-shadow',
             position: 'relative',
             overflow: 'hidden',
             '&:hover': {
-                transform: 'translateY(-10px)',
+                transform: 'translate3d(0, -10px, 0)',
                 boxShadow: '0 20px 40px rgba(0, 0, 0, 0.1)',
                 '& .MuiCardMedia-root': {
-                    transform: 'scale(1.05)',
+                    transform: 'scale(1.05) translate3d(0,0,0)',
                 },
                 '& .subtype-arrow': {
-                    transform: 'translateX(5px)',
+                    transform: 'translate3d(5px, 0, 0)',
                     color: 'primary.main'
                 }
             }
@@ -406,7 +409,8 @@ const SubtypeCard = ({ subtype, onClick }) => (
                     height: '100%',
                     width: '100%',
                     objectFit: 'cover',
-                    transition: 'transform 0.5s ease'
+                    transition: 'transform 0.5s ease',
+                    willChange: 'transform'
                 }}
             />
             <Box
@@ -442,7 +446,7 @@ const SubtypeCard = ({ subtype, onClick }) => (
             </Typography>
             <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', color: 'text.secondary', fontWeight: 700, fontSize: '0.875rem' }}>
                 <Typography variant="caption" sx={{ textTransform: 'uppercase', letterSpacing: '0.1em' }}>View More</Typography>
-                <ArrowRight className="subtype-arrow" size={18} style={{ transition: 'all 0.3s ease' }} />
+                <ArrowRight className="subtype-arrow" size={18} style={{ transition: 'transform 0.3s ease, color 0.3s ease', willChange: 'transform' }} />
             </Box>
         </CardContent>
     </Card>
@@ -459,15 +463,16 @@ const ProductCard = ({ product }) => (
             bgcolor: '#000158',
             color: 'white',
             boxShadow: 'none',
-            transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+            transition: 'transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.4s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+            willChange: 'transform, border-color, box-shadow',
             position: 'relative',
             overflow: 'hidden',
             '&:hover': {
                 borderColor: 'rgba(255, 255, 255, 0.3)',
-                transform: 'translateY(-10px)',
+                transform: 'translate3d(0, -10px, 0)',
                 boxShadow: '0 20px 40px rgba(0, 0, 0, 0.4)',
                 '& .MuiCardMedia-root': {
-                    transform: 'scale(1.1)',
+                    transform: 'scale(1.1) translate3d(0,0,0)',
                 },
                 '& .overlay-hover': {
                     opacity: 0.1,
@@ -475,7 +480,7 @@ const ProductCard = ({ product }) => (
             }
         }}
     >
-        <Box sx={{ position: 'relative', height: { xs: 200, md: 200 }, overflow: 'hidden', bgcolor: 'rgba(223, 223, 223, 0.3)' }}>
+        <Box sx={{ position: 'relative', height: { xs: 200, md: 300 }, overflow: 'hidden', bgcolor: 'rgba(223, 223, 223, 0.3)' }}>
             <Box
                 className="overlay-hover"
                 sx={{
@@ -489,13 +494,14 @@ const ProductCard = ({ product }) => (
             />
             <CardMedia
                 component="img"
-                src={product.image || levisBristleImage}
+                src={product.image}
                 alt={product.name}
                 sx={{
                     height: '100%',
                     width: '100%',
                     objectFit: 'cover',
-                    transition: 'transform 0.5s ease'
+                    transition: 'transform 0.5s ease',
+                    willChange: 'transform'
                 }}
             />
             <Typography
@@ -509,6 +515,7 @@ const ProductCard = ({ product }) => (
                     letterSpacing: '0.2em',
                     color: 'primary.main',
                     bgcolor: 'rgba(255, 255, 255, 0.9)',
+                    
                     px: 1,
                     py: 0.5,
                     border: '1px solid',
@@ -524,7 +531,7 @@ const ProductCard = ({ product }) => (
         <CardContent
             sx={{
                 p: { xs: 2, md: 3 },
-                height: { xs: 190, md: 220 },
+                height: { xs: 190, md: 70 },
                 flexGrow: 1,
                 display: 'flex',
                 flexDirection: 'column',
@@ -546,7 +553,7 @@ const ProductCard = ({ product }) => (
                     variant="h6"
                     sx={{
                         fontSize: { xs: '1rem', md: '1rem' },
-                        fontWeight: 900,
+                        fontWeight: 700,
                         textTransform: 'uppercase',
                         color: 'white',
                         mb: { xs: 0, md: 2 },
@@ -579,29 +586,11 @@ const ProductCard = ({ product }) => (
                             mb: 1
                         }}
                     >
-                        {product.command || product.app || "Details coming soon..."}
+                        {product.command || product.app}
                     </Typography>
                 </Box>
 
-                <Button
-                    fullWidth
-                    sx={{
-                        mt: { xs: 2, md: 3 },
-                        py: { xs: 1, md: 1.5 },
-                        bgcolor: 'rgba(255, 255, 255, 0.1)',
-                        color: 'white',
-                        fontSize: '10px',
-                        fontWeight: 900,
-                        borderRadius: 0,
-                        '&:hover': {
-                            bgcolor: 'white',
-                            color: '#000158',
-                        }
-                    }}
-                    endIcon={<ArrowRight size={14} />}
-                >
-                    Technical Specs
-                </Button>
+            
             </Box>
         </CardContent>
     </Card>

@@ -91,7 +91,7 @@ const Footer = ({ navigateTo, currentPage }) => {
                                             fontSize: '13px',
                                             fontWeight: isActive ? 800 : 600,
                                             color: isActive ? '#000158' : '#64748b',
-                                            transition: 'all 0.2s',
+                                            transition: 'color 0.2s',
                                             '&:hover': { color: '#000158' }
                                         }}
                                     >

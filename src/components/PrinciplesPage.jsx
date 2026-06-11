@@ -86,10 +86,7 @@ const PrinciplesPage = () => {
                                         width: '380px',
                                         height: '380px',
                                         animation: 'float 6s ease-in-out infinite',
-                                        '@keyframes float': {
-                                            '0%, 100%': { transform: 'translateY(0px)' },
-                                            '50%': { transform: 'translateY(-15px)' }
-                                        }
+                                        willChange: 'transform',
                                     }}
                                 >
                                     <svg width="100%" height="100%" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -233,18 +230,19 @@ const PrinciplesPage = () => {
                                             border: '1px solid rgba(0, 1, 88, 0.1)',
                                             bgcolor: '#ffffff',
                                             boxShadow: 'none',
-                                            transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+                                            transition: 'transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.4s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+                                            willChange: 'transform, border-color, box-shadow',
                                             position: 'relative',
                                             overflow: 'hidden',
                                             textAlign: 'justify',
                                             '&:hover': {
                                                 borderColor: 'primary.main',
-                                                transform: 'translateY(-10px)',
+                                                transform: 'translate3d(0, -10px, 0)',
                                                 boxShadow: '0 20px 40px rgba(0, 1, 88, 0.1)',
                                                 '& .icon-wrapper': {
                                                     bgcolor: 'primary.main',
                                                     color: '#ffffff',
-                                                    transform: 'scale(1.1)'
+                                                    transform: 'scale(1.1) translate3d(0,0,0)'
                                                 }
                                             }
                                         }}
@@ -261,7 +259,8 @@ const PrinciplesPage = () => {
                                                     justifyContent: 'center',
                                                     color: 'primary.main',
                                                     mb: 4,
-                                                    transition: 'all 0.4s ease'
+                                                    transition: 'transform 0.4s ease, background-color 0.4s ease, color 0.4s ease',
+                                                    willChange: 'transform'
                                                 }}
                                             >
                                                 <item.icon size={36} strokeWidth={1.5} />

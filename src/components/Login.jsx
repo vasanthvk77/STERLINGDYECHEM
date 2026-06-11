@@ -12,6 +12,7 @@ import {
 } from '@mui/material';
 import { Lock, User, ArrowRight } from 'lucide-react';
 import dbData from '../data/data.js';
+import AnimatedButton from './AnimatedButton';
 
 const Login = ({ onLogin }) => {
     const [username, setUsername] = useState('');
@@ -126,22 +127,16 @@ const Login = ({ onLogin }) => {
                             </Alert>
                         )}
 
-                        <Button
+                        <AnimatedButton
                             fullWidth
                             type="submit"
-                            variant="contained"
-                            size="large"
-                            endIcon={<ArrowRight size={18} />}
+                            lightBg={false}
                             sx={{
                                 py: 2,
-                                fontWeight: 900,
-                                textTransform: 'uppercase',
-                                letterSpacing: '0.2em',
-                                borderRadius: 0
                             }}
                         >
                             Sign In
-                        </Button>
+                        </AnimatedButton>
                     </Stack>
                 </Box>
 

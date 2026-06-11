@@ -20,6 +20,7 @@ import {
 } from '@mui/material';
 import { Menu as MenuIcon, X as CloseIcon, ChevronDown, ChevronUp } from 'lucide-react';
 import logo from '../assets/images/logo.png';
+import AnimatedButton from './AnimatedButton';
 
 const Navbar = ({ isScrolled, currentPage, navLinks, navigateTo, mobileMenuOpen, setMobileMenuOpen }) => {
     const [anchorEl, setAnchorEl] = useState(null);
@@ -67,7 +68,7 @@ const Navbar = ({ isScrolled, currentPage, navLinks, navigateTo, mobileMenuOpen,
                 borderRadius: 0,
                 border: '1px solid rgba(255, 255, 255, 0.2)',
                 boxShadow: '0 10px 40px rgba(0, 1, 88, 0.2)',
-                transition: 'all 0.4s ease',
+                transition: 'background-color 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease, transform 0.4s ease, top 0.4s ease, left 0.4s ease, width 0.4s ease',
                 zIndex: 1100,
             }}
         >
@@ -179,30 +180,21 @@ const Navbar = ({ isScrolled, currentPage, navLinks, navigateTo, mobileMenuOpen,
 
                     {/* ACTIONS */}
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-                        <Button
+                        <AnimatedButton
                             variant="contained"
                             onClick={() => navigateTo('CONTACT US')}
+                            lightBg={false}
+                            borderColor={!isScrolled && currentPage === 'HOME' ? '#ffffff' : '#000158'}
                             sx={{
                                 display: { xs: 'none', sm: 'flex' },
-                                bgcolor: currentPage === 'CONTACT US' ? '#000158' : '#ffffff',
-                                color: currentPage === 'CONTACT US' ? '#ffffff' : '#000158',
-                                borderRadius: 0,
                                 px: 4,
                                 py: 1.2,
-                                fontWeight: 900,
                                 fontSize: '11px',
-                                letterSpacing: '0.12em',
-                                border: !isScrolled && currentPage === 'HOME' ? '1px solid #ffffff' : '1px solid #000158',
-                                '&:hover': {
-                                    bgcolor: currentPage === 'CONTACT US' ? '#0000a0' : (isScrolled || currentPage !== 'HOME' ? 'rgba(0, 1, 88, 0.05)' : 'rgba(255, 255, 255, 0.1)'),
-                                    color: currentPage === 'CONTACT US' ? '#ffffff' : (isScrolled || currentPage !== 'HOME' ? '#000158' : '#ffffff'),
-                                    transform: 'translateY(-1px)',
-                                    boxShadow: '0 5px 15px rgba(0, 0, 0, 0.2)'
-                                }
+                                boxShadow: '0 5px 15px rgba(0, 0, 0, 0.2)'
                             }}
                         >
                             CONTACT US
-                        </Button>
+                        </AnimatedButton>
                         <IconButton
                             onClick={() => setMobileMenuOpen(true)}
                             sx={{

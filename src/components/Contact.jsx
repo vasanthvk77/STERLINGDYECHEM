@@ -23,6 +23,7 @@ import CheckBoxIcon from '@mui/icons-material/CheckBox';
 import emailjs from '@emailjs/browser';
 import dbData from '../data/data.js';
 import contactBgImage from '../assets/images/hero_pioneer.jpg';
+import AnimatedButton from './AnimatedButton';
 
 const Contact = () => {
     // --- EMAIL CONFIGURATION ---
@@ -114,42 +115,44 @@ const Contact = () => {
                 // METHOD 1: EMAILJS (Frontend)
                 const { service_id, public_key, ack_template_id, admin_template_id } = dbData.emailjs_details;
 
-                // 1. Send Admin Notification First
-                await emailjs.send(service_id, admin_template_id, templateParams, public_key);
-
-                // 2. Send Customer Acknowledgment Second
-                await emailjs.send(
-                    service_id,
-                    ack_template_id,
-                    {
-                        name: fullName,
-                        requirement: requirement,
-                        email: formData.email
-                    },
-                    public_key
-                );
+                // Send admin notification and customer acknowledgment in background
+                emailjs.send(service_id, admin_template_id, templateParams, public_key)
+                    .then(() => {
+                        emailjs.send(
+                            service_id,
+                            ack_template_id,
+                            {
+                                name: fullName,
+                                requirement: requirement,
+                                email: formData.email
+                            },
+                            public_key
+                        );
+                    })
+                    .catch(err => console.error('Background EmailJS Error:', err));
             } else {
                 // METHOD 2: RESEND (Serverless API)
-                const response = await fetch('/api/sendEmail', {
+                fetch('/api/sendEmail', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(templateParams)
-                });
-
-                if (!response.ok) throw new Error('API Error');
+                }).catch(err => console.error('Background API Error:', err));
             }
 
-            setStatus('success');
-            setFormData({
-                firstName: '',
-                lastName: '',
-                email: '',
-                phone: '',
-                whatsapp: '',
-                products: ['Silicone Inks'],
-                message: ''
-            });
-            setShowSnackbar(true);
+            // Immediately set a 1 second timeout to show success (Optimistic UI)
+            setTimeout(() => {
+                setStatus('success');
+                setFormData({
+                    firstName: '',
+                    lastName: '',
+                    email: '',
+                    phone: '',
+                    whatsapp: '',
+                    products: ['Silicone Inks'],
+                    message: ''
+                });
+                setShowSnackbar(true);
+            }, 1000);
         } catch (error) {
             console.error('Email Sending Error:', error);
             setStatus('error');
@@ -189,6 +192,32 @@ const Contact = () => {
                             inset: 0,
                             // background: 'linear-gradient(to right, #000158, rgba(0, 1, 88, 0.7), transparent)',
                             zIndex: 1
+                        }}
+                    />
+                    {/* Top Edge Fade */}
+                    <Box
+                        sx={{
+                            position: 'absolute',
+                            top: 0,
+                            left: 0,
+                            right: 0,
+                            height: { xs: '100px', md: '180px' },
+                            background: 'linear-gradient(to bottom, #ffffff 0%, rgba(255, 255, 255, 0.95) 10%, rgba(255, 255, 255, 0) 80%)',
+                            zIndex: 2,
+                            pointerEvents: 'none'
+                        }}
+                    />
+                    {/* Bottom Edge Fade */}
+                    <Box
+                        sx={{
+                            position: 'absolute',
+                            bottom: 0,
+                            left: 0,
+                            right: 0,
+                            height: { xs: '100px', md: '180px' },
+                            background: 'linear-gradient(to top, #f8f9fa 0%, rgba(248, 249, 250, 0.95) 10%, rgba(248, 249, 250, 0) 80%)',
+                            zIndex: 2,
+                            pointerEvents: 'none'
                         }}
                     />
                 </Box>
@@ -650,25 +679,28 @@ const Contact = () => {
                                             />
                                         </Grid>
                                         <Grid item xs={12}>
-                                            <Button
+                                            <AnimatedButton
                                                 fullWidth
                                                 type="submit"
-                                                variant="contained"
-                                                size="large"
                                                 disabled={status === 'loading'}
+                                                showArrow={status !== 'success' && status !== 'loading'}
+                                                baseBg={status === 'success' ? '#b9bd62ff' : '#b9bd62ff'}
+                                                slideBg={status === 'success' ? '#000158' : '#000158'}
+                                                baseColor="#ffffff"
+                                                slideColor="#ffffff"
                                                 sx={{
                                                     py: 2,
                                                     mt: 1,
-                                                    bgcolor: status === 'success' ? 'success.main' : '#b9bd62ff',
-                                                    '& .MuiFilledInput-root:hover': { bgcolor: '#28911cff' },
-                                                    '& .MuiFilledInput-root.Mui-focused': { bgcolor: '#28911cff' },
-                                                    '& .MuiButton-root:hover': { bgcolor: '#28911cff' },
-
                                                 }}
-                                                endIcon={status === 'loading' ? <CircularProgress size={20} color="inherit" /> : <ArrowRight size={14} />}
                                             >
-                                                {status === 'success' ? 'Request Sent' : 'Submit'}
-                                            </Button>
+                                                {status === 'loading' ? (
+                                                    <CircularProgress size={20} color="inherit" />
+                                                ) : status === 'success' ? (
+                                                    'Request Sent'
+                                                ) : (
+                                                    'Submit'
+                                                )}
+                                            </AnimatedButton>
                                         </Grid>
                                     </Grid>
                                 </form>

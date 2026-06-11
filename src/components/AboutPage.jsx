@@ -67,18 +67,19 @@ const AboutPage = () => {
                                         bgcolor: '#ffffff',
                                         boxShadow: '0 20px 40px rgba(0,0,0,0.04)',
                                         border: '1px solid rgba(0, 1, 88, 0.05)',
-                                        transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+                                        transition: 'transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.4s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+                                        willChange: 'transform, box-shadow, border-color',
                                         position: 'relative',
                                         overflow: 'hidden',
                                         '&:hover': {
-                                            transform: 'translateY(-10px)',
+                                            transform: 'translate3d(0, -10px, 0)',
                                             boxShadow: '0 30px 60px rgba(0,0,0,0.08)',
                                             borderColor: 'rgba(0, 1, 88, 0.1)',
-                                            '& .icon-bg-vision': { transform: 'scale(1.5) rotate(15deg)' }
+                                            '& .icon-bg-vision': { transform: 'scale(1.5) rotate(15deg) translate3d(0,0,0)' }
                                         }
                                     }}
                                 >
-                                    <Box className="icon-bg-vision" sx={{ position: 'absolute', top: -30, right: -30, width: 150, height: 150, borderRadius: '50%', bgcolor: 'rgba(0, 1, 88, 0.02)', transition: 'transform 0.6s ease', zIndex: 0 }} />
+                                    <Box className="icon-bg-vision" sx={{ position: 'absolute', top: -30, right: -30, width: 150, height: 150, borderRadius: '50%', bgcolor: 'rgba(0, 1, 88, 0.02)', transition: 'transform 0.6s ease', willChange: 'transform', zIndex: 0 }} />
                                     <Box sx={{ position: 'relative', zIndex: 1 }}>
                                         <Box sx={{ display: 'flex', alignItems: 'center', mb: 3, gap: 2.5 }}>
                                             <Box sx={{ width: 56, height: 56, borderRadius: '16px', bgcolor: 'rgba(0, 1, 88, 0.05)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'primary.main', transition: 'all 0.3s ease' }}>
@@ -104,17 +105,18 @@ const AboutPage = () => {
                                         bgcolor: 'primary.main',
                                         color: 'white',
                                         boxShadow: '0 20px 40px rgba(0,1,88,0.2)',
-                                        transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+                                        transition: 'transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+                                        willChange: 'transform, box-shadow',
                                         position: 'relative',
                                         overflow: 'hidden',
                                         '&:hover': {
-                                            transform: 'translateY(-10px)',
+                                            transform: 'translate3d(0, -10px, 0)',
                                             boxShadow: '0 30px 60px rgba(0,1,88,0.35)',
-                                            '& .icon-bg-mission': { transform: 'scale(1.5) rotate(-15deg)' }
+                                            '& .icon-bg-mission': { transform: 'scale(1.5) rotate(-15deg) translate3d(0,0,0)' }
                                         }
                                     }}
                                 >
-                                    <Box className="icon-bg-mission" sx={{ position: 'absolute', top: -30, right: -30, width: 150, height: 150, borderRadius: '50%', bgcolor: 'rgba(255, 255, 255, 0.05)', transition: 'transform 0.6s ease', zIndex: 0 }} />
+                                    <Box className="icon-bg-mission" sx={{ position: 'absolute', top: -30, right: -30, width: 150, height: 150, borderRadius: '50%', bgcolor: 'rgba(255, 255, 255, 0.05)', transition: 'transform 0.6s ease', willChange: 'transform', zIndex: 0 }} />
                                     <Box sx={{ position: 'relative', zIndex: 1 }}>
                                         <Box sx={{ display: 'flex', alignItems: 'center', mb: 3, gap: 2.5 }}>
                                             <Box sx={{ width: 56, height: 56, borderRadius: '16px', bgcolor: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'primary.main' }}>
@@ -161,10 +163,11 @@ const AboutPage = () => {
                                         aspectRatio: '4/5',
                                         bgcolor: 'white',
                                         p: 1.5,
-                                        transform: 'rotate(-2deg)',
+                                        transform: 'rotate(-2deg) translate3d(0,0,0)',
                                         transition: 'transform 0.6s cubic-bezier(0.4, 0, 0.2, 1)',
+                                        willChange: 'transform',
                                         '&:hover': {
-                                            transform: 'rotate(0deg) scale(1.02)'
+                                            transform: 'rotate(0deg) scale(1.02) translate3d(0,0,0)'
                                         }
                                     }}
                                 >
@@ -217,10 +220,7 @@ const AboutPage = () => {
                                         alignItems: 'center',
                                         gap: 2.5,
                                         animation: 'float 6s ease-in-out infinite',
-                                        '@keyframes float': {
-                                            '0%, 100%': { transform: 'translateY(0)' },
-                                            '50%': { transform: 'translateY(-15px)' }
-                                        }
+                                        willChange: 'transform',
                                     }}
                                 >
                                     <Box sx={{ width: 56, height: 56, borderRadius: '50%', bgcolor: 'rgba(0,1,88,0.04)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
@@ -250,6 +250,7 @@ const AboutPage = () => {
                                         boxShadow: '0 20px 40px rgba(58, 123, 213, 0.4)',
                                         display: { xs: 'none', lg: 'block' },
                                         animation: 'float 8s ease-in-out infinite reverse',
+                                        willChange: 'transform',
                                     }}
                                 />
                             </Box>

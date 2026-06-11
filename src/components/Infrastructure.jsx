@@ -45,6 +45,7 @@ const Infrastructure = () => {
 
     return (
         <Box 
+            id="certification-section"
             ref={sectionRef}
             component="section"
             sx={{ 
@@ -69,8 +70,33 @@ const Infrastructure = () => {
                 },
             }}
         >
-            <Container maxWidth="lg" sx={{ position: "relative", zIndex: 2 }}>
-                
+            {/* Top Edge Fade */}
+            <Box
+                sx={{
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    height: { xs: '100px', md: '180px' },
+                    background: 'linear-gradient(to bottom, #f8f8f8 0%, rgba(248, 248, 248, 0.95) 10%, rgba(248, 248, 248, 0) 80%)',
+                    zIndex: 2,
+                    pointerEvents: 'none'
+                }}
+            />
+            {/* Bottom Edge Fade */}
+            <Box
+                sx={{
+                    position: 'absolute',
+                    bottom: 0,
+                    left: 0,
+                    right: 0,
+                    height: { xs: '100px', md: '180px' },
+                    background: 'linear-gradient(to top, #ffffff 0%, rgba(255, 255, 255, 0.95) 10%, rgba(255, 255, 255, 0) 80%)',
+                    zIndex: 2,
+                    pointerEvents: 'none'
+                }}
+            />
+            <Container maxWidth="lg" sx={{ position: "relative", zIndex: 3 }}>
                 {}
                 <Box sx={{ textAlign: 'center', mb: { xs: 4, md: 10 } }}>
                     <Typography 
@@ -159,6 +185,7 @@ const Infrastructure = () => {
                                     alignItems: 'center',
                                     textAlign: 'center',
                                     zIndex: zIndexValue,
+                                    willChange: 'transform, opacity',
                                 }}
                             >
                                 <Box sx={{ position: 'relative', mb: 3 }}>
@@ -175,8 +202,9 @@ const Infrastructure = () => {
                                             p: { xs: 3, md: 5 },
                                             border: '8px solid rgba(255,255,255,0.1)',
                                             transition: 'transform 0.3s ease',
+                                            willChange: 'transform',
                                             '&:hover': {
-                                                transform: 'scale(1.05)'
+                                                transform: 'scale(1.05) translate3d(0,0,0)'
                                             }
                                         }}
                                     >

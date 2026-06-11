@@ -287,7 +287,7 @@ const App = () => {
         )}
 
         {currentPage === 'ABOUT US' && (
-          <Box sx={{ pt: { xs: 12, lg: 20 }, minHeight: '100vh' }}>
+          <Box sx={{ pt: { xs: '80px', lg: '100px' }, minHeight: '100vh', bgcolor: '#ffffff' }}>
             <AboutPage />
           </Box>
         )}
@@ -299,7 +299,7 @@ const App = () => {
         )}
 
         {currentPage === 'PRODUCT' && (
-          <Box sx={{ pt: { xs: 12, lg: 20 }, minHeight: '100vh' }}>
+          <Box sx={{ pt: { xs: '80px', lg: '100px' }, minHeight: '100vh', bgcolor: 'rgba(223, 223, 223, 0.2)' }}>
             <ProductCatalog
               categories={categories}
               activeCategory={activeCategory}
@@ -312,7 +312,7 @@ const App = () => {
         )}
 
         {currentPage === 'INSIGHTS' && (
-          <Box sx={{ pt: { xs: 12, lg: 20 }, minHeight: '100vh' }}>
+          <Box sx={{ pt: { xs: '80px', lg: '100px' }, minHeight: '100vh', bgcolor: '#ffffff' }}>
             <BlogPage />
           </Box>
         )}

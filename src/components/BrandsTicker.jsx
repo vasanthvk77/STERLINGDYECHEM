@@ -22,22 +22,13 @@ const BrandsTicker = () => {
         <Box
             component="section"
             sx={{
-                py: 8,
+                 py: 8,
                 bgcolor: '#ffffff',
                 borderTop: '1px solid',
                 borderColor: 'divider',
                 overflow: 'hidden'
             }}
         >
-            <style>
-                {`
-                    @keyframes ticker {
-                        0% { transform: translateX(0); }
-                        100% { transform: translateX(-50%); }
-                    }
-                `}
-            </style>
-
             <Container maxWidth="lg" sx={{ mb: 6, textAlign: 'center' }}>
                 <Box sx={{ display: 'inline-flex', alignItems: 'center', gap: 2 }}>
                     <Box sx={{ width: 32, height: '2px', bgcolor: 'primary.main' }} />
@@ -64,6 +55,8 @@ const BrandsTicker = () => {
                         py: 4,
                         alignItems: 'center',
                         animation: 'ticker 30s linear infinite',
+                        willChange: 'transform',
+                        transform: 'translate3d(0, 0, 0)',
                         '&:hover': { animationPlayState: 'paused' }
                     }}
                 >

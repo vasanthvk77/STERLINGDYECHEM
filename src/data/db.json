@@ -11,7 +11,7 @@
       "email_address": "vasanth2004vk@gmail.com",
       "email_server": "smtp.gmail.com",
       "email_port": "587",
-      "email_password": "mlom jcmk hjtb psgw"
+      "email_password": "arkw mywx mvxh dvhf"
     }
   ],
   "email_inbound": [
@@ -55,7 +55,7 @@
       "id": "cat_1772958548406604",
       "brand": "Silicone Inks",
       "description": "Premium silicone printing inks for high-stretch athletic wear and difficult-to-print substrates.",
-      "image": "/images/cat_silicone.png",
+      "image": "",
       "subtypes": [
         {
           "id": "sub_58e61gvww",

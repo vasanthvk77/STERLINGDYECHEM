@@ -9,31 +9,34 @@ const CustomCursor = () => {
         const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
         if (isTouchDevice) return;
 
-        let animationFrameId;
+        let mouseX = 0;
+        let mouseY = 0;
+        let isPending = false;
 
         const moveCursor = (e) => {
-            const clientX = e.clientX;
-            const clientY = e.clientY;
+            mouseX = e.clientX;
+            mouseY = e.clientY;
 
-            if (animationFrameId) cancelAnimationFrame(animationFrameId);
-
-            animationFrameId = requestAnimationFrame(() => {
-                if (cursorRef.current) {
-                    cursorRef.current.style.transform = `translate3d(${clientX}px, ${clientY}px, 0)`;
-                }
-            });
+            if (!isPending) {
+                isPending = true;
+                requestAnimationFrame(() => {
+                    if (cursorRef.current) {
+                        cursorRef.current.style.transform = `translate3d(${mouseX}px, ${mouseY}px, 0)`;
+                    }
+                    isPending = false;
+                });
+            }
         };
 
         window.addEventListener('mousemove', moveCursor);
 
         return () => {
             window.removeEventListener('mousemove', moveCursor);
-            if (animationFrameId) cancelAnimationFrame(animationFrameId);
         };
     }, []);
 
     return (
-        <div className="custom-cursor-container" style={{ display: 'none' }}>
+        <div className="custom-cursor-container">
             {/* The actual cursor is hidden on mobile via CSS but also via JS check above */}
             <div
                 ref={cursorRef}
@@ -52,13 +55,6 @@ const CustomCursor = () => {
                     />
                 ))}
             </div>
-            <style>
-                {`
-                    @media (min-width: 900px) {
-                        .custom-cursor-container { display: block !important; }
-                    }
-                `}
-            </style>
         </div>
     );
 };

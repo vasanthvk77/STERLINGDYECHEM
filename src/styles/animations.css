@@ -70,6 +70,13 @@ select {
     left: 0;
     pointer-events: none;
     z-index: 10000;
+    display: none;
+}
+
+@media (min-width: 900px) {
+    .custom-cursor-container {
+        display: block !important;
+    }
 }
 
 /* INWARD-FACING TEARDROP RAIN DROPS */
@@ -89,49 +96,69 @@ select {
 /* We rotate the entire drop around the cursor center while keeping it pointed inward */
 @keyframes dropOrbit {
     from {
-        transform: rotate(var(--start-angle)) translateY(12px) rotate(180deg);
+        transform: rotate(0deg) translateY(12px) rotate(180deg);
     }
 
     to {
-        transform: rotate(calc(var(--start-angle) + 360deg)) translateY(12px) rotate(180deg);
+        transform: rotate(360deg) translateY(12px) rotate(180deg);
     }
 }
 
-/* 6 Drops Orbiting Inward */
+/* 6 Drops Orbiting Inward - Offset by negative animation delay to run purely on compositor thread */
 .d-0 {
     background: #ff00ff;
-    --start-angle: 0deg;
     animation: dropOrbit 3s linear infinite;
+    animation-delay: 0s;
 }
 
 .d-1 {
     background: #00ffff;
-    --start-angle: 60deg;
     animation: dropOrbit 3s linear infinite;
+    animation-delay: -0.5s;
 }
 
 .d-2 {
     background: #eeff00;
-    --start-angle: 120deg;
     animation: dropOrbit 3s linear infinite;
+    animation-delay: -1s;
 }
 
 .d-3 {
     background: #00ff00;
-    --start-angle: 180deg;
     animation: dropOrbit 3s linear infinite;
+    animation-delay: -1.5s;
 }
 
 .d-4 {
     background: #ff0000;
-    --start-angle: 240deg;
     animation: dropOrbit 3s linear infinite;
+    animation-delay: -2s;
 }
 
 .d-5 {
     background: #a600ff;
-    --start-angle: 300deg;
     animation: dropOrbit 3s linear infinite;
+    animation-delay: -2.5s;
+}
+
+/* GLOBAL FLOAT ANIMATION */
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-15px);
+    }
+}
+
+/* GLOBAL TICKER ANIMATION (GPU accelerated) */
+@keyframes ticker {
+    0% {
+        transform: translate3d(0, 0, 0);
+    }
+    100% {
+        transform: translate3d(-50%, 0, 0);
+    }
 }
 
 @media (max-width: 1024px) {

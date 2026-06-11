@@ -1,16 +1,20 @@
 import React from 'react';
-import { Box, Typography, Button, Container, IconButton, Stack } from '@mui/material';
-import { ShieldCheck, ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Box, Typography, Container, IconButton, Stack } from '@mui/material';
+import { ShieldCheck, ChevronLeft, ChevronRight } from 'lucide-react';
+import AnimatedButton from './AnimatedButton';
+
 
 const Hero = ({ slides, currentSlide, setCurrentSlide, nextSlide, prevSlide }) => {
     return (
         <Box
             component="section"
+            className="hero-banner-root"
             sx={{
                 position: 'relative',
                 height: { xs: 'calc(100vh - 80px)', lg: '100vh' },
                 overflow: 'hidden',
                 bgcolor: '#000158',
+                
             }}
         >
             {slides.map((slide, index) => (
@@ -19,9 +23,12 @@ const Hero = ({ slides, currentSlide, setCurrentSlide, nextSlide, prevSlide }) =
                     sx={{
                         position: 'absolute',
                         inset: 0,
-                        transition: 'opacity 1.2s cubic-bezier(0.4, 0, 0.2, 1)',
+                        transition: 'opacity 1.2s cubic-bezier(0.4, 0, 0.2, 1), visibility 1.2s cubic-bezier(0.4, 0, 0.2, 1)',
                         opacity: index === currentSlide ? 1 : 0,
+                        visibility: index === currentSlide ? 'visible' : 'hidden',
                         zIndex: index === currentSlide ? 10 : 0,
+                        pointerEvents: index === currentSlide ? 'auto' : 'none',
+                        willChange: 'opacity, visibility',
                     }}
                 >
                     {/* BACKGROUND IMAGE */}
@@ -32,8 +39,9 @@ const Hero = ({ slides, currentSlide, setCurrentSlide, nextSlide, prevSlide }) =
                             backgroundSize: 'cover',
                             backgroundPosition: 'center',
                             backgroundImage: `url(${slide.image})`,
-                            transform: index === currentSlide ? 'scale(1.15)' : 'scale(1)',
+                            transform: index === currentSlide ? 'scale(1.15) translate3d(0,0,0)' : 'scale(1) translate3d(0,0,0)',
                             transition: index === currentSlide ? 'transform 15s linear' : 'transform 1.2s ease-in-out',
+                            willChange: 'transform',
                         }}
                     />
 
@@ -71,13 +79,14 @@ const Hero = ({ slides, currentSlide, setCurrentSlide, nextSlide, prevSlide }) =
                     >
                         <Box
                             sx={{
-                                transition: 'all 1.2s cubic-bezier(0.2, 0.8, 0.2, 1)',
-                                transform: index === currentSlide ? 'translateY(0)' : 'translateY(60px)',
+                                transition: 'transform 1.2s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 1.2s cubic-bezier(0.2, 0.8, 0.2, 1)',
+                                transform: index === currentSlide ? 'translate3d(0, 0, 0)' : 'translate3d(0, 60px, 0)',
                                 opacity: index === currentSlide ? 1 : 0,
                                 display: 'flex',
                                 flexDirection: 'column',
                                 alignItems: 'center',
-                                maxWidth: '1200px'
+                                maxWidth: '1200px',
+                                willChange: 'transform, opacity',
                             }}
                         >
                             <Typography
@@ -109,30 +118,22 @@ const Hero = ({ slides, currentSlide, setCurrentSlide, nextSlide, prevSlide }) =
                             >
                                 {slide.subtitle}
                             </Typography>
-                            <Button
-                                variant="contained"
+                            <AnimatedButton
+                                lightBg={true}
                                 size="large"
                                 onClick={() => slide.action ? slide.action() : navigateTo('PRODUCT')}
                                 sx={{
-                                    bgcolor: '#ffffff',
-                                    color: '#000158',
                                     px: 8,
                                     py: 2.5,
                                     fontSize: '12px',
-                                    fontWeight: 900,
-                                    borderRadius: 0,
                                     boxShadow: '0 10px 20px rgba(0, 0, 0, 0.2)',
                                     '&:hover': {
-                                        bgcolor: '#f1f1f1',
-                                        transform: 'translateY(-2px)',
                                         boxShadow: '0 15px 30px rgba(0, 0, 0, 0.3)',
-                                    },
-                                    transition: 'all 0.3s ease'
+                                    }
                                 }}
-                                endIcon={<ArrowRight size={18} strokeWidth={3} />}
                             >
                                 {slide.cta}
-                            </Button>
+                            </AnimatedButton>
                         </Box>
                     </Container>
                 </Box>
@@ -160,7 +161,7 @@ const Hero = ({ slides, currentSlide, setCurrentSlide, nextSlide, prevSlide }) =
                                         height: '3px',
                                         width: i === currentSlide ? 80 : 40,
                                         bgcolor: i === currentSlide ? '#ffffff' : 'rgba(255, 255, 255, 0.3)',
-                                        transition: 'all 0.6s cubic-bezier(0.4, 0, 0.2, 1)',
+                                        transition: 'width 0.6s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.6s cubic-bezier(0.4, 0, 0.2, 1)',
                                         cursor: 'pointer',
                                     }}
                                 />
